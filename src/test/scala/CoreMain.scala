@@ -1,5 +1,7 @@
 package MyCore
 
+class Top extends ALU
+
 object MyCoreGen extends App{
-    chisel3.Driver.execute(args, () => new RegFile)
+    chisel3.Driver.execute(args, () => new Top)
 }

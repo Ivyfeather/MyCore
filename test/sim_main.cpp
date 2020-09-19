@@ -1,9 +1,10 @@
 #include <verilated.h>
 #include <iostream>
-#include "VRegFile.h"
+#include "VTop.h"
+#include "verilated_vcd_c.h"
 using namespace std;
 
-VRegFile *top;
+VTop *top;
 uint64_t main_time = 0;    
 
 double sc_time_stamp () {       // Called by $time in Verilog
@@ -12,24 +13,26 @@ double sc_time_stamp () {       // Called by $time in Verilog
 
 
 int main(int argc, char** argv, char** env) {
-	Verilated::commandArgs(argc, argv);
 	Verilated::traceEverOn(true);
-	top = new VRegFile;
-	top->reset = 1;
-	
+	Verilated::commandArgs(argc, argv);
+
+	Verilated::mkdir("logs");
+	top = new VTop;
+
+	top->reset = !0;
+	top->clock = 0;
+#if 0	
 	while (!Verilated::gotFinish()) {
 		if(main_time > 4)
 			top->reset = 0;
-		if(main_time % 2 == 1)
-			top->clock = 1;
-		if(main_time % 2 == 0)
-			top->clock = 0;
+		
+		top->clock = !top->clock;
 
 		top->io_waddr = main_time % 32;
 		top->io_wen = 1;
 		top->io_wdata = main_time;
 
-		top->io_rs1_addr = main_time % 32 - 1;
+		top->io_rs1_addr = (main_time - 1) % 32 ;
 		top->io_rs2_addr = main_time % 32 ;
 
 		top->eval();
@@ -42,7 +45,37 @@ int main(int argc, char** argv, char** env) {
 		}
 
 	}
+#endif
+
+#if 1
+	while (!Verilated::gotFinish()) {
+		if(main_time > 4) top->reset = 0;
+		top->clock = !top->clock;
+		top->reset = 0;
+
+		top->io_in1 = main_time;
+		top->io_in2 = 5*main_time + 1;
+		top->io_opcode = 0;
+		printf("result: %lu\n", top->io_out);
+
+		top->eval();
+		
+		main_time ++;
+		if(main_time > 100){
+			break;
+		}
+
+
+	}
+#endif
 	top->final();
+
+
+#if VM_COVERAGE
+    Verilated::mkdir("logs");
+    VerilatedCov::write("logs/coverage.dat");
+#endif
+
 	delete top;
 	exit(0);
 }

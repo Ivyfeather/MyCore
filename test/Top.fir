@@ -1,0 +1,46 @@
+;buildInfoPackage: chisel3, version: 3.3.1, scalaVersion: 2.12.11, sbtVersion: 1.3.10
+circuit Top : 
+  module Top : 
+    input clock : Clock
+    input reset : UInt<1>
+    output io : {flip opcode : UInt<6>, flip in1 : UInt<64>, flip in2 : UInt<64>, out : UInt<64>}
+    
+    node _T = bits(io.opcode, 4, 4) @[alu.scala 21:29]
+    node _T_1 = not(io.in2) @[alu.scala 34:54]
+    node _T_2 = add(_T_1, UInt<1>("h01")) @[alu.scala 34:62]
+    node _T_3 = tail(_T_2, 1) @[alu.scala 34:62]
+    node _T_4 = mux(_T, _T_3, io.in2) @[alu.scala 34:35]
+    node add_result = add(io.in1, _T_4) @[alu.scala 34:29]
+    node xor_result = xor(io.in1, io.in2) @[alu.scala 35:29]
+    node or_result = or(io.in1, io.in2) @[alu.scala 36:29]
+    node and_result = and(io.in1, io.in2) @[alu.scala 37:29]
+    node _T_5 = bits(add_result, 64, 64) @[alu.scala 39:33]
+    node sltu_result = not(_T_5) @[alu.scala 39:22]
+    node _T_6 = bits(xor_result, 63, 63) @[alu.scala 40:32]
+    node slt_result = xor(_T_6, sltu_result) @[alu.scala 40:43]
+    node shamt = bits(io.in2, 4, 0) @[alu.scala 43:23]
+    node _T_7 = bits(add_result, 63, 0) @[alu.scala 46:46]
+    node _T_8 = cat(UInt<63>("h00"), sltu_result) @[Cat.scala 29:58]
+    node _T_9 = cat(UInt<63>("h00"), slt_result) @[Cat.scala 29:58]
+    node _T_10 = and(io.opcode, UInt<6>("h03f")) @[Lookup.scala 31:38]
+    node _T_11 = eq(UInt<5>("h011"), _T_10) @[Lookup.scala 31:38]
+    node _T_12 = and(io.opcode, UInt<6>("h03f")) @[Lookup.scala 31:38]
+    node _T_13 = eq(UInt<5>("h011"), _T_12) @[Lookup.scala 31:38]
+    node _T_14 = and(io.opcode, UInt<6>("h03f")) @[Lookup.scala 31:38]
+    node _T_15 = eq(UInt<1>("h01"), _T_14) @[Lookup.scala 31:38]
+    node _T_16 = and(io.opcode, UInt<6>("h03f")) @[Lookup.scala 31:38]
+    node _T_17 = eq(UInt<2>("h02"), _T_16) @[Lookup.scala 31:38]
+    node _T_18 = and(io.opcode, UInt<6>("h03f")) @[Lookup.scala 31:38]
+    node _T_19 = eq(UInt<2>("h03"), _T_18) @[Lookup.scala 31:38]
+    node _T_20 = mux(_T_19, and_result, _T_7) @[Lookup.scala 33:37]
+    node _T_21 = mux(_T_17, or_result, _T_20) @[Lookup.scala 33:37]
+    node _T_22 = mux(_T_15, xor_result, _T_21) @[Lookup.scala 33:37]
+    node _T_23 = mux(_T_13, _T_9, _T_22) @[Lookup.scala 33:37]
+    node _T_24 = mux(_T_11, _T_8, _T_23) @[Lookup.scala 33:37]
+    io.out <= _T_24 @[alu.scala 46:12]
+    node _T_25 = bits(reset, 0, 0) @[alu.scala 56:11]
+    node _T_26 = eq(_T_25, UInt<1>("h00")) @[alu.scala 56:11]
+    when _T_26 : @[alu.scala 56:11]
+      printf(clock, UInt<1>(1), "in1:%d in2:%d opcode:%x out:%d\n", io.in1, io.in2, io.opcode, io.out) @[alu.scala 56:11]
+      skip @[alu.scala 56:11]
+    
