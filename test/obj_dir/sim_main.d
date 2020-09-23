@@ -1,20 +1,24 @@
-sim_main.o: ../sim_main.cpp /usr/share/verilator/include/verilated.h \
- /usr/share/verilator/include/verilatedos.h VTop.h \
- /usr/share/verilator/include/verilated_heavy.h \
- /usr/share/verilator/include/verilated.h \
- /usr/share/verilator/include/verilated_cov.h \
- /usr/share/verilator/include/verilated_vcd_c.h
+sim_main.o: ../sim_main.cpp \
+ /usr/local/share/verilator/include/verilated.h \
+ /usr/local/share/verilator/include/verilatedos.h VTop.h \
+ /usr/local/share/verilator/include/verilated_heavy.h \
+ /usr/local/share/verilator/include/verilated.h \
+ /usr/local/share/verilator/include/verilated_cov.h \
+ /usr/local/share/verilator/include/verilated_vcd_c.h \
+ /usr/local/share/verilator/include/verilated_trace.h
 
-/usr/share/verilator/include/verilated.h:
+/usr/local/share/verilator/include/verilated.h:
 
-/usr/share/verilator/include/verilatedos.h:
+/usr/local/share/verilator/include/verilatedos.h:
 
 VTop.h:
 
-/usr/share/verilator/include/verilated_heavy.h:
+/usr/local/share/verilator/include/verilated_heavy.h:
 
-/usr/share/verilator/include/verilated.h:
+/usr/local/share/verilator/include/verilated.h:
 
-/usr/share/verilator/include/verilated_cov.h:
+/usr/local/share/verilator/include/verilated_cov.h:
 
-/usr/share/verilator/include/verilated_vcd_c.h:
+/usr/local/share/verilator/include/verilated_vcd_c.h:
+
+/usr/local/share/verilator/include/verilated_trace.h:

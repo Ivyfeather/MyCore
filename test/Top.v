@@ -1,45 +1,87 @@
 module Top(
   input         clock,
   input         reset,
-  input  [5:0]  io_opcode,
-  input  [63:0] io_in1,
-  input  [63:0] io_in2,
-  output [63:0] io_out
+  input  [4:0]  io_rs1_addr,
+  output [63:0] io_rs1_data,
+  input  [4:0]  io_rs2_addr,
+  output [63:0] io_rs2_data,
+  input  [4:0]  io_waddr,
+  input  [63:0] io_wdata,
+  input         io_wen
 );
-  wire [63:0] _T_1 = ~io_in2; // @[alu.scala 34:54]
-  wire [63:0] _T_3 = _T_1 + 64'h1; // @[alu.scala 34:62]
-  wire [63:0] _T_4 = io_opcode[4] ? _T_3 : io_in2; // @[alu.scala 34:35]
-  wire [64:0] add_result = io_in1 + _T_4; // @[alu.scala 34:29]
-  wire [63:0] xor_result = io_in1 ^ io_in2; // @[alu.scala 35:29]
-  wire [63:0] or_result = io_in1 | io_in2; // @[alu.scala 36:29]
-  wire [63:0] and_result = io_in1 & io_in2; // @[alu.scala 37:29]
-  wire  sltu_result = ~add_result[64]; // @[alu.scala 39:22]
-  wire  slt_result = xor_result[63] ^ sltu_result; // @[alu.scala 40:43]
-  wire [63:0] _T_8 = {63'h0,sltu_result}; // @[Cat.scala 29:58]
-  wire [63:0] _T_9 = {63'h0,slt_result}; // @[Cat.scala 29:58]
-  wire  _T_11 = 6'h11 == io_opcode; // @[Lookup.scala 31:38]
-  wire  _T_15 = 6'h1 == io_opcode; // @[Lookup.scala 31:38]
-  wire  _T_17 = 6'h2 == io_opcode; // @[Lookup.scala 31:38]
-  wire  _T_19 = 6'h3 == io_opcode; // @[Lookup.scala 31:38]
-  wire [63:0] _T_20 = _T_19 ? and_result : add_result[63:0]; // @[Lookup.scala 33:37]
-  wire [63:0] _T_21 = _T_17 ? or_result : _T_20; // @[Lookup.scala 33:37]
-  wire [63:0] _T_22 = _T_15 ? xor_result : _T_21; // @[Lookup.scala 33:37]
-  wire [63:0] _T_23 = _T_11 ? _T_9 : _T_22; // @[Lookup.scala 33:37]
-  wire  _T_26 = ~reset; // @[alu.scala 56:11]
-  assign io_out = _T_11 ? _T_8 : _T_23; // @[alu.scala 46:12]
+`ifdef RANDOMIZE_MEM_INIT
+  reg [63:0] _RAND_0;
+`endif // RANDOMIZE_MEM_INIT
+  reg [63:0] rf [0:31]; // @[regs.scala 19:17]
+  wire [63:0] rf__T_2_data; // @[regs.scala 19:17]
+  wire [4:0] rf__T_2_addr; // @[regs.scala 19:17]
+  wire [63:0] rf__T_5_data; // @[regs.scala 19:17]
+  wire [4:0] rf__T_5_addr; // @[regs.scala 19:17]
+  wire [63:0] rf__T_data; // @[regs.scala 19:17]
+  wire [4:0] rf__T_addr; // @[regs.scala 19:17]
+  wire  rf__T_mask; // @[regs.scala 19:17]
+  wire  rf__T_en; // @[regs.scala 19:17]
+  wire  _T_1 = io_rs1_addr != 5'h0; // @[regs.scala 22:37]
+  wire  _T_4 = io_rs2_addr != 5'h0; // @[regs.scala 23:37]
+  assign rf__T_2_addr = io_rs1_addr;
+  assign rf__T_2_data = rf[rf__T_2_addr]; // @[regs.scala 19:17]
+  assign rf__T_5_addr = io_rs2_addr;
+  assign rf__T_5_data = rf[rf__T_5_addr]; // @[regs.scala 19:17]
+  assign rf__T_data = io_wdata;
+  assign rf__T_addr = io_waddr;
+  assign rf__T_mask = 1'h1;
+  assign rf__T_en = io_wen;
+  assign io_rs1_data = _T_1 ? rf__T_2_data : 64'h0; // @[regs.scala 22:17]
+  assign io_rs2_data = _T_4 ? rf__T_5_data : 64'h0; // @[regs.scala 23:17]
+`ifdef RANDOMIZE_GARBAGE_ASSIGN
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_INVALID_ASSIGN
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_REG_INIT
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_MEM_INIT
+`define RANDOMIZE
+`endif
+`ifndef RANDOM
+`define RANDOM $random
+`endif
+`ifdef RANDOMIZE_MEM_INIT
+  integer initvar;
+`endif
+`ifndef SYNTHESIS
+`ifdef FIRRTL_BEFORE_INITIAL
+`FIRRTL_BEFORE_INITIAL
+`endif
+initial begin
+  `ifdef RANDOMIZE
+    `ifdef INIT_RANDOM
+      `INIT_RANDOM
+    `endif
+    `ifndef VERILATOR
+      `ifdef RANDOMIZE_DELAY
+        #`RANDOMIZE_DELAY begin end
+      `else
+        #0.002 begin end
+      `endif
+    `endif
+`ifdef RANDOMIZE_MEM_INIT
+  _RAND_0 = {2{`RANDOM}};
+  for (initvar = 0; initvar < 32; initvar = initvar+1)
+    rf[initvar] = _RAND_0[63:0];
+`endif // RANDOMIZE_MEM_INIT
+  `endif // RANDOMIZE
+end // initial
+`ifdef FIRRTL_AFTER_INITIAL
+`FIRRTL_AFTER_INITIAL
+`endif
+`endif // SYNTHESIS
   always @(posedge clock) begin
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_T_26) begin
-          $fwrite(32'h80000002,"in1:%d in2:%d opcode:%x adder:%d\
-          out:%d\n",io_in1,io_in2,io_opcode,add_result,io_out); // @[alu.scala 56:11]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
+    if(rf__T_en & rf__T_mask) begin
+      rf[rf__T_addr] <= rf__T_data; // @[regs.scala 19:17]
+    end
   end
    initial begin
       if ($test$plusargs("trace") != 0) begin
@@ -49,5 +91,4 @@ module Top(
       end
       $display("[%0t] Model running...\n", $time);
    end
-
 endmodule

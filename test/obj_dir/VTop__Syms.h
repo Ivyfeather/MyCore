@@ -18,14 +18,18 @@ class VTop__Syms : public VerilatedSyms {
     
     // LOCAL STATE
     const char* __Vm_namep;
+    bool __Vm_dumping;  // Dumping is active
+    VerilatedMutex __Vm_dumperMutex;  // Protect __Vm_dumperp
+    VerilatedVcdC* __Vm_dumperp VL_GUARDED_BY(__Vm_dumperMutex);  /// Trace class for $dump*
     bool __Vm_activity;  ///< Used by trace routines to determine change occurred
+    uint32_t __Vm_baseCode;  ///< Used by trace routines when tracing multiple models
     bool __Vm_didInit;
     
     // SUBCELL STATE
     VTop*                          TOPp;
     
     // COVERAGE
-    uint32_t __Vcoverage[460];
+    uint32_t __Vcoverage[346];
     
     // CREATORS
     VTop__Syms(VTop* topp, const char* namep);
@@ -33,7 +37,6 @@ class VTop__Syms : public VerilatedSyms {
     
     // METHODS
     inline const char* name() { return __Vm_namep; }
-    inline bool getClearActivity() { bool r=__Vm_activity; __Vm_activity=false; return r; }
     
 } VL_ATTR_ALIGNED(VL_CACHE_LINE_BYTES);
 

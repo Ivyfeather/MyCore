@@ -11,6 +11,7 @@ double sc_time_stamp () {       // Called by $time in Verilog
 	return main_time;           // converts to double, to match
 }		                        // what SystemC does
 
+#define REGFILE
 
 int main(int argc, char** argv, char** env) {
 	Verilated::traceEverOn(true);
@@ -21,13 +22,13 @@ int main(int argc, char** argv, char** env) {
 
 	top->reset = !0;
 	top->clock = 0;
-#if 0	
+#ifdef REGFILE	
 	while (!Verilated::gotFinish()) {
-		if(main_time > 4)
-			top->reset = 0;
-		
+		main_time ++;
 		top->clock = !top->clock;
-
+		if(main_time > 4)	top->reset = 0;		
+		if(main_time > 100)	break;
+		
 		top->io_waddr = main_time % 32;
 		top->io_wen = 1;
 		top->io_wdata = main_time;
@@ -39,15 +40,10 @@ int main(int argc, char** argv, char** env) {
 		printf("%lu:\t clk:%u\t rst:%u\t raddr1:%u\t rdata1:%lu\t raddr2:%u\t rdata2:%lu\t \n",
 				main_time, top->clock, top->reset, top->io_rs1_addr, top->io_rs1_data, \
 				 top->io_rs2_addr, top->io_rs2_data);
-		main_time ++;
-		if(main_time > 100){
-			break;
-		}
-
 	}
 #endif
 
-#if 1
+#ifdef ALU
 	while (!Verilated::gotFinish()) {
 		if(main_time > 4) top->reset = 0;
 		top->clock = !top->clock;
@@ -64,8 +60,6 @@ int main(int argc, char** argv, char** env) {
 		if(main_time > 100){
 			break;
 		}
-
-
 	}
 #endif
 	top->final();
