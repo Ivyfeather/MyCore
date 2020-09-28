@@ -5,7 +5,7 @@ import chisel3.util._
 
 trait CoreConfig
 {
-    val xlen = 64
+    val xlen = 32
 }
 
 abstract class MyCoreModule extends Module with CoreConfig

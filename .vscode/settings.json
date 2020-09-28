@@ -3,5 +3,8 @@
         "memory": "cpp",
         "random": "cpp",
         "optional": "cpp"
+    },
+    "files.watcherExclude": {
+        "**/target": true
     }
 }

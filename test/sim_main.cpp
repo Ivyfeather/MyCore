@@ -11,7 +11,8 @@ double sc_time_stamp () {       // Called by $time in Verilog
 	return main_time;           // converts to double, to match
 }		                        // what SystemC does
 
-#define REGFILE
+//#define REGFILE
+#define ALU
 
 int main(int argc, char** argv, char** env) {
 	Verilated::traceEverOn(true);

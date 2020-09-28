@@ -1,16 +1,11 @@
 [
   {
     "class":"firrtl.transforms.CombinationalPath",
-    "sink":"~Top|Top>io_rs1_data",
+    "sink":"~Top|Top>io_out",
     "sources":[
-      "~Top|Top>io_rs1_addr"
-    ]
-  },
-  {
-    "class":"firrtl.transforms.CombinationalPath",
-    "sink":"~Top|Top>io_rs2_data",
-    "sources":[
-      "~Top|Top>io_rs2_addr"
+      "~Top|Top>io_opcode",
+      "~Top|Top>io_in1",
+      "~Top|Top>io_in2"
     ]
   },
   {

@@ -6,17 +6,18 @@ import utils._
 
 trait ALUop{
     val ALUop_bits = 6
-    def ALU_X   = BitPat("b000000")
-    def ADD     = BitPat("b000000")
-    def SLT     = BitPat("b010001")
-    def SLTU    = BitPat("b010010")
-    def XOR     = BitPat("b000001")
-    def OR      = BitPat("b000010")
-    def AND     = BitPat("b000011")
-    def SLL     = BitPat("b000100")
-    def SRL     = BitPat("b000101")
-    def SRA     = BitPat("b000110")
-    def SUB     = BitPat("b010000")
+    def ALU_X       = "b000000".U
+    def ALU_ADD     = "b000000".U
+    def ALU_SLT     = "b010001".U
+    def ALU_SLTU    = "b010010".U
+    def ALU_XOR     = "b000001".U
+    def ALU_OR      = "b000010".U
+    def ALU_AND     = "b000011".U
+    def ALU_SLL     = "b000100".U
+    def ALU_SRL     = "b000101".U
+    def ALU_SRA     = "b000110".U
+    def ALU_SUB     = "b010000".U
+    def ALU_COPY1   = "b001000".U
 
     def isSub(op: UInt) = op(4)
 }
@@ -45,12 +46,12 @@ class ALU extends MyCoreModule with ALUop{
 
     io.out := Lookup(io.opcode,    add_result(xlen-1, 0),//test
             Array(  
-                    SLT         -> ZeroExt(sltu_result, xlen),
-                    SLT         -> ZeroExt(slt_result, xlen),
-                    XOR         -> xor_result,
-                    OR          -> or_result,
-                    AND         -> and_result
-                    
+                    BitPat.apply(ALU_SLTU)   -> ZeroExt(sltu_result, xlen),
+                    BitPat.apply(ALU_SLT)    -> ZeroExt(slt_result, xlen),
+                    BitPat.apply(ALU_XOR)    -> xor_result,
+                    BitPat.apply(ALU_OR)     -> or_result,
+                    BitPat.apply(ALU_AND)    -> and_result,
+                    BitPat.apply(ALU_COPY1)  -> io.in1
                     ))
 
     printf("in1:%d in2:%d opcode:%x out:%d\n", io.in1, io.in2, io.opcode, io.out)
