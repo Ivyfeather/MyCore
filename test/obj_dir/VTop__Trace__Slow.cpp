@@ -64,24 +64,34 @@ void VTop::traceInitSub0(void* userp, VerilatedVcd* tracep) {
     if (false && tracep && c) {}  // Prevent unused
     // Body
     {
-        tracep->declBit(c+8,"clock", false,-1);
-        tracep->declBit(c+9,"reset", false,-1);
-        tracep->declBus(c+10,"io_opcode", false,-1, 5,0);
-        tracep->declBus(c+11,"io_in1", false,-1, 31,0);
-        tracep->declBus(c+12,"io_in2", false,-1, 31,0);
-        tracep->declBus(c+13,"io_out", false,-1, 31,0);
-        tracep->declBit(c+8,"Top clock", false,-1);
-        tracep->declBit(c+9,"Top reset", false,-1);
-        tracep->declBus(c+10,"Top io_opcode", false,-1, 5,0);
-        tracep->declBus(c+11,"Top io_in1", false,-1, 31,0);
-        tracep->declBus(c+12,"Top io_in2", false,-1, 31,0);
-        tracep->declBus(c+13,"Top io_out", false,-1, 31,0);
-        tracep->declQuad(c+1,"Top add_result", false,-1, 32,0);
-        tracep->declBus(c+3,"Top xor_result", false,-1, 31,0);
-        tracep->declBus(c+4,"Top or_result", false,-1, 31,0);
-        tracep->declBus(c+5,"Top and_result", false,-1, 31,0);
-        tracep->declBit(c+6,"Top sltu_result", false,-1);
-        tracep->declBit(c+7,"Top slt_result", false,-1);
+        tracep->declBit(c+33,"clock", false,-1);
+        tracep->declBit(c+34,"reset", false,-1);
+        tracep->declBus(c+35,"io_rs1_addr", false,-1, 4,0);
+        tracep->declBus(c+36,"io_rs1_data", false,-1, 31,0);
+        tracep->declBus(c+37,"io_rs2_addr", false,-1, 4,0);
+        tracep->declBus(c+38,"io_rs2_data", false,-1, 31,0);
+        tracep->declBus(c+39,"io_waddr", false,-1, 4,0);
+        tracep->declBus(c+40,"io_wdata", false,-1, 31,0);
+        tracep->declBit(c+41,"io_wen", false,-1);
+        tracep->declBit(c+33,"Top clock", false,-1);
+        tracep->declBit(c+34,"Top reset", false,-1);
+        tracep->declBus(c+35,"Top io_rs1_addr", false,-1, 4,0);
+        tracep->declBus(c+36,"Top io_rs1_data", false,-1, 31,0);
+        tracep->declBus(c+37,"Top io_rs2_addr", false,-1, 4,0);
+        tracep->declBus(c+38,"Top io_rs2_data", false,-1, 31,0);
+        tracep->declBus(c+39,"Top io_waddr", false,-1, 4,0);
+        tracep->declBus(c+40,"Top io_wdata", false,-1, 31,0);
+        tracep->declBit(c+41,"Top io_wen", false,-1);
+        {int i; for (i=0; i<32; i++) {
+                tracep->declBus(c+1+i*1,"Top rf", true,(i+0), 31,0);}}
+        tracep->declBus(c+42,"Top rf__T_24_data", false,-1, 31,0);
+        tracep->declBus(c+35,"Top rf__T_24_addr", false,-1, 4,0);
+        tracep->declBus(c+43,"Top rf__T_29_data", false,-1, 31,0);
+        tracep->declBus(c+37,"Top rf__T_29_addr", false,-1, 4,0);
+        tracep->declBus(c+40,"Top rf__T_21_data", false,-1, 31,0);
+        tracep->declBus(c+39,"Top rf__T_21_addr", false,-1, 4,0);
+        tracep->declBit(c+44,"Top rf__T_21_mask", false,-1);
+        tracep->declBit(c+41,"Top rf__T_21_en", false,-1);
     }
 }
 
@@ -110,18 +120,49 @@ void VTop::traceFullSub0(void* userp, VerilatedVcd* tracep) {
     if (false && oldp) {}  // Prevent unused
     // Body
     {
-        tracep->fullQData(oldp+1,(vlTOPp->Top__DOT__add_result),33);
-        tracep->fullIData(oldp+3,(vlTOPp->Top__DOT__xor_result),32);
-        tracep->fullIData(oldp+4,(vlTOPp->Top__DOT__or_result),32);
-        tracep->fullIData(oldp+5,(vlTOPp->Top__DOT__and_result),32);
-        tracep->fullBit(oldp+6,((1U & (~ (IData)((vlTOPp->Top__DOT__add_result 
-                                                  >> 0x20U))))));
-        tracep->fullBit(oldp+7,(vlTOPp->Top__DOT__slt_result));
-        tracep->fullBit(oldp+8,(vlTOPp->clock));
-        tracep->fullBit(oldp+9,(vlTOPp->reset));
-        tracep->fullCData(oldp+10,(vlTOPp->io_opcode),6);
-        tracep->fullIData(oldp+11,(vlTOPp->io_in1),32);
-        tracep->fullIData(oldp+12,(vlTOPp->io_in2),32);
-        tracep->fullIData(oldp+13,(vlTOPp->io_out),32);
+        tracep->fullIData(oldp+1,(vlTOPp->Top__DOT__rf[0]),32);
+        tracep->fullIData(oldp+2,(vlTOPp->Top__DOT__rf[1]),32);
+        tracep->fullIData(oldp+3,(vlTOPp->Top__DOT__rf[2]),32);
+        tracep->fullIData(oldp+4,(vlTOPp->Top__DOT__rf[3]),32);
+        tracep->fullIData(oldp+5,(vlTOPp->Top__DOT__rf[4]),32);
+        tracep->fullIData(oldp+6,(vlTOPp->Top__DOT__rf[5]),32);
+        tracep->fullIData(oldp+7,(vlTOPp->Top__DOT__rf[6]),32);
+        tracep->fullIData(oldp+8,(vlTOPp->Top__DOT__rf[7]),32);
+        tracep->fullIData(oldp+9,(vlTOPp->Top__DOT__rf[8]),32);
+        tracep->fullIData(oldp+10,(vlTOPp->Top__DOT__rf[9]),32);
+        tracep->fullIData(oldp+11,(vlTOPp->Top__DOT__rf[10]),32);
+        tracep->fullIData(oldp+12,(vlTOPp->Top__DOT__rf[11]),32);
+        tracep->fullIData(oldp+13,(vlTOPp->Top__DOT__rf[12]),32);
+        tracep->fullIData(oldp+14,(vlTOPp->Top__DOT__rf[13]),32);
+        tracep->fullIData(oldp+15,(vlTOPp->Top__DOT__rf[14]),32);
+        tracep->fullIData(oldp+16,(vlTOPp->Top__DOT__rf[15]),32);
+        tracep->fullIData(oldp+17,(vlTOPp->Top__DOT__rf[16]),32);
+        tracep->fullIData(oldp+18,(vlTOPp->Top__DOT__rf[17]),32);
+        tracep->fullIData(oldp+19,(vlTOPp->Top__DOT__rf[18]),32);
+        tracep->fullIData(oldp+20,(vlTOPp->Top__DOT__rf[19]),32);
+        tracep->fullIData(oldp+21,(vlTOPp->Top__DOT__rf[20]),32);
+        tracep->fullIData(oldp+22,(vlTOPp->Top__DOT__rf[21]),32);
+        tracep->fullIData(oldp+23,(vlTOPp->Top__DOT__rf[22]),32);
+        tracep->fullIData(oldp+24,(vlTOPp->Top__DOT__rf[23]),32);
+        tracep->fullIData(oldp+25,(vlTOPp->Top__DOT__rf[24]),32);
+        tracep->fullIData(oldp+26,(vlTOPp->Top__DOT__rf[25]),32);
+        tracep->fullIData(oldp+27,(vlTOPp->Top__DOT__rf[26]),32);
+        tracep->fullIData(oldp+28,(vlTOPp->Top__DOT__rf[27]),32);
+        tracep->fullIData(oldp+29,(vlTOPp->Top__DOT__rf[28]),32);
+        tracep->fullIData(oldp+30,(vlTOPp->Top__DOT__rf[29]),32);
+        tracep->fullIData(oldp+31,(vlTOPp->Top__DOT__rf[30]),32);
+        tracep->fullIData(oldp+32,(vlTOPp->Top__DOT__rf[31]),32);
+        tracep->fullBit(oldp+33,(vlTOPp->clock));
+        tracep->fullBit(oldp+34,(vlTOPp->reset));
+        tracep->fullCData(oldp+35,(vlTOPp->io_rs1_addr),5);
+        tracep->fullIData(oldp+36,(vlTOPp->io_rs1_data),32);
+        tracep->fullCData(oldp+37,(vlTOPp->io_rs2_addr),5);
+        tracep->fullIData(oldp+38,(vlTOPp->io_rs2_data),32);
+        tracep->fullCData(oldp+39,(vlTOPp->io_waddr),5);
+        tracep->fullIData(oldp+40,(vlTOPp->io_wdata),32);
+        tracep->fullBit(oldp+41,(vlTOPp->io_wen));
+        tracep->fullIData(oldp+42,(vlTOPp->Top__DOT__rf___05FT_24_data),32);
+        tracep->fullIData(oldp+43,(vlTOPp->Top__DOT__rf___05FT_29_data),32);
+        tracep->fullBit(oldp+44,(1U));
     }
 }

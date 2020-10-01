@@ -1,51 +1,68 @@
-module Top(
-  input         clock,
-  input         reset,
-  input  [5:0]  io_opcode,
-  input  [31:0] io_in1,
-  input  [31:0] io_in2,
-  output [31:0] io_out
+/* verilator lint_off UNUSED */
+module Top( // @[:@3.2]
+  input         clock, // @[:@4.4]
+  input         reset, // @[:@5.4]
+  input  [4:0]  io_rs1_addr, // @[:@6.4]
+  output [31:0] io_rs1_data, // @[:@6.4]
+  input  [4:0]  io_rs2_addr, // @[:@6.4]
+  output [31:0] io_rs2_data, // @[:@6.4]
+  input  [4:0]  io_waddr, // @[:@6.4]
+  input  [31:0] io_wdata, // @[:@6.4]
+  input         io_wen // @[:@6.4]
 );
-  wire [31:0] _T_1 = ~io_in2; // @[alu.scala 35:54]
-  wire [31:0] _T_3 = _T_1 + 32'h1; // @[alu.scala 35:62]
-  wire [31:0] _T_4 = io_opcode[4] ? _T_3 : io_in2; // @[alu.scala 35:35]
-  wire [32:0] add_result = io_in1 + _T_4; // @[alu.scala 35:29]
-  wire [31:0] xor_result = io_in1 ^ io_in2; // @[alu.scala 36:29]
-  wire [31:0] or_result = io_in1 | io_in2; // @[alu.scala 37:29]
-  wire [31:0] and_result = io_in1 & io_in2; // @[alu.scala 38:29]
-  wire  sltu_result = ~add_result[32]; // @[alu.scala 40:22]
-  wire  slt_result = xor_result[31] ^ sltu_result; // @[alu.scala 41:43]
-  wire [31:0] _T_8 = {31'h0,sltu_result}; // @[Cat.scala 29:58]
-  wire [31:0] _T_9 = {31'h0,slt_result}; // @[Cat.scala 29:58]
-  wire [5:0] _T_10 = io_opcode & 6'h1f; // @[Lookup.scala 31:38]
-  wire  _T_11 = 6'h12 == _T_10; // @[Lookup.scala 31:38]
-  wire  _T_13 = 6'h11 == _T_10; // @[Lookup.scala 31:38]
-  wire [5:0] _T_14 = io_opcode & 6'h1; // @[Lookup.scala 31:38]
-  wire  _T_15 = 6'h1 == _T_14; // @[Lookup.scala 31:38]
-  wire [5:0] _T_16 = io_opcode & 6'h3; // @[Lookup.scala 31:38]
-  wire  _T_17 = 6'h2 == _T_16; // @[Lookup.scala 31:38]
-  wire  _T_19 = 6'h3 == _T_16; // @[Lookup.scala 31:38]
-  wire [5:0] _T_20 = io_opcode & 6'hf; // @[Lookup.scala 31:38]
-  wire  _T_21 = 6'h8 == _T_20; // @[Lookup.scala 31:38]
-  wire [31:0] _T_22 = _T_21 ? io_in1 : add_result[31:0]; // @[Lookup.scala 33:37]
-  wire [31:0] _T_23 = _T_19 ? and_result : _T_22; // @[Lookup.scala 33:37]
-  wire [31:0] _T_24 = _T_17 ? or_result : _T_23; // @[Lookup.scala 33:37]
-  wire [31:0] _T_25 = _T_15 ? xor_result : _T_24; // @[Lookup.scala 33:37]
-  wire [31:0] _T_26 = _T_13 ? _T_9 : _T_25; // @[Lookup.scala 33:37]
-  wire  _T_29 = ~reset; // @[alu.scala 57:11]
-  assign io_out = _T_11 ? _T_8 : _T_26; // @[alu.scala 47:12]
+  reg [31:0] rf [0:31]; // @[RegFile.scala 19:17:@8.4]
+  reg [31:0] _RAND_0;
+  wire [31:0] rf__T_24_data; // @[RegFile.scala 19:17:@8.4]
+  wire [4:0] rf__T_24_addr; // @[RegFile.scala 19:17:@8.4]
+  wire [31:0] rf__T_29_data; // @[RegFile.scala 19:17:@8.4]
+  wire [4:0] rf__T_29_addr; // @[RegFile.scala 19:17:@8.4]
+  wire [31:0] rf__T_21_data; // @[RegFile.scala 19:17:@8.4]
+  wire [4:0] rf__T_21_addr; // @[RegFile.scala 19:17:@8.4]
+  wire  rf__T_21_mask; // @[RegFile.scala 19:17:@8.4]
+  wire  rf__T_21_en; // @[RegFile.scala 19:17:@8.4]
+  wire  _T_23; // @[RegFile.scala 22:37:@13.4]
+  wire  _T_28; // @[RegFile.scala 23:37:@17.4]
+  assign rf__T_24_addr = io_rs1_addr;
+  assign rf__T_24_data = rf[rf__T_24_addr]; // @[RegFile.scala 19:17:@8.4]
+  assign rf__T_29_addr = io_rs2_addr;
+  assign rf__T_29_data = rf[rf__T_29_addr]; // @[RegFile.scala 19:17:@8.4]
+  assign rf__T_21_data = io_wdata;
+  assign rf__T_21_addr = io_waddr;
+  assign rf__T_21_mask = 1'h1;
+  assign rf__T_21_en = io_wen;
+  assign _T_23 = io_rs1_addr != 5'h0; // @[RegFile.scala 22:37:@13.4]
+  assign _T_28 = io_rs2_addr != 5'h0; // @[RegFile.scala 23:37:@17.4]
+  assign io_rs1_data = _T_23 ? rf__T_24_data : 32'h0; // @[RegFile.scala 22:17:@16.4]
+  assign io_rs2_data = _T_28 ? rf__T_29_data : 32'h0; // @[RegFile.scala 23:17:@20.4]
+`ifdef RANDOMIZE_GARBAGE_ASSIGN
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_INVALID_ASSIGN
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_REG_INIT
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_MEM_INIT
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE
+  integer initvar;
+  initial begin
+    `ifndef verilator
+      #0.002 begin end
+    `endif
+  _RAND_0 = {1{$random}};
+  `ifdef RANDOMIZE_MEM_INIT
+  for (initvar = 0; initvar < 32; initvar = initvar+1)
+    rf[initvar] = _RAND_0[31:0];
+  `endif // RANDOMIZE_MEM_INIT
+  end
+`endif // RANDOMIZE
   always @(posedge clock) begin
-    `ifndef SYNTHESIS
-    `ifdef PRINTF_COND
-      if (`PRINTF_COND) begin
-    `endif
-        if (_T_29) begin
-          $fwrite(32'h80000002,"in1:%d in2:%d opcode:%x out:%d\n",io_in1,io_in2,io_opcode,io_out); // @[alu.scala 57:11]
-        end
-    `ifdef PRINTF_COND
-      end
-    `endif
-    `endif // SYNTHESIS
+    if(rf__T_21_en & rf__T_21_mask) begin
+      rf[rf__T_21_addr] <= rf__T_21_data; // @[RegFile.scala 19:17:@8.4]
+    end
   end
    initial begin
       if ($test$plusargs("trace") != 0) begin
