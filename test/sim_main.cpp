@@ -1,3 +1,11 @@
+
+#include<iostream>
+#include<cstdio>
+#include<verilated.h>
+
+
+
+/* // outdated version, for testing ALU and RegFile
 #include <verilated.h>
 #include <iostream>
 #include "VTop.h"
@@ -74,3 +82,5 @@ int main(int argc, char** argv, char** env) {
 	delete top;
 	exit(0);
 }
+
+*/

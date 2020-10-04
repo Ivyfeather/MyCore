@@ -3,7 +3,7 @@
 #include <assert.h>
 
 #define MEM_ASSERT(addr) assert(START_ADDR <= addr && addr <= START_ADDR + RAMSIZE/sizeof(wlen_t)\
-                                    && “addr out of range”)
+                                    && "addr out of range")
 
 
 ram_c::ram_c(char *imgPath){
@@ -20,10 +20,10 @@ ram_c::ram_c(char *imgPath){
     fclose(fp);
 }
 
-void *ram_c::get_img_start() { return &ram[0] };
-Long *get_img_size() { return img_size };
+void *ram_c::get_img_start() { return &ram[0]; }
+long ram_c::get_img_size() { return img_size; }
 
-wlen_t Memread(wlen_t addr, bool en){
+wlen_t ram_c::Memread(wlen_t addr, bool en){
     if(en){
         MEM_ASSERT(addr);
         return ram[(addr - START_ADDR)/sizeof(wlen_t)];
@@ -31,10 +31,13 @@ wlen_t Memread(wlen_t addr, bool en){
     return 0;
 }
 
-void Memwrite(wlen_t addr, wlen_t data, bool wen, mask_t mask){
+void ram_c::Memwrite(wlen_t addr, wlen_t data, bool wen, mask_t mask){
     if(wen){
         MEM_ASSERT(addr);
         //[TODO] implement bit mask later
         ram[(addr - START_ADDR)/sizeof(wlen_t)] = data;
     }
+}
+
+int main(){
 }
