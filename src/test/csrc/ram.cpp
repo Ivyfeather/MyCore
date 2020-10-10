@@ -38,6 +38,3 @@ void ram_c::Memwrite(wlen_t addr, wlen_t data, bool wen, mask_t mask){
         ram[(addr - START_ADDR)/sizeof(wlen_t)] = data;
     }
 }
-
-int main(){
-}
