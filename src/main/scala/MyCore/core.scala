@@ -19,16 +19,23 @@ class core extends MyCoreModule {
     pc_4    := pc_reg + 4.U
 
     // INST
+    io.imem.req.bits.data   := 0.U // this data is for writing mem
     io.imem.req.bits.addr   := pc_reg
     io.imem.req.bits.fcn    := MRD
     io.imem.req.bits.msk    := MT_WU
     io.imem.req.valid       := true.B
     val inst = Wire(UInt(32.W))
     inst:= Mux(io.imem.resp.valid, io.imem.resp.bits.data, BUBBLE)
+    //[TODO] ready? logic correct?
+    io.imem.resp.ready := true.B
 
-    val alu = new ALU
-    val idu = new IDU
-    val rf  = new RegFile
+    val alu = Module(new ALU)
+    val idu = Module(new IDU)
+    val rf  = Module(new RegFile)
+    idu.io.inst := inst
+
+    // stall when inst/required data not returned
+    val stall = !io.imem.resp.valid || !( (idu.io.mem_en && io.dmem.resp.valid) || !idu.io.mem_en )
 
     // immediates, riscv-spec P16
     val imm_i = inst(31, 20)
@@ -79,6 +86,8 @@ class core extends MyCoreModule {
     io.dmem.req.bits.fcn  := idu.io.mem_fcn
     io.dmem.req.bits.msk  := idu.io.mem_msk
 
+    io.dmem.resp.ready := true.B
+
     // Branch/Jump
     val br_target  = pc_reg + imm_b_sext
     val jmp_target = pc_reg + imm_j_sext
@@ -98,7 +107,9 @@ class core extends MyCoreModule {
         (idu.io.br_type === BR_J)   -> jmp_target,
         (idu.io.br_type === BR_JR)  -> jr_target
     ))
-
+    when(!stall){
+        pc_reg := pc_next
+    }
 }
 
 
