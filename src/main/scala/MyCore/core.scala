@@ -7,6 +7,7 @@ import Memory._
 class coreIO extends MyCoreBundle {
     val imem = new MemPortIO(32)
     val dmem = new MemPortIO(xlen)
+    val debug_io = new Debug_IO
 }
 
 class core extends MyCoreModule {
@@ -63,7 +64,6 @@ class core extends MyCoreModule {
     ))
     rf.io.wen      := idu.io.rf_wen // && !exception
 
-
     // ALU
     alu.io.opcode  := idu.io.alu_op
     alu.io.in1     := MuxCase(rf.io.rs1_data, Array(
@@ -102,6 +102,7 @@ class core extends MyCoreModule {
         (idu.io.br_type === BR_LTU &&  alu.io.out(0)) -> true.B
     ))
 
+    // PC_NEXT
     pc_next := MuxCase(pc_4, Array(
         (br_taken === true.B)       -> br_target,
         (idu.io.br_type === BR_J)   -> jmp_target,
@@ -110,6 +111,13 @@ class core extends MyCoreModule {
     when(!stall){
         pc_reg := pc_next
     }
+
+    // DEBUG
+    io.debug_io.wen     := rf.io.wen
+    io.debug_io.waddr   := rf.io.waddr
+    io.debug_io.wdata   := rf.io.wdata
+    io.debug_io.PC      := pc_reg
+    io.debug_io.stall   := stall
 }
 
 
