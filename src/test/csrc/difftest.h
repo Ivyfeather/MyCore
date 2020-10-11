@@ -45,19 +45,34 @@ private:
 
 class Verilator: public difftest {
 public:
-    Verilator()
+    Verilator(ram_c *ram);
+    ~Verilator();
     void step(int n);
     int get_cycle_cnt();
 
 private:
     ram_c *ram;
     int cycle_cnt;
-
+    long *main_time;
     VTop *top;
+    //[TODO] add waveform
+
+    struct debug_IO{
+        wlen_t waddr; // 5-bit wide, for 32 GPRs
+        wlen_t wdata;
+        bool wen;
+    };
+    struct debug_IO wb;
+
+    struct memread_req{
+        wlen_t addr;
+        bool en;
+    }
+    struct memread_req imem_buf, dmem_buf;
 
 
     void get_difftest_result();
-
+    void eval_ram();
 }
 
 
