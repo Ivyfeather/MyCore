@@ -15,7 +15,6 @@
 
 typedef uint32_t mask_t;
 
-#define NUM_REGS 32
 #define START_ADDR 0x80000000
 
 #endif

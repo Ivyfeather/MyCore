@@ -10,7 +10,7 @@ Nemu::Nemu(ram_c *ram){
 #endif
 
     void *handle;
-    handle = dlopen(REF_SO, RTLD_LAZY | RTLD_DEEPBIND);
+    handle = dlopen(NEMU_SO, RTLD_LAZY | RTLD_DEEPBIND);
     assert(handle);
 
     ref_memcpy_from_dut = (void (*)(wlen_t, void *, int))dlsym(handle, "difftest_memcpy_from_dut");
@@ -30,6 +30,29 @@ Nemu::Nemu(ram_c *ram){
 
     ref_init();
     ref_memcpy_from_dut(START_ADDR, ram->get_img_start(), ram->get_img_size());
+
+    //[TODO] init regs, using setregs
+
+    //[TEST] above functions
+    /*
+    printf("kernel size:%d\n", ram->get_img_size());
+    for(int i=0;i<20;i++)
+        printf("0x%08x: 0x%08x\n", START_ADDR + 0x4*i, *(uint32_t *)(ram->get_img_start() + 0x4*i) );
+
+
+    for(int i=0;i<NUM_REGS;i++) { regfile[i]=0; }    
+    regfile[4] = 0x11111001;
+    regfile[7] = 0x23456789;
+    regfile[THIS_PC] = START_ADDR;
+
+    ref_setregs(regfile);
+
+    regfile[4] = regfile[7] = 0;
+    ref_getregs(regfile);
+
+
+    printf("nemu_init\n"); dump(); 
+*/
 }
 
 int Nemu::get_cycle_cnt() { return cycle_cnt; }
@@ -41,6 +64,7 @@ void Nemu::step(int n){
 }
 
 void Nemu::get_difftest_result(){
+
     ref_getregs(regfile);
 
     wlen_t next_pc = regfile[THIS_PC];

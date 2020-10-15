@@ -16,9 +16,9 @@ class RFIO extends MyCoreBundle {
 
 class RegFile extends MyCoreModule {
     val io = IO(new RFIO)
-    val rf = Mem(32, UInt(xlen.W))
+    val regfile = Mem(32, UInt(xlen.W))
 
-    when(io.wen){   rf(io.waddr):= io.wdata }
-    io.rs1_data := Mux((io.rs1_addr =/= 0.U), rf(io.rs1_addr), 0.U)
-    io.rs2_data := Mux((io.rs2_addr =/= 0.U), rf(io.rs2_addr), 0.U)
+    when(io.wen){   regfile(io.waddr):= io.wdata }
+    io.rs1_data := Mux((io.rs1_addr =/= 0.U), regfile(io.rs1_addr), 0.U)
+    io.rs2_data := Mux((io.rs2_addr =/= 0.U), regfile(io.rs2_addr), 0.U)
 }

@@ -7,21 +7,30 @@
 #include "VTop.h"
 #include "verilated_vcd_c.h"
 
+// 0~31: GPRs
 enum {
-    // 0~31 GPRs
-    THIS_PC = 32,
-    NUM_REGS
+  THIS_PC = 32,
+#ifndef __RV32__
+  DIFFTEST_MSTATUS,
+  DIFFTEST_MCAUSE,
+  DIFFTEST_MEPC,
+  DIFFTEST_SSTATUS,
+  DIFFTEST_SCAUSE,
+  DIFFTEST_SEPC,
+#endif
+  NUM_REGS
 };
 
+extern const char *reg_name[NUM_REGS]; 
 
-class difftest {
+class Difftest {
 public:
     wlen_t regfile[NUM_REGS];
 
     void dump();
-}
+};
 
-class Nemu: public difftest {
+class Nemu: public Difftest {
 public:
     Nemu(ram_c *ram);
     void step(int n);
@@ -38,12 +47,12 @@ private:
 
     ram_c *ram;
     int cycle_cnt;
-    wlen_t nemu_this_pc;
+    wlen_t nemu_this_pc = START_ADDR;
     void get_difftest_result();
-}
+};
 
 
-class Verilator: public difftest {
+class Verilator: public Difftest {
 public:
     Verilator(ram_c *ram);
     ~Verilator();
@@ -67,13 +76,12 @@ private:
     struct memread_req{
         wlen_t addr;
         bool en;
-    }
+    };
     struct memread_req imem_buf, dmem_buf;
 
-
     void get_difftest_result();
+    void single_cycle();
     void eval_ram();
-}
-
+};
 
 #endif

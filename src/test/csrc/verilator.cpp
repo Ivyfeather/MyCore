@@ -3,7 +3,7 @@
 #include "verilated_vcd_c.h"
 
 Verilator::Verilator(ram_c *ram){
-
+    top = new VTop;
 
     // init rf
     for(int i=0; i < NUM_REGS; i++) {
@@ -16,11 +16,33 @@ Verilator::Verilator(ram_c *ram){
 }
 
 Verilator::~Verilator(){
-    tfp->close();
     top->final();
     delete top;
 }
 
+
+void Verilator::step(int n){
+    for(; n>0; n--){
+
+
+    }
+}
+
+void Verilator::single_cycle(){
+    top->clock = 1;
+    //[TODO] why this eval? can be omitted?
+    top->eval();
+    eval_ram();
+    top->eval();
+
+    top->clock = 0;
+    top->eval();
+    cycle_cnt ++;
+}
+
+
+// !caution!: must be used every cycle in order to capture the change
+// ?may change to directly reading 32 regs?
 void Verilator::get_difftest_result(){
     regfile[THIS_PC] = top->io_debug_io_PC;
 
@@ -32,7 +54,6 @@ void Verilator::get_difftest_result(){
     wb.wen    = top->io_debug_io_wen;
     wb.waddr  = top->io_debug_io_waddr;
     wb.wdata  = top->io_debug_io_wdata;
-
 }
 
 void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
@@ -47,17 +68,17 @@ void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
     top->io_dmem_resp_valid = dmem_buf.en;
 
     // accept new read req this cycle
-    imem_buf.en = top->io_imem_req_valid
-    imem_buf.addr = top->io_imem_req_bits_addr；
+    imem_buf.en = top->io_imem_req_valid;
+    imem_buf.addr = top->io_imem_req_bits_addr;
     if(top->io_imem_req_valid) top->io_imem_req_ready = 1; //ready=1 means accept this req
 
-    dmem_buf.en = top->io_dmem_req_valid
-    dmem_buf.addr = top->io_dmem_req_bits_addr；
+    dmem_buf.en = top->io_dmem_req_valid;
+    dmem_buf.addr = top->io_dmem_req_bits_addr;
     if(top->io_dmem_req_valid) top->io_dmem_req_ready = 1;
 
     //[TODO] write mem has one cycle delay?
     ram->Memwrite(top->io_dmem_req_bits_addr, top->io_dmem_resp_bits_data, \
-        top->io_dmem_req_valid && top->io_dmem_req_bits_fcn\ // write mem
-        , top->io_dmem_req_bits_msk);
+        top->io_dmem_req_valid && top->io_dmem_req_bits_fcn,\
+        top->io_dmem_req_bits_msk); // write mem
 
 }

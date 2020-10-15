@@ -1,5 +1,7 @@
+#ifndef __RAM_H__
+#define __RAM_H__
+
 #include "common.h"
-#include "difftest.h"
 
 #define RAMSIZE (128 * 1024 * 1024)
 
@@ -17,3 +19,5 @@ private:
     wlen_t ram[RAMSIZE / sizeof(wlen_t)];
 
 };
+
+#endif

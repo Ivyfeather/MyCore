@@ -1,14 +1,14 @@
 #include "ram.h"
-#include <cstdio>
+#include <stdio.h>
 #include <assert.h>
 
 #define MEM_ASSERT(addr) assert(START_ADDR <= addr && addr <= START_ADDR + RAMSIZE/sizeof(wlen_t)\
                                     && "addr out of range")
 
 
-ram_c::ram_c(char *imgPath){
-    assert(imgPath);
-    FILE *fp = fopen(imgPath, "rb");
+ram_c::ram_c(char *img_path){
+    assert(img_path);
+    FILE *fp = fopen(img_path, "rb");
     assert(fp);
 
     fseek(fp, 0, SEEK_END);
