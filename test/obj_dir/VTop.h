@@ -8,7 +8,7 @@
 #ifndef _VTOP_H_
 #define _VTOP_H_  // guard
 
-#include "verilated.h"
+#include "verilated_heavy.h"
 #include "verilated_cov.h"
 
 //==========
@@ -46,10 +46,10 @@ VL_MODULE(VTop) {
     VL_OUT(io_imem_req_bits_data,31,0);
     VL_IN(io_imem_resp_bits_data,31,0);
     VL_OUT(io_dmem_req_bits_addr,31,0);
-    VL_OUT(io_dmem_req_bits_data,31,0);
-    VL_IN(io_dmem_resp_bits_data,31,0);
-    VL_OUT(io_debug_io_wdata,31,0);
-    VL_OUT(io_debug_io_PC,31,0);
+    VL_OUT64(io_dmem_req_bits_data,63,0);
+    VL_IN64(io_dmem_resp_bits_data,63,0);
+    VL_OUT64(io_debug_io_wdata,63,0);
+    VL_OUT64(io_debug_io_PC,63,0);
     
     // LOCAL SIGNALS
     // Internals; generally not touched by application code
@@ -61,7 +61,7 @@ VL_MODULE(VTop) {
     CData/*0:0*/ Top__DOT__idu_io_mem_en;
     CData/*0:0*/ Top__DOT__idu_io_mem_fcn;
     CData/*2:0*/ Top__DOT__idu_io_mem_msk;
-    CData/*0:0*/ Top__DOT___T_111;
+    CData/*0:0*/ Top__DOT___T_112;
     CData/*0:0*/ Top__DOT__stall;
     CData/*0:0*/ Top__DOT__br_taken;
     CData/*0:0*/ Top__DOT__alu__DOT__slt_result;
@@ -81,34 +81,33 @@ VL_MODULE(VTop) {
     CData/*0:0*/ Top__DOT__idu__DOT___T_653;
     SData/*11:0*/ Top__DOT__imm_s;
     SData/*11:0*/ Top__DOT__imm_b;
-    IData/*31:0*/ Top__DOT__alu_io_in1;
-    IData/*31:0*/ Top__DOT__alu_io_in2;
-    IData/*31:0*/ Top__DOT__alu_io_out;
     IData/*31:0*/ Top__DOT__idu_io_inst;
-    IData/*31:0*/ Top__DOT__rf_io_rs1_data;
-    IData/*31:0*/ Top__DOT__rf_io_rs2_data;
-    IData/*31:0*/ Top__DOT__rf_io_wdata;
-    IData/*31:0*/ Top__DOT__pc_reg;
-    IData/*31:0*/ Top__DOT__pc_4;
     IData/*19:0*/ Top__DOT__imm_j;
     IData/*31:0*/ Top__DOT__imm_i_sext;
     IData/*31:0*/ Top__DOT__imm_s_sext;
-    IData/*30:0*/ Top__DOT___T_150;
-    IData/*30:0*/ Top__DOT___T_162;
-    IData/*31:0*/ Top__DOT__pc_next;
-    IData/*31:0*/ Top__DOT__alu__DOT__xor_result;
-    IData/*31:0*/ Top__DOT__alu__DOT__or_result;
-    IData/*31:0*/ Top__DOT__alu__DOT__and_result;
-    IData/*31:0*/ Top__DOT__alu__DOT___T_25;
-    IData/*31:0*/ Top__DOT__alu__DOT__srl_result;
-    IData/*31:0*/ Top__DOT__rf__DOT__regfile___05FT_24_data;
-    IData/*31:0*/ Top__DOT__rf__DOT__regfile___05FT_29_data;
-    QData/*32:0*/ Top__DOT___T_187;
-    QData/*32:0*/ Top__DOT___T_188;
-    QData/*32:0*/ Top__DOT___T_189;
-    QData/*32:0*/ Top__DOT__alu__DOT__add_result;
-    QData/*62:0*/ Top__DOT__alu__DOT___T_23;
-    IData/*31:0*/ Top__DOT__rf__DOT__regfile[32];
+    IData/*30:0*/ Top__DOT___T_151;
+    IData/*30:0*/ Top__DOT___T_163;
+    WData/*64:0*/ Top__DOT___T_188[3];
+    WData/*64:0*/ Top__DOT___T_189[3];
+    WData/*64:0*/ Top__DOT___T_190[3];
+    WData/*64:0*/ Top__DOT__alu__DOT__add_result[3];
+    WData/*94:0*/ Top__DOT__alu__DOT___T_23[3];
+    QData/*63:0*/ Top__DOT__alu_io_in1;
+    QData/*63:0*/ Top__DOT__alu_io_in2;
+    QData/*63:0*/ Top__DOT__alu_io_out;
+    QData/*63:0*/ Top__DOT__rf_io_rs1_data;
+    QData/*63:0*/ Top__DOT__rf_io_rs2_data;
+    QData/*63:0*/ Top__DOT__rf_io_wdata;
+    QData/*63:0*/ Top__DOT__pc_reg;
+    QData/*63:0*/ Top__DOT___T_231;
+    QData/*63:0*/ Top__DOT__alu__DOT__xor_result;
+    QData/*63:0*/ Top__DOT__alu__DOT__or_result;
+    QData/*63:0*/ Top__DOT__alu__DOT__and_result;
+    QData/*63:0*/ Top__DOT__alu__DOT___T_25;
+    QData/*63:0*/ Top__DOT__alu__DOT__srl_result;
+    QData/*63:0*/ Top__DOT__rf__DOT__regfile___05FT_24_data;
+    QData/*63:0*/ Top__DOT__rf__DOT__regfile___05FT_29_data;
+    QData/*63:0*/ Top__DOT__rf__DOT__regfile[32];
     
     // LOCAL VARIABLES
     // Internals; generally not touched by application code
@@ -149,40 +148,40 @@ VL_MODULE(VTop) {
         IData/*31:0*/ Top__DOT____Vtogcov__io_imem_req_bits_data;
         IData/*31:0*/ Top__DOT____Vtogcov__io_imem_resp_bits_data;
         IData/*31:0*/ Top__DOT____Vtogcov__io_dmem_req_bits_addr;
-        IData/*31:0*/ Top__DOT____Vtogcov__io_dmem_req_bits_data;
-        IData/*31:0*/ Top__DOT____Vtogcov__io_dmem_resp_bits_data;
-        IData/*31:0*/ Top__DOT____Vtogcov__io_debug_io_wdata;
-        IData/*31:0*/ Top__DOT____Vtogcov__io_debug_io_PC;
-        IData/*31:0*/ Top__DOT____Vtogcov__alu_io_in1;
-        IData/*31:0*/ Top__DOT____Vtogcov__alu_io_in2;
-        IData/*31:0*/ Top__DOT____Vtogcov__alu_io_out;
         IData/*31:0*/ Top__DOT____Vtogcov__idu_io_inst;
-        IData/*31:0*/ Top__DOT____Vtogcov__rf_io_rs1_data;
-        IData/*31:0*/ Top__DOT____Vtogcov__rf_io_rs2_data;
-        IData/*31:0*/ Top__DOT____Vtogcov__rf_io_wdata;
-        IData/*31:0*/ Top__DOT____Vtogcov__pc_reg;
-        IData/*31:0*/ Top__DOT____Vtogcov__pc_4;
         IData/*19:0*/ Top__DOT____Vtogcov__imm_j;
         IData/*31:0*/ Top__DOT____Vtogcov__imm_z;
         IData/*31:0*/ Top__DOT____Vtogcov__imm_i_sext;
         IData/*31:0*/ Top__DOT____Vtogcov__imm_s_sext;
         IData/*31:0*/ Top__DOT____Vtogcov__imm_b_sext;
         IData/*31:0*/ Top__DOT____Vtogcov__imm_j_sext;
-        IData/*31:0*/ Top__DOT____Vtogcov__br_target;
-        IData/*31:0*/ Top__DOT____Vtogcov__jmp_target;
-        IData/*31:0*/ Top__DOT____Vtogcov__jr_target;
+        IData/*31:0*/ Top__DOT____Vtogcov__pc_4;
         IData/*31:0*/ Top__DOT____Vtogcov__pc_next;
-        IData/*31:0*/ Top__DOT__alu__DOT____Vtogcov__xor_result;
-        IData/*31:0*/ Top__DOT__alu__DOT____Vtogcov__or_result;
-        IData/*31:0*/ Top__DOT__alu__DOT____Vtogcov__and_result;
-        IData/*31:0*/ Top__DOT__alu__DOT____Vtogcov__sll_result;
-        IData/*31:0*/ Top__DOT__alu__DOT____Vtogcov__sra_result;
-        IData/*31:0*/ Top__DOT__alu__DOT____Vtogcov__srl_result;
+        WData/*64:0*/ Top__DOT__alu__DOT____Vtogcov__add_result[3];
+        QData/*63:0*/ Top__DOT____Vtogcov__io_dmem_req_bits_data;
+        QData/*63:0*/ Top__DOT____Vtogcov__io_dmem_resp_bits_data;
+        QData/*63:0*/ Top__DOT____Vtogcov__io_debug_io_wdata;
+        QData/*63:0*/ Top__DOT____Vtogcov__io_debug_io_PC;
+        QData/*63:0*/ Top__DOT____Vtogcov__alu_io_in1;
+        QData/*63:0*/ Top__DOT____Vtogcov__alu_io_in2;
+        QData/*63:0*/ Top__DOT____Vtogcov__alu_io_out;
+        QData/*63:0*/ Top__DOT____Vtogcov__rf_io_rs1_data;
+        QData/*63:0*/ Top__DOT____Vtogcov__rf_io_rs2_data;
+        QData/*63:0*/ Top__DOT____Vtogcov__rf_io_wdata;
+        QData/*63:0*/ Top__DOT____Vtogcov__pc_reg;
+        QData/*63:0*/ Top__DOT____Vtogcov__br_target;
+        QData/*63:0*/ Top__DOT____Vtogcov__jmp_target;
+        QData/*63:0*/ Top__DOT____Vtogcov__jr_target;
+        QData/*63:0*/ Top__DOT__alu__DOT____Vtogcov__xor_result;
+        QData/*63:0*/ Top__DOT__alu__DOT____Vtogcov__or_result;
+        QData/*63:0*/ Top__DOT__alu__DOT____Vtogcov__and_result;
+        QData/*63:0*/ Top__DOT__alu__DOT____Vtogcov__sll_result;
+        QData/*63:0*/ Top__DOT__alu__DOT____Vtogcov__sra_result;
     };
     struct {
-        IData/*31:0*/ Top__DOT__rf__DOT____Vtogcov__regfile___05FT_24_data;
-        IData/*31:0*/ Top__DOT__rf__DOT____Vtogcov__regfile___05FT_29_data;
-        QData/*32:0*/ Top__DOT__alu__DOT____Vtogcov__add_result;
+        QData/*63:0*/ Top__DOT__alu__DOT____Vtogcov__srl_result;
+        QData/*63:0*/ Top__DOT__rf__DOT____Vtogcov__regfile___05FT_24_data;
+        QData/*63:0*/ Top__DOT__rf__DOT____Vtogcov__regfile___05FT_29_data;
         CData/*0:0*/ __Vm_traceActivity[3];
     };
     
@@ -210,26 +209,26 @@ VL_MODULE(VTop) {
     
     // API METHODS
     /// Evaluate the model.  Application must call when inputs change.
-    void eval() { eval_step(); }
+    void eval() { eval_step(); eval_end_step(); }
     /// Evaluate when calling multiple units/models per time step.
     void eval_step();
     /// Evaluate at end of a timestep for tracing, when using eval_step().
     /// Application must call after all eval() and before time changes.
-    void eval_end_step() {}
+    void eval_end_step();
     /// Simulation complete, run final blocks.  Application must call on completion.
     void final();
     
     // INTERNAL METHODS
   private:
     static void _eval_initial_loop(VTop__Syms* __restrict vlSymsp);
-  public:
+    void _traceDump();void _traceDumpOpen();void _traceDumpClose();public:
     void __Vconfigure(VTop__Syms* symsp, bool first);
   private:
     static QData _change_request(VTop__Syms* __restrict vlSymsp);
     static QData _change_request_1(VTop__Syms* __restrict vlSymsp);
   public:
-    static void _combo__TOP__3(VTop__Syms* __restrict vlSymsp);
-    static void _combo__TOP__5(VTop__Syms* __restrict vlSymsp);
+    static void _combo__TOP__4(VTop__Syms* __restrict vlSymsp);
+    static void _combo__TOP__6(VTop__Syms* __restrict vlSymsp);
   private:
     void _configure_coverage(VTop__Syms* __restrict vlSymsp, bool first) VL_ATTR_COLD;
     void _ctor_var_reset() VL_ATTR_COLD;
@@ -243,8 +242,9 @@ VL_MODULE(VTop) {
     static void _eval_initial(VTop__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void _eval_settle(VTop__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void _initial__TOP__1(VTop__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    static void _sequent__TOP__4(VTop__Syms* __restrict vlSymsp);
+    static void _sequent__TOP__5(VTop__Syms* __restrict vlSymsp);
     static void _settle__TOP__2(VTop__Syms* __restrict vlSymsp) VL_ATTR_COLD;
+    static void _settle__TOP__3(VTop__Syms* __restrict vlSymsp) VL_ATTR_COLD;
   private:
     static void traceChgSub0(void* userp, VerilatedVcd* tracep);
     static void traceChgTop0(void* userp, VerilatedVcd* tracep);

@@ -1,10 +1,3 @@
-
-#include<iostream>
-#include<cstdio>
-#include<verilated.h>
-
-
-
 /* // outdated version, for testing ALU and RegFile
 #include <verilated.h>
 #include <iostream>

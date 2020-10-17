@@ -31,7 +31,7 @@ VERILATOR = $(VERILATOR_ROOT)/bin/verilator
 VERILATOR_COVERAGE = $(VERILATOR_ROOT)/bin/verilator_coverage
 endif
 
-VERILATOR_FLAGS =
+VERILATOR_FLAGS = --build
 # Generate C++ in executable form
 VERILATOR_FLAGS += -cc --exe
 # Generate makefile dependencies (not shown as complicates the Makefile)
@@ -50,10 +50,22 @@ VERILATOR_FLAGS += --coverage
 #VERILATOR_FLAGS += --debug
 # Add this trace to get a backtrace in gdb
 #VERILATOR_FLAGS += --gdbbt
+# Ignore Unused signals and module name not matching filename
+VERILATOR_FLAGS += -Wno-UNUSED -Wno-DECLFILENAME
 
 # Input files for Verilator
-VERILATOR_INPUT = -f input.vc Top.v sim_main.cpp
 
+VERILATOR_INPUT = -f input.vc ../Top.v 
+VERILATOR_INPUT += $(shell find ../src/test/csrc -name "*.cpp")
+
+NEMU_SO = ./ready-to-run/riscv64-nemu-interpreter-so
+RAM_PATH = ./testbench/dummy.bin
+
+CFLAGS = -DNEMU_SO=\\\"$(NEMU_SO)\\\"
+CFLAGS += -DRAM_PATH=\\\"$(RAM_PATH)\\\"
+LDFLAGS = -ldl
+
+VERILATOR_FLAGS += -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 ######################################################################
 default: run
 
@@ -69,7 +81,8 @@ run:
 # 2. Or, run the make rules Verilator does:
 #	$(MAKE) -j -C obj_dir -f VTop.mk
 # 3. Or, call a submakefile where we can override the rules ourselves:
-	$(MAKE) -j -C obj_dir -f ../Makefile_obj
+#	$(MAKE) -j -C obj_dir -f ../Makefile_obj
+	@echo " done in VERILATE, pass --build"
 
 	@echo
 	@echo "-- RUN ---------------------"
@@ -86,7 +99,7 @@ run:
 	@echo "-- DONE --------------------"
 #	@echo "To see waveforms, open vlt_dump.vcd in a waveform viewer"
 	@echo
-	gtkwave logs/vlt_dump.vcd 
+#	gtkwave logs/vlt_dump.vcd 
 
 ######################################################################
 # Other targets
