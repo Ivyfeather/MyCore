@@ -14,7 +14,7 @@ class core extends MyCoreModule {
     val io = IO(new coreIO)
 
     // PC
-    val pc_reg  = RegInit(START_ADDR)//START_ADDR)
+    val pc_reg  = RegInit(START_ADDR.asUInt(xlen.W))
     val pc_next = Wire(UInt(32.W))
     val pc_4    = Wire(UInt(32.W))
     pc_4    := pc_reg + 4.U

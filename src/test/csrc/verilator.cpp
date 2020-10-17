@@ -2,17 +2,31 @@
 #include "VTop.h"
 #include "verilated_vcd_c.h"
 
-Verilator::Verilator(ram_c *ram){
+Verilator::Verilator(ram_c *input_ram, uint64_t *input_time){
     top = new VTop;
-
+    ram = input_ram;
     // init rf
     for(int i=0; i < NUM_REGS; i++) {
         regfile[i] = 0;
     }
     regfile[THIS_PC] = START_ADDR;
-
+    main_time = input_time;
     // init buf
+    top->clock = 0;
+    top->reset = 1;
+    for(int i=0; i<5; i++){
+        top->clock = !top->clock;
+        top->eval();
+        (*main_time) ++;
+    }
+    top->clock = 0;
+    top->reset = 0;
 
+    (*main_time) ++;
+    imem_buf.en = false;
+    dmem_buf.en = false;
+
+    step(1);
 }
 
 Verilator::~Verilator(){
@@ -23,37 +37,29 @@ Verilator::~Verilator(){
 
 void Verilator::step(int n){
     for(; n>0; n--){
-
-
+        single_cycle();
     }
+    get_difftest_result();
 }
 
 void Verilator::single_cycle(){
     top->clock = 1;
-    //[TODO] why this eval? can be omitted?
-    top->eval();
     eval_ram();
     top->eval();
-
+    (*main_time) ++;
     top->clock = 0;
     top->eval();
-    cycle_cnt ++;
+    (*main_time) ++;
 }
 
 
 // !caution!: must be used every cycle in order to capture the change
-// ?may change to directly reading 32 regs?
+// ?may change to directly reading regs?
+// [TODO] change to reading regs
 void Verilator::get_difftest_result(){
-    regfile[THIS_PC] = top->io_debug_io_PC;
 
-    // deal with rf change in the previous cycle
-    if(wb.wen){
-        regfile[wb.waddr] = wb.wdata;
-    }
-    // get the rf change of this cycle, handle this in the next cycle
-    wb.wen    = top->io_debug_io_wen;
-    wb.waddr  = top->io_debug_io_waddr;
-    wb.wdata  = top->io_debug_io_wdata;
+
+
 }
 
 void Verilator::eval_ram(){// here, ram can always resp in 1 cycle

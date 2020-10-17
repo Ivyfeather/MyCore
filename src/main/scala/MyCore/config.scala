@@ -4,7 +4,7 @@ import chisel3._
 import Const._
 
 trait config {
-  val xlen = 32
+  val xlen = 64
 }
 
 abstract class MyCoreModule extends Module with config with Ctrlopsel with RISCVconst

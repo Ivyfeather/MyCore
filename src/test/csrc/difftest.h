@@ -45,8 +45,8 @@ private:
     void (*ref_step)(int n);
     void (*ref_init)(void);
 
-    ram_c *ram;
-    int cycle_cnt;
+    //ram_c *ram;
+    int cycle_cnt = 0;
     wlen_t nemu_this_pc = START_ADDR;
     void get_difftest_result();
 };
@@ -54,25 +54,25 @@ private:
 
 class Verilator: public Difftest {
 public:
-    Verilator(ram_c *ram);
+    Verilator(ram_c *ram, uint64_t *main_time);
     ~Verilator();
     void step(int n);
-    int get_cycle_cnt();
 
 private:
     ram_c *ram;
-    int cycle_cnt;
-    long *main_time;
+    uint64_t *main_time;    // to change main_time in sim_main.cpp
+
     VTop *top;
     //[TODO] add waveform
 
+/*
     struct debug_IO{
         wlen_t waddr; // 5-bit wide, for 32 GPRs
         wlen_t wdata;
         bool wen;
     };
     struct debug_IO wb;
-
+*/
     struct memread_req{
         wlen_t addr;
         bool en;

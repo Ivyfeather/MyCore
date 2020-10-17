@@ -25,6 +25,7 @@ long ram_c::get_img_size() { return img_size; }
 
 wlen_t ram_c::Memread(wlen_t addr, bool en){
     if(en){
+        //printf("[TEST] readmem: 0x%016lx\n", addr);
         MEM_ASSERT(addr);
         return ram[(addr - START_ADDR)/sizeof(wlen_t)];
     }

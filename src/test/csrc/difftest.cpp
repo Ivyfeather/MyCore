@@ -14,7 +14,7 @@ const char *reg_name[NUM_REGS] = {
 };
 
 void Difftest::dump(){
-    printf(" =================  PC = 0x%016lx ================= \n", regfile[THIS_PC]);
+    printf("\n =================  PC = 0x%016lx ================= \n", regfile[THIS_PC]);
     for(int i=0; i<THIS_PC; i+=4){
       //[TEST] print GPRs only
         printf("%s: 0x%016lx\t", reg_name[i],   regfile[i]);
