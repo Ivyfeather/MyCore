@@ -26,7 +26,7 @@ int main(int argc, char **argv){
     Nemu *nemu = new Nemu(ram);
 
     //while(!Verilated::gotFinish()){
-    for(int i=0;i<10;i++){
+    for(int i=0;i<20;i++){
         verilator->step(1);
         nemu->step(1); 
 

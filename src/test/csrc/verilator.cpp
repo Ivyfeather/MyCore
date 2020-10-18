@@ -78,7 +78,7 @@ uint32_t Verilator::readinst(wlen_t addr){
 }
 
 void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
- #if 0
+#if 0
     // set ready signals to zero
     top->io_imem_req_ready = 0;
     top->io_dmem_req_ready = 0;
@@ -119,7 +119,7 @@ void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
         top->io_imem_resp_valid = 1;
         if(top->io_imem_resp_ready) imem_buf.has = 0;
     }
-    printf("[TEST] has:%d cycle: %lu, rd_addr: %016lx\n", imem_buf.has, *main_time, imem_buf.addr);
+    //printf("[TEST] has:%d cycle: %lu, rd_addr: %016lx\n", imem_buf.has, *main_time, imem_buf.addr);
 
 
     if(!dmem_buf.has && top->io_dmem_req_valid){

@@ -66,10 +66,11 @@ void Nemu::step(int n){
 void Nemu::get_difftest_result(){
 
     ref_getregs(regfile);
-
+/*
     wlen_t next_pc = regfile[THIS_PC];
     regfile[THIS_PC] = nemu_this_pc;
     nemu_this_pc = next_pc;
+*/
 }
 
 void Nemu::set_difftest_status(){
