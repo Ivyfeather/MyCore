@@ -65,18 +65,11 @@ private:
     VTop *top;
     //[TODO] add waveform
 
-/*
-    struct debug_IO{
-        wlen_t waddr; // 5-bit wide, for 32 GPRs
-        wlen_t wdata;
-        bool wen;
-    };
-    struct debug_IO wb;
-*/
     struct memread_req{
+        bool has;
         wlen_t addr;
-        bool en;
     };
+    uint32_t readinst(wlen_t addr);
     struct memread_req imem_buf, dmem_buf;
 
     void get_difftest_result();

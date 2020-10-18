@@ -70,6 +70,7 @@ VERILATOR_FLAGS += -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 default: run
 
 run:
+	#sed -i '1i /* verilator lint_off UNUSED */' ../Top.v && sed -i '$$d' ../Top.v && cat >> ../Top.v <dumpfile.txt
 	@echo
 	@echo "-- VERILATE ----------------"
 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)

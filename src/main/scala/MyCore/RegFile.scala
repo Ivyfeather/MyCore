@@ -2,7 +2,7 @@ package MyCore
 
 import chisel3._
 import chisel3.util._
-//import chisel3.util.experimental.BoringUtils
+import chisel3.util.experimental.BoringUtils
 
 class RFIO extends MyCoreBundle {
     val rs1_addr = Input(UInt(5.W))
@@ -23,5 +23,5 @@ class RegFile extends MyCoreModule {
     io.rs1_data := Mux((io.rs1_addr =/= 0.U), regfile(io.rs1_addr), 0.U)
     io.rs2_data := Mux((io.rs2_addr =/= 0.U), regfile(io.rs2_addr), 0.U)
 
-   // BoringUtils.
+   BoringUtils.addSource(VecInit((0 to 31).map(i => regfile(i))), "difftest_r")
 }

@@ -30,10 +30,10 @@ int main(int argc, char **argv){
         verilator->step(1);
         nemu->step(1); 
 
-        printf("VERILATOR");
-        verilator->dump();
-        printf("NEMU     ");
-        nemu->dump();
+        // printf("VERILATOR");
+        // verilator->dump();
+        // printf("NEMU     ");
+        // nemu->dump();
 
         // difftest
         //[TEST] GPRs only
@@ -41,8 +41,8 @@ int main(int argc, char **argv){
         for(int i=0; i<THIS_PC+1; i++){
             if(verilator->regfile[i] != nemu->regfile[i]){
                 printf("\n ================= Reg Diff =================\n");
-                printf("nemu_pc: %016lx\n%s:\n nemu:\t\t %016lx\n verilator:\t %016lx\n", \
-                    nemu->regfile[THIS_PC], reg_name[i], nemu->regfile[i], verilator->regfile[i]);
+                printf("nemu_pc:\t %016lx\nverilator_pc:\t %016lx\n%s:\n nemu:\t\t %016lx\n verilator:\t %016lx\n", \
+                    nemu->regfile[THIS_PC], verilator->regfile[THIS_PC], reg_name[i], nemu->regfile[i], verilator->regfile[i]);
                 diff = true; break;
             }
         }

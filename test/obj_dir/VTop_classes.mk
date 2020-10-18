@@ -25,11 +25,17 @@ VM_TRACE_FST_WRITER_THREAD = 0
 VM_CLASSES_FAST += \
 	VTop \
 	VTop__1 \
+	VTop__2 \
+	VTop__3 \
+	VTop__4 \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
 	VTop__Slow \
 	VTop__1__Slow \
+	VTop__2__Slow \
+	VTop__3__Slow \
+	VTop__4__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization
 VM_SUPPORT_FAST += \

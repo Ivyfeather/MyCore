@@ -3,15 +3,20 @@ package MyCore
 import chisel3._
 import chisel3.util._
 import Memory._
+import chisel3.util.experimental.BoringUtils
 
 class coreIO extends MyCoreBundle {
     val imem = new MemPortIO(32)
     val dmem = new MemPortIO(xlen)
-    val debug_io = new Debug_IO
+    val debug = new Debug_IO
 }
 
 class core extends MyCoreModule {
     val io = IO(new coreIO)
+
+    val alu = Module(new ALU)
+    val idu = Module(new IDU)
+    val rf  = Module(new RegFile)
 
     // PC
     val pc_reg  = RegInit(START_ADDR.asUInt(xlen.W))
@@ -19,24 +24,29 @@ class core extends MyCoreModule {
     val pc_4    = Wire(UInt(32.W))
     pc_4    := pc_reg + 4.U
 
+    // stall when inst/required data not returned
+    val stall = !io.imem.resp.valid || !( (idu.io.mem_en && io.dmem.resp.valid) || !idu.io.mem_en )
+
     // INST
     io.imem.req.bits.data   := 0.U // this data is for writing mem
     io.imem.req.bits.addr   := pc_reg
     io.imem.req.bits.fcn    := MRD
     io.imem.req.bits.msk    := MT_WU
-    io.imem.req.valid       := true.B
+
+
+    val imem_req_r = RegInit(true.B);
+    when(io.imem.req.ready) { imem_req_r := false.B }
+    .elsewhen(!stall)       { imem_req_r := true.B }
+
+    io.imem.req.valid       := imem_req_r
+
+
     val inst = Wire(UInt(32.W))
     inst:= Mux(io.imem.resp.valid, io.imem.resp.bits.data, BUBBLE)
     //[TODO] ready? logic correct?
     io.imem.resp.ready := true.B
 
-    val alu = Module(new ALU)
-    val idu = Module(new IDU)
-    val rf  = Module(new RegFile)
     idu.io.inst := inst
-
-    // stall when inst/required data not returned
-    val stall = !io.imem.resp.valid || !( (idu.io.mem_en && io.dmem.resp.valid) || !idu.io.mem_en )
 
     // immediates, riscv-spec P16
     val imm_i = inst(31, 20)
@@ -112,12 +122,14 @@ class core extends MyCoreModule {
         pc_reg := pc_next
     }
 
+
     // DEBUG
-    io.debug_io.wen     := rf.io.wen
-    io.debug_io.waddr   := rf.io.waddr
-    io.debug_io.wdata   := rf.io.wdata
-    io.debug_io.PC      := pc_reg
-    io.debug_io.stall   := stall
+    io.debug.PC      := pc_reg
+    io.debug.stall   := stall
+
+    val difftest_regs = WireInit(0.U.asTypeOf( Vec(32, UInt(xlen.W)) ))
+    BoringUtils.addSink(difftest_regs, "difftest_r")
+    io.debug.rf      := difftest_regs
 }
 
 
