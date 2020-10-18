@@ -9,7 +9,6 @@ Verilator::Verilator(ram_c *input_ram, uint64_t *input_time){
     for(int i=0; i < NUM_REGS; i++) {
         regfile[i] = 0;
     }
-    regfile[THIS_PC] = START_ADDR;
     main_time = input_time;
     // init buf
     top->clock = 0;
@@ -23,9 +22,10 @@ Verilator::Verilator(ram_c *input_ram, uint64_t *input_time){
     imem_buf.has = false;
     dmem_buf.has = false;
 
-    for(int i=0;i<20;i++)printf("%016lx\n", ram->Memread(START_ADDR+i*4,1));
+    //for(int i=0;i<20;i++)printf("[TEST]inst_ram: %016lx\n", ram->Memread(START_ADDR+i*4,1));
 
-    step(1);
+    single_cycle();
+    get_difftest_result();
 }
 
 Verilator::~Verilator(){
@@ -36,6 +36,9 @@ Verilator::~Verilator(){
 
 void Verilator::step(int n){
     for(; n>0; n--){
+        while(top->io_debug_stall){
+            single_cycle();
+        }
         single_cycle();
     }
     get_difftest_result();

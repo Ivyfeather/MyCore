@@ -48,9 +48,6 @@ void VTop::_initial__TOP__1(VTop__Syms* __restrict vlSymsp) {
     VTop* const __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
     // Variables
     WData/*159:0*/ __Vtemp1[5];
-    WData/*159:0*/ __Vtemp2[5];
-    WData/*159:0*/ __Vtemp3[5];
-    WData/*159:0*/ __Vtemp4[5];
     // Body
     ++(vlSymsp->__Vcoverage[5441]);
     if (VL_UNLIKELY((0U != VL_TESTPLUSARGS_I("trace")))) {
@@ -69,55 +66,7 @@ void VTop::_initial__TOP__1(VTop__Syms* __restrict vlSymsp) {
     }
     VL_WRITEF("[%0t] Model running...\n\n",64,VL_TIME_UNITED_Q(1));
     ++(vlSymsp->__Vcoverage[5444]);
-    if (VL_UNLIKELY((0U != VL_TESTPLUSARGS_I("trace")))) {
-        VL_WRITEF("[%0t] Tracing to logs/vlt_dump.vcd...\n\n",
-                  64,VL_TIME_UNITED_Q(1));
-        __Vtemp2[0U] = 0x2e766364U;
-        __Vtemp2[1U] = 0x64756d70U;
-        __Vtemp2[2U] = 0x766c745fU;
-        __Vtemp2[3U] = 0x6f67732fU;
-        __Vtemp2[4U] = 0x6cU;
-        vl_dumpctl_filenamep(true, VL_CVT_PACK_STR_NW(5, __Vtemp2));
-        vlSymsp->TOPp->_traceDumpOpen();
-        ++(vlSymsp->__Vcoverage[5445]);
-    } else {
-        ++(vlSymsp->__Vcoverage[5446]);
-    }
-    VL_WRITEF("[%0t] Model running...\n\n",64,VL_TIME_UNITED_Q(1));
-    ++(vlSymsp->__Vcoverage[5447]);
-    if (VL_UNLIKELY((0U != VL_TESTPLUSARGS_I("trace")))) {
-        VL_WRITEF("[%0t] Tracing to logs/vlt_dump.vcd...\n\n",
-                  64,VL_TIME_UNITED_Q(1));
-        __Vtemp3[0U] = 0x2e766364U;
-        __Vtemp3[1U] = 0x64756d70U;
-        __Vtemp3[2U] = 0x766c745fU;
-        __Vtemp3[3U] = 0x6f67732fU;
-        __Vtemp3[4U] = 0x6cU;
-        vl_dumpctl_filenamep(true, VL_CVT_PACK_STR_NW(5, __Vtemp3));
-        vlSymsp->TOPp->_traceDumpOpen();
-        ++(vlSymsp->__Vcoverage[5448]);
-    } else {
-        ++(vlSymsp->__Vcoverage[5449]);
-    }
-    VL_WRITEF("[%0t] Model running...\n\n",64,VL_TIME_UNITED_Q(1));
-    ++(vlSymsp->__Vcoverage[5450]);
-    if (VL_UNLIKELY((0U != VL_TESTPLUSARGS_I("trace")))) {
-        VL_WRITEF("[%0t] Tracing to logs/vlt_dump.vcd...\n\n",
-                  64,VL_TIME_UNITED_Q(1));
-        __Vtemp4[0U] = 0x2e766364U;
-        __Vtemp4[1U] = 0x64756d70U;
-        __Vtemp4[2U] = 0x766c745fU;
-        __Vtemp4[3U] = 0x6f67732fU;
-        __Vtemp4[4U] = 0x6cU;
-        vl_dumpctl_filenamep(true, VL_CVT_PACK_STR_NW(5, __Vtemp4));
-        vlSymsp->TOPp->_traceDumpOpen();
-        ++(vlSymsp->__Vcoverage[5451]);
-    } else {
-        ++(vlSymsp->__Vcoverage[5452]);
-    }
-    VL_WRITEF("[%0t] Model running...\n\n",64,VL_TIME_UNITED_Q(1));
-    ++(vlSymsp->__Vcoverage[5453]);
-    ++(vlSymsp->__Vcoverage[6041]);
+    ++(vlSymsp->__Vcoverage[6032]);
     vlTOPp->io_imem_req_bits_data = 0U;
     vlTOPp->io_imem_req_bits_fcn = 0U;
     vlTOPp->io_imem_req_bits_msk = 7U;

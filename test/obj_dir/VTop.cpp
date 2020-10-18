@@ -31,7 +31,7 @@ void VTop::eval_step() {
             Verilated::debug(1);
             __Vchange = _change_request(vlSymsp);
             Verilated::debug(__Vsaved_debug);
-            VL_FATAL_MT("../Top.v", 679, "",
+            VL_FATAL_MT("../Top.v", 676, "",
                 "Verilated model didn't converge\n"
                 "- See DIDNOTCONVERGE in the Verilator manual");
         } else {
@@ -67,7 +67,7 @@ void VTop::_eval_initial_loop(VTop__Syms* __restrict vlSymsp) {
             Verilated::debug(1);
             __Vchange = _change_request(vlSymsp);
             Verilated::debug(__Vsaved_debug);
-            VL_FATAL_MT("../Top.v", 679, "",
+            VL_FATAL_MT("../Top.v", 676, "",
                 "Verilated model didn't DC converge\n"
                 "- See DIDNOTCONVERGE in the Verilator manual");
         } else {
@@ -982,9 +982,9 @@ VL_INLINE_OPT void VTop::_sequent__TOP__7(VTop__Syms* __restrict vlSymsp) {
     }
     vlTOPp->Top__DOT__imem_req_r = ((IData)(vlTOPp->reset) 
                                     | (IData)(vlTOPp->Top__DOT___GEN_1));
-    ++(vlSymsp->__Vcoverage[6040]);
+    ++(vlSymsp->__Vcoverage[6031]);
     if (vlTOPp->Top__DOT__idu_io_rf_wen) {
-        ++(vlSymsp->__Vcoverage[6038]);
+        ++(vlSymsp->__Vcoverage[6029]);
         __Vdlyvval__Top__DOT__rf__DOT__regfile__v0 
             = vlTOPp->Top__DOT__rf_io_wdata;
         __Vdlyvset__Top__DOT__rf__DOT__regfile__v0 = 1U;
@@ -992,7 +992,7 @@ VL_INLINE_OPT void VTop::_sequent__TOP__7(VTop__Syms* __restrict vlSymsp) {
             = (0x1fU & (vlTOPp->Top__DOT__idu_io_inst 
                         >> 7U));
     } else {
-        ++(vlSymsp->__Vcoverage[6039]);
+        ++(vlSymsp->__Vcoverage[6030]);
     }
     if (__Vdlyvset__Top__DOT__rf__DOT__regfile__v0) {
         vlTOPp->Top__DOT__rf__DOT__regfile[__Vdlyvdim0__Top__DOT__rf__DOT__regfile__v0] 

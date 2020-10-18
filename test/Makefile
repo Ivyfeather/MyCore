@@ -69,8 +69,10 @@ VERILATOR_FLAGS += -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 ######################################################################
 default: run
 
+add_waveform:
+	sed -i '1i /* verilator lint_off UNUSED */' ../Top.v && sed -i '$$d' ../Top.v && cat >> ../Top.v <dumpfile.txt
+
 run:
-	#sed -i '1i /* verilator lint_off UNUSED */' ../Top.v && sed -i '$$d' ../Top.v && cat >> ../Top.v <dumpfile.txt
 	@echo
 	@echo "-- VERILATE ----------------"
 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)
