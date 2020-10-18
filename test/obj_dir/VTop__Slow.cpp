@@ -26,9 +26,6 @@ void VTop::__Vconfigure(VTop__Syms* vlSymsp, bool first) {
 }
 
 VTop::~VTop() {
-#ifdef VM_TRACE
-    if (VL_UNLIKELY(__VlSymsp->__Vm_dumping)) _traceDumpClose();
-#endif  // VM_TRACE
     VL_DO_CLEAR(delete __VlSymsp, __VlSymsp = nullptr);
 }
 
@@ -46,27 +43,9 @@ void VTop::__vlCoverInsert(uint32_t* countp, bool enable, const char* filenamep,
 void VTop::_initial__TOP__1(VTop__Syms* __restrict vlSymsp) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTop::_initial__TOP__1\n"); );
     VTop* const __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
-    // Variables
-    WData/*159:0*/ __Vtemp1[5];
     // Body
-    ++(vlSymsp->__Vcoverage[5441]);
-    if (VL_UNLIKELY((0U != VL_TESTPLUSARGS_I("trace")))) {
-        __Vtemp1[0U] = 0x2e766364U;
-        __Vtemp1[1U] = 0x64756d70U;
-        __Vtemp1[2U] = 0x766c745fU;
-        __Vtemp1[3U] = 0x6f67732fU;
-        __Vtemp1[4U] = 0x6cU;
-        vl_dumpctl_filenamep(true, VL_CVT_PACK_STR_NW(5, __Vtemp1));
-        vlSymsp->TOPp->_traceDumpOpen();
-        ++(vlSymsp->__Vcoverage[5442]);
-        VL_WRITEF("[%0t] Tracing to logs/vlt_dump.vcd...\n\n",
-                  64,VL_TIME_UNITED_Q(1));
-    } else {
-        ++(vlSymsp->__Vcoverage[5443]);
-    }
-    VL_WRITEF("[%0t] Model running...\n\n",64,VL_TIME_UNITED_Q(1));
-    ++(vlSymsp->__Vcoverage[5444]);
-    ++(vlSymsp->__Vcoverage[6032]);
+    ++(vlSymsp->__Vcoverage[5829]);
+    ++(vlSymsp->__Vcoverage[6417]);
     vlTOPp->io_imem_req_bits_data = 0U;
     vlTOPp->io_imem_req_bits_fcn = 0U;
     vlTOPp->io_imem_req_bits_msk = 7U;
@@ -975,7 +954,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     vlTOPp->io_imem_req_valid = vlTOPp->Top__DOT__imem_req_r;
     if ((2U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5181]);
+        ++(vlSymsp->__Vcoverage[5557]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffffffdU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (2U 
@@ -984,7 +963,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((4U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5182]);
+        ++(vlSymsp->__Vcoverage[5558]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffffffbU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (4U 
@@ -993,7 +972,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((8U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5183]);
+        ++(vlSymsp->__Vcoverage[5559]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffffff7U 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (8U 
@@ -1002,7 +981,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x10U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                   ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5184]);
+        ++(vlSymsp->__Vcoverage[5560]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffffffefU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x10U 
@@ -1011,7 +990,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x20U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                   ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5185]);
+        ++(vlSymsp->__Vcoverage[5561]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffffffdfU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x20U 
@@ -1020,7 +999,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x40U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                   ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5186]);
+        ++(vlSymsp->__Vcoverage[5562]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffffffbfU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x40U 
@@ -1029,7 +1008,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x80U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                   ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5187]);
+        ++(vlSymsp->__Vcoverage[5563]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffffff7fU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x80U 
@@ -1038,7 +1017,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x100U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                    ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5188]);
+        ++(vlSymsp->__Vcoverage[5564]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffffeffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x100U 
@@ -1047,7 +1026,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x200U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                    ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5189]);
+        ++(vlSymsp->__Vcoverage[5565]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffffdffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x200U 
@@ -1056,7 +1035,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x400U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                    ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5190]);
+        ++(vlSymsp->__Vcoverage[5566]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffffbffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x400U 
@@ -1065,7 +1044,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x800U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                    ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5191]);
+        ++(vlSymsp->__Vcoverage[5567]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffff7ffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x800U 
@@ -1074,7 +1053,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x1000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                     ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5192]);
+        ++(vlSymsp->__Vcoverage[5568]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffffefffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x1000U 
@@ -1083,7 +1062,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x2000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                     ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5193]);
+        ++(vlSymsp->__Vcoverage[5569]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffffdfffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x2000U 
@@ -1092,7 +1071,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x4000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                     ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5194]);
+        ++(vlSymsp->__Vcoverage[5570]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffffbfffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x4000U 
@@ -1101,7 +1080,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x8000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                     ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5195]);
+        ++(vlSymsp->__Vcoverage[5571]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffff7fffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x8000U 
@@ -1110,7 +1089,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x10000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                      ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5196]);
+        ++(vlSymsp->__Vcoverage[5572]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffeffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x10000U 
@@ -1119,7 +1098,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x20000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                      ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5197]);
+        ++(vlSymsp->__Vcoverage[5573]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffdffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x20000U 
@@ -1128,7 +1107,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x40000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                      ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5198]);
+        ++(vlSymsp->__Vcoverage[5574]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfffbffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x40000U 
@@ -1137,7 +1116,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x80000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                      ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5199]);
+        ++(vlSymsp->__Vcoverage[5575]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfff7ffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x80000U 
@@ -1146,7 +1125,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x100000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                       ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5200]);
+        ++(vlSymsp->__Vcoverage[5576]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffefffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x100000U 
@@ -1155,7 +1134,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x200000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                       ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5201]);
+        ++(vlSymsp->__Vcoverage[5577]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffdfffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x200000U 
@@ -1164,7 +1143,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x400000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                       ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5202]);
+        ++(vlSymsp->__Vcoverage[5578]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xffbfffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x400000U 
@@ -1173,7 +1152,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x800000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                       ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5203]);
+        ++(vlSymsp->__Vcoverage[5579]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xff7fffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x800000U 
@@ -1182,7 +1161,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x1000000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                        ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5204]);
+        ++(vlSymsp->__Vcoverage[5580]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfeffffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x1000000U 
@@ -1191,7 +1170,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x2000000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                        ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5205]);
+        ++(vlSymsp->__Vcoverage[5581]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfdffffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x2000000U 
@@ -1200,7 +1179,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x4000000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                        ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5206]);
+        ++(vlSymsp->__Vcoverage[5582]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xfbffffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x4000000U 
@@ -1209,7 +1188,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x8000000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                        ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5207]);
+        ++(vlSymsp->__Vcoverage[5583]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xf7ffffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x8000000U 
@@ -1218,7 +1197,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x10000000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                         ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5208]);
+        ++(vlSymsp->__Vcoverage[5584]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xefffffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x10000000U 
@@ -1227,7 +1206,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x20000000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                         ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5209]);
+        ++(vlSymsp->__Vcoverage[5585]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xdfffffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x20000000U 
@@ -1236,7 +1215,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x40000000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                         ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5210]);
+        ++(vlSymsp->__Vcoverage[5586]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0xbfffffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x40000000U 
@@ -1245,7 +1224,7 @@ void VTop::_settle__TOP__2(VTop__Syms* __restrict vlSymsp) {
     }
     if ((0x80000000U & (((IData)(4U) + (IData)(vlTOPp->Top__DOT__pc_reg)) 
                         ^ vlTOPp->Top__DOT____Vtogcov__pc_4))) {
-        ++(vlSymsp->__Vcoverage[5211]);
+        ++(vlSymsp->__Vcoverage[5587]);
         vlTOPp->Top__DOT____Vtogcov__pc_4 = ((0x7fffffffU 
                                               & vlTOPp->Top__DOT____Vtogcov__pc_4) 
                                              | (0x80000000U 

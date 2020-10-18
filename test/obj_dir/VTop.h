@@ -8,7 +8,7 @@
 #ifndef _VTOP_H_
 #define _VTOP_H_  // guard
 
-#include "verilated_heavy.h"
+#include "verilated.h"
 #include "verilated_cov.h"
 
 //==========
@@ -112,10 +112,11 @@ VL_MODULE(VTop) {
     SData/*11:0*/ Top__DOT__imm_b;
     IData/*31:0*/ Top__DOT__idu_io_inst;
     IData/*19:0*/ Top__DOT__imm_j;
-    IData/*31:0*/ Top__DOT__imm_i_sext;
-    IData/*31:0*/ Top__DOT__imm_s_sext;
-    IData/*31:0*/ Top__DOT__imm_b_sext;
-    IData/*31:0*/ Top__DOT__imm_j_sext;
+    WData/*65:0*/ Top__DOT__imm_b_sext[3];
+    WData/*73:0*/ Top__DOT__imm_j_sext[3];
+    WData/*65:0*/ Top__DOT__br_target[3];
+    WData/*73:0*/ Top__DOT__jmp_target[3];
+    WData/*73:0*/ Top__DOT___pc_next_T_5[3];
     WData/*64:0*/ Top__DOT__alu__DOT__add_result[3];
     WData/*94:0*/ Top__DOT__alu__DOT___T_7[3];
     QData/*63:0*/ Top__DOT__alu_io_in1;
@@ -125,10 +126,10 @@ VL_MODULE(VTop) {
     QData/*63:0*/ Top__DOT__rf_io_rs2_data;
     QData/*63:0*/ Top__DOT__rf_io_wdata;
     QData/*63:0*/ Top__DOT__pc_reg;
-    QData/*63:0*/ Top__DOT__br_target;
-    QData/*63:0*/ Top__DOT__jmp_target;
+    QData/*63:0*/ Top__DOT__imm_i_sext;
+    QData/*63:0*/ Top__DOT__imm_s_sext;
+    QData/*63:0*/ Top__DOT__imm_u_sext;
     QData/*63:0*/ Top__DOT__jr_target;
-    QData/*63:0*/ Top__DOT___pc_next_T_5;
     QData/*63:0*/ Top__DOT__alu__DOT__xor_result;
     QData/*63:0*/ Top__DOT__alu__DOT__or_result;
     QData/*63:0*/ Top__DOT__alu__DOT__and_result;
@@ -176,7 +177,6 @@ VL_MODULE(VTop) {
         CData/*0:0*/ __Vclklast__TOP__clock;
         SData/*11:0*/ Top__DOT____Vtogcov__imm_s;
         SData/*11:0*/ Top__DOT____Vtogcov__imm_b;
-        SData/*10:0*/ Top__DOT____Vtogcov__right_right_3;
         IData/*31:0*/ Top__DOT____Vtogcov__io_imem_req_bits_addr;
         IData/*31:0*/ Top__DOT____Vtogcov__io_imem_req_bits_data;
         IData/*31:0*/ Top__DOT____Vtogcov__io_imem_resp_bits_data;
@@ -184,14 +184,12 @@ VL_MODULE(VTop) {
         IData/*31:0*/ Top__DOT____Vtogcov__idu_io_inst;
         IData/*19:0*/ Top__DOT____Vtogcov__imm_j;
         IData/*31:0*/ Top__DOT____Vtogcov__imm_z;
-        IData/*19:0*/ Top__DOT____Vtogcov__right_4;
-        IData/*31:0*/ Top__DOT____Vtogcov__imm_i_sext;
-        IData/*19:0*/ Top__DOT____Vtogcov__right_5;
-        IData/*31:0*/ Top__DOT____Vtogcov__imm_s_sext;
-        IData/*18:0*/ Top__DOT____Vtogcov__right_right_2;
-        IData/*31:0*/ Top__DOT____Vtogcov__imm_b_sext;
-        IData/*31:0*/ Top__DOT____Vtogcov__imm_j_sext;
+        WData/*65:0*/ Top__DOT____Vtogcov__imm_b_sext[3];
+        IData/*31:0*/ Top__DOT____Vtogcov__right_right_3;
+        WData/*73:0*/ Top__DOT____Vtogcov__imm_j_sext[3];
         IData/*31:0*/ Top__DOT____Vtogcov__pc_4;
+        WData/*65:0*/ Top__DOT____Vtogcov__br_target[3];
+        WData/*73:0*/ Top__DOT____Vtogcov__jmp_target[3];
         IData/*31:0*/ Top__DOT____Vtogcov__pc_next;
         WData/*64:0*/ Top__DOT__alu__DOT____Vtogcov__add_result[3];
         QData/*63:0*/ Top__DOT____Vtogcov__io_dmem_req_bits_data;
@@ -206,11 +204,11 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_7;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_8;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_9;
-    };
-    struct {
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_10;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_11;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_12;
+    };
+    struct {
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_13;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_14;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_15;
@@ -270,10 +268,15 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT____Vtogcov__rf___05FWIRE_0_30;
         QData/*63:0*/ Top__DOT____Vtogcov__rf___05FWIRE_0_31;
         QData/*63:0*/ Top__DOT____Vtogcov__pc_reg;
-        QData/*63:0*/ Top__DOT____Vtogcov__br_target;
-        QData/*63:0*/ Top__DOT____Vtogcov__jmp_target;
+        QData/*51:0*/ Top__DOT____Vtogcov__right_4;
+        QData/*63:0*/ Top__DOT____Vtogcov__imm_i_sext;
+        QData/*51:0*/ Top__DOT____Vtogcov__right_5;
+        QData/*63:0*/ Top__DOT____Vtogcov__imm_s_sext;
+        QData/*52:0*/ Top__DOT____Vtogcov__right_right_2;
     };
     struct {
+        QData/*63:0*/ Top__DOT____Vtogcov__imm_u_sext;
+        QData/*52:0*/ Top__DOT____Vtogcov__right_right_4;
         QData/*63:0*/ Top__DOT____Vtogcov__jr_target;
         QData/*63:0*/ Top__DOT__alu__DOT____Vtogcov__xor_result;
         QData/*63:0*/ Top__DOT__alu__DOT____Vtogcov__or_result;
@@ -310,25 +313,26 @@ VL_MODULE(VTop) {
     
     // API METHODS
     /// Evaluate the model.  Application must call when inputs change.
-    void eval() { eval_step(); eval_end_step(); }
+    void eval() { eval_step(); }
     /// Evaluate when calling multiple units/models per time step.
     void eval_step();
     /// Evaluate at end of a timestep for tracing, when using eval_step().
     /// Application must call after all eval() and before time changes.
-    void eval_end_step();
+    void eval_end_step() {}
     /// Simulation complete, run final blocks.  Application must call on completion.
     void final();
     
     // INTERNAL METHODS
   private:
     static void _eval_initial_loop(VTop__Syms* __restrict vlSymsp);
-    void _traceDump();void _traceDumpOpen();void _traceDumpClose();public:
+  public:
     void __Vconfigure(VTop__Syms* symsp, bool first);
   private:
     static QData _change_request(VTop__Syms* __restrict vlSymsp);
     static QData _change_request_1(VTop__Syms* __restrict vlSymsp);
   public:
     static void _combo__TOP__10(VTop__Syms* __restrict vlSymsp);
+    static void _combo__TOP__11(VTop__Syms* __restrict vlSymsp);
     static void _combo__TOP__6(VTop__Syms* __restrict vlSymsp);
   private:
     void _configure_coverage(VTop__Syms* __restrict vlSymsp, bool first) VL_ATTR_COLD;

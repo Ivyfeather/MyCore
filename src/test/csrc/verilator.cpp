@@ -58,7 +58,7 @@ void Verilator::single_cycle(){
 void Verilator::get_difftest_result(){
 #define macro(x) regfile[x] = top->io_debug_rf_##x
     //[TEST] GPRs only for now
-    macro(0); macro(1); macro(2); macro(3); macro(4); macro(5); macro(6); macro(7);
+    macro(1); macro(2); macro(3); macro(4); macro(5); macro(6); macro(7);
     macro(8); macro(9); macro(10); macro(11); macro(12); macro(13); macro(14); macro(15);
     macro(16); macro(17); macro(18); macro(19); macro(20); macro(21); macro(22); macro(23);
     macro(24); macro(25); macro(26); macro(27); macro(28); macro(29); macro(30); macro(31);

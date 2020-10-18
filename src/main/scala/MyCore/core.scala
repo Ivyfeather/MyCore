@@ -57,11 +57,12 @@ class core extends MyCoreModule {
     val imm_z = Cat(Fill(27,0.U), inst(19,15))
 
     // sign-extend immediates, riscv-spec P17
-    val imm_i_sext = Cat(Fill(20,imm_i(11)), imm_i)
-    val imm_s_sext = Cat(Fill(20,imm_s(11)), imm_s)
-    val imm_b_sext = Cat(Fill(19,imm_b(11)), imm_b, 0.U)
-    val imm_u_sext = Cat(imm_u, Fill(12,0.U))
-    val imm_j_sext = Cat(Fill(11,imm_j(19)), imm_j, 0.U)
+    // [TODO] imm for 64bit?
+    val imm_i_sext = Cat(Fill(xlen-12,imm_i(11)), imm_i)
+    val imm_s_sext = Cat(Fill(xlen-12,imm_s(11)), imm_s)
+    val imm_b_sext = Cat(Fill(xlen-11,imm_b(11)), imm_b, 0.U)
+    val imm_u_sext = Cat(Fill(xlen-32,imm_u(11)), imm_u, Fill(12,0.U))
+    val imm_j_sext = Cat(Fill(xlen-11,imm_j(19)), imm_j, 0.U)
 
     // RegFile
     rf.io.rs1_addr := inst(RS1_MSB, RS1_LSB)
