@@ -133,8 +133,13 @@ void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
         if(top->io_dmem_resp_ready) dmem_buf.has = 0;
     }
 
+    //[TODO] should implement resp_valid for memread and memwrite separately
     ram->Memwrite(top->io_dmem_req_bits_addr, top->io_dmem_req_bits_data, \
         top->io_dmem_req_valid && top->io_dmem_req_bits_fcn,\
         top->io_dmem_req_bits_msk); // write mem
 #endif
+}
+
+bool Verilator::hit_trap(){
+    return top->io_debug_trap;
 }

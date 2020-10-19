@@ -1,6 +1,7 @@
 package MyCore
 
 import chisel3._
+import chisel3.util._
 import Const._
 
 class Debug_IO extends MyCoreBundle {
@@ -17,4 +18,9 @@ class Debug_IO extends MyCoreBundle {
     val rf      = Output(Vec(32, UInt(xlen.W)))
     val PC      = Output(UInt(xlen.W))
     val stall   = Output(Bool())
+    val trap    = Output(Bool())
+}
+
+object MyCoreTrap{
+    def TRAP = BitPat("b????????????_?????_000_?????_1101011")
 }

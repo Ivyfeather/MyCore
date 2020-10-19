@@ -25,13 +25,13 @@ int main(int argc, char **argv){
     Verilator *verilator = new Verilator(ram, &main_time);
     Nemu *nemu = new Nemu(ram);
 
-    //while(!Verilated::gotFinish()){
-    for(int i=0;i<20;i++){
+    //for(int i=0;i<20;i++){
+    while(!verilator->hit_trap()){
         verilator->step(1);
         nemu->step(1); 
 
         // printf("VERILATOR");
-        // verilator->dump();
+        verilator->dump();
         // printf("NEMU     ");
         // nemu->dump();
 

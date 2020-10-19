@@ -57,6 +57,7 @@ public:
     Verilator(ram_c *ram, uint64_t *main_time);
     ~Verilator();
     void step(int n);
+    bool hit_trap();
 
 private:
     ram_c *ram;

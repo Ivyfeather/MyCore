@@ -28,22 +28,22 @@ class core extends MyCoreModule {
     val stall = !io.imem.resp.valid || !( (idu.io.mem_en && io.dmem.resp.valid) || !idu.io.mem_en )
 
     // INST
+    val imem_req_r = RegInit(true.B);
+    when(io.imem.req.ready) { imem_req_r := false.B }
+    .elsewhen(!stall)       { imem_req_r := true.B }
+
+    io.imem.req.valid       := imem_req_r
     io.imem.req.bits.data   := 0.U // this data is for writing mem
     io.imem.req.bits.addr   := pc_reg
     io.imem.req.bits.fcn    := MRD
     io.imem.req.bits.msk    := MT_WU
 
 
-    val imem_req_r = RegInit(true.B);
-    when(io.imem.req.ready) { imem_req_r := false.B }
-    .elsewhen(!stall)       { imem_req_r := true.B }
-
-    io.imem.req.valid       := imem_req_r
-
-
-    val inst = Wire(UInt(32.W))
-    inst:= Mux(io.imem.resp.valid, io.imem.resp.bits.data, BUBBLE)
+    val inst = RegInit(BUBBLE)
+    when(io.imem.resp.valid) { inst := io.imem.resp.bits.data }
     //[TODO] ready? logic correct?
+//    val inst = Wire(UInt(32.W))
+//    inst:= Mux(io.imem.resp.valid, io.imem.resp.bits.data, BUBBLE)
     io.imem.resp.ready := true.B
 
     idu.io.inst := inst
@@ -129,8 +129,11 @@ class core extends MyCoreModule {
     io.debug.stall   := stall
 
     val difftest_regs = WireInit(0.U.asTypeOf( Vec(32, UInt(xlen.W)) ))
+    val difftest_is_trap = WireInit(false.B)
     BoringUtils.addSink(difftest_regs, "difftest_r")
-    io.debug.rf      := difftest_regs
+    BoringUtils.addSink(difftest_is_trap, "is_trap")
+    io.debug.rf     := difftest_regs
+    io.debug.trap   := difftest_is_trap
 }
 
 

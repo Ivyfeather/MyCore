@@ -25,7 +25,7 @@ class ALU extends MyCoreModule with ALUop{
     val slt_result  : Bool = xor_result(xlen - 1) ^ sltu_result
 
     // SHIFT
-    val shamt = io.in2(4,0).asUInt() //[TODO] consider 64bit
+    val shamt = io.in2(5,0).asUInt() //[TODO] if RV64, it should be (5,0); if RV32, it should be (4,0), but slli in RV32 has 5th-bit=0
     val sll_result = (io.in1 << shamt)(xlen-1, 0)
     val sra_result = (io.in1.asSInt() >> shamt).asUInt()
     val srl_result = io.in1 >> shamt
