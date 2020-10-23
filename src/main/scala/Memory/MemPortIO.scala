@@ -6,13 +6,13 @@ import chisel3.util._
 
 class MemPortIO(val data_width: Int) extends MyCoreBundle {
     val req     = new DecoupledIO(new MemReq(data_width))
-    val resp    = Flipped(new DecoupledIO(new MemResp(data_width)))
+    val resp    = Flipped(new ValidIO(new MemResp(data_width)))
 }
 
 class MemReq(val data_width: Int) extends MyCoreBundle {
-    val addr = Output(UInt(32.W))//[TODO] 32/39 bit addr space
+    val addr = Output(UInt(xlen.W))//[TODO] 32/39 bit addr space
     val data = Output(UInt(data_width.W))
-    val fcn  = Output(Bool())
+    val wr   = Output(Bool())
     val msk  = Output(UInt(MTT_bits))
 }
 
