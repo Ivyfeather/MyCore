@@ -13,6 +13,36 @@ class coreIO extends MyCoreBundle {
 
 class core extends MyCoreModule {
     val io = IO(new coreIO)
+    io := DontCare
+
+    val pre_top = Module(new Pre_TOP)
+    val fs_top  = Module(new IF_TOP)
+    val ds_top  = Module(new ID_TOP)
+
+    pre_top.io.fs <> fs_top.io.pres
+
+    io.imem <> pre_top.io.imem
+    io.imem <> fs_top.io.imem
+
+    io.imem.req  <> pre_top.io.imem.req
+    io.imem.resp <> fs_top.io.imem.resp
+
+    fs_top.io.ds <> ds_top.io.fs
+
+    ds_top.io.es := DontCare
+
+    val debug_io    = WireInit(0.U.asTypeOf(new Debug_IO))
+    BoringUtils.addSink(debug_io.PC, "debug_pc")
+    BoringUtils.addSink(debug_io.inst, "debug_inst")
+    BoringUtils.addSink(debug_io.rf, "difftest_r")
+    BoringUtils.addSink(debug_io.trap, "is_trap")
+    io.debug     := debug_io
+
+
+}
+/*
+class core extends MyCoreModule {
+    val io = IO(new coreIO)
 
     val alu = Module(new ALU)
     val idu = Module(new IDU)
@@ -25,17 +55,25 @@ class core extends MyCoreModule {
     pc_4    := pc_reg + 4.U
 
     // stall when inst/required data not returned
-    val stall = !io.imem.resp.valid || !( (idu.io.mem_en && io.dmem.resp.valid) || !idu.io.mem_en )
+    val stall = WireInit(false.B)
+    val imem_req_r = RegInit(true.B)
+    val dmem_req_r = RegInit(false.B)
 
     // INST
-    val imem_req_r = RegInit(true.B);
+    //[TODO] should have another reg for whether inst returned
     when(io.imem.req.ready) { imem_req_r := false.B }
-    .elsewhen(!stall)       { imem_req_r := true.B }
+    .elsewhen(!stall)       { imem_req_r := true.B  }
+
+    when(io.dmem.req.valid) { dmem_req_r := false.B }
+    .elsewhen(idu.io.mem_en){ dmem_req_r := true.B  }
+
+    //stall :=  !imem_req_r || !( (idu.io.mem_en && io.dmem.resp.valid) || !idu.io.mem_en )
+    stall := imem_req_r || dmem_req_r
 
     io.imem.req.valid       := imem_req_r
     io.imem.req.bits.data   := 0.U // this data is for writing mem
     io.imem.req.bits.addr   := pc_reg
-    io.imem.req.bits.fcn    := MRD
+    io.imem.req.bits.wr     := MRD
     io.imem.req.bits.msk    := MT_WU
 
 
@@ -91,10 +129,10 @@ class core extends MyCoreModule {
     )).asUInt()
 
     // Dmem
+    io.dmem.req.valid     := dmem_req_r
     io.dmem.req.bits.addr := alu.io.out
     io.dmem.req.bits.data := rf.io.rs2_data
-    io.dmem.req.valid     := idu.io.mem_en
-    io.dmem.req.bits.fcn  := idu.io.mem_fcn
+    io.dmem.req.bits.wr   := idu.io.mem_wr
     io.dmem.req.bits.msk  := idu.io.mem_msk
 
     io.dmem.resp.ready := true.B
@@ -135,5 +173,5 @@ class core extends MyCoreModule {
     io.debug.rf     := difftest_regs
     io.debug.trap   := difftest_is_trap
 }
-
+*/
 

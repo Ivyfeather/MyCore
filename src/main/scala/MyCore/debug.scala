@@ -19,6 +19,9 @@ class Debug_IO extends MyCoreBundle {
     val PC      = Output(UInt(xlen.W))
     val stall   = Output(Bool())
     val trap    = Output(Bool())
+
+    //[TEST]
+    val inst    = Output(UInt(32.W))
 }
 
 object MyCoreTrap{
