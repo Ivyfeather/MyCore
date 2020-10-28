@@ -18,22 +18,32 @@ class core extends MyCoreModule {
     val pre_top = Module(new Pre_TOP)
     val fs_top  = Module(new IF_TOP)
     val ds_top  = Module(new ID_TOP)
+    val es_top  = Module(new EXE_TOP)
+    val ms_top  = Module(new MEM_TOP)
+    val ws_top  = Module(new WB_TOP)
 
     pre_top.io.fs <> fs_top.io.pres
+    fs_top.io.ds <> ds_top.io.fs
+    ds_top.io.es <> es_top.io.ds
+    es_top.io.ms <> ms_top.io.es
+    ms_top.io.ws <> ws_top.io.ms
+    ws_top.io.rf <> ds_top.io.wb
 
-    io.imem <> pre_top.io.imem
-    io.imem <> fs_top.io.imem
 
+    pre_top.io.imem := DontCare
+    fs_top.io.imem  := DontCare
     io.imem.req  <> pre_top.io.imem.req
     io.imem.resp <> fs_top.io.imem.resp
 
-    fs_top.io.ds <> ds_top.io.fs
+    es_top.io.dmem := DontCare
+    ms_top.io.dmem := DontCare
+    io.dmem.req  <> es_top.io.dmem.req
+    io.dmem.resp <> ms_top.io.dmem.resp
 
-    ds_top.io.es := DontCare
 
     val debug_io    = WireInit(0.U.asTypeOf(new Debug_IO))
     BoringUtils.addSink(debug_io.PC, "debug_pc")
-    BoringUtils.addSink(debug_io.inst, "debug_inst")
+//    BoringUtils.addSink(debug_io.inst, "debug_inst")
     BoringUtils.addSink(debug_io.rf, "difftest_r")
     BoringUtils.addSink(debug_io.trap, "is_trap")
     io.debug     := debug_io

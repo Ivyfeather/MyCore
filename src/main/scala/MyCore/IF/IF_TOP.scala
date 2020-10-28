@@ -16,8 +16,7 @@ class IF_TOP extends MyCoreModule {
     io := DontCare
 
     // RegEnable(next, init, enable)
-    val from_pre_r = RegEnable(io.pres.bits, 0.U.asTypeOf(new Pre_to_IF_IO),
-        io.pres.valid && io.pres.ready)
+    val from_pre_r = RegEnable(io.pres.bits, 0.U.asTypeOf(new Pre_to_IF_IO), io.pres.valid && io.pres.ready)
 
     //-- ready_go: whether this module finishes its own task
     val fs_ready_go    = RegInit(false.B)
@@ -32,7 +31,7 @@ class IF_TOP extends MyCoreModule {
     // if gets valid data and finishes its task, signal downstream valid
     io.ds.valid    := fs_valid && fs_ready_go
 
-// ================================================================
+// ==== To ds ===========================================================
     io.ds.bits.inst := io.imem.resp.bits.data
     io.ds.bits.PC := from_pre_r.PC
 

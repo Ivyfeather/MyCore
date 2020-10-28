@@ -27,8 +27,8 @@ class Pre_TOP extends MyCoreModule {
 
 // ================================================================
     // trick: to make nextpc be START_ADDR during reset
-    val pre_pc  = RegInit((START_ADDR - 4).asUInt(xlen.W))
     val nextpc  = Wire(UInt(xlen.W))
+    val pre_pc  = RegEnable(nextpc, (START_ADDR - 4).asUInt(xlen.W), io.fs.valid && io.fs.ready) //[TODO]
     val seq_pc  = pre_pc + 4.U
 
     // require inst
@@ -48,11 +48,20 @@ class Pre_TOP extends MyCoreModule {
     // next pc
     val br_taken  = WireInit(Bool(), false.B)
     val br_target = WireInit(UInt(xlen.W), 0.U)
-    nextpc := MuxCase(seq_pc, Array(
-        (br_taken) -> br_target
-    ))
+
     BoringUtils.addSink(br_taken, "br_taken")
     BoringUtils.addSink(br_target,"br_target")
+
+    // use reg to store br_target
+    val buf_valid = RegInit(false.B)
+    when(buf_valid && io.imem.req.ready)    { buf_valid := false.B }
+    .elsewhen(br_taken)                     { buf_valid := true.B}
+
+    val buf_npc = RegEnable(br_target, 0.U(xlen.W), br_taken)
+
+    nextpc := MuxCase(seq_pc, Array(
+        (buf_valid) -> buf_npc
+    ))
 
     //[TODO] check
     io.fs.bits.PC := nextpc
