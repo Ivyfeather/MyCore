@@ -25,8 +25,8 @@ int main(int argc, char **argv){
     Verilator *verilator = new Verilator(ram, &main_time);
     Nemu *nemu = new Nemu(ram);
 
-    //for(int i=0;i<20;i++){
-    while(!verilator->hit_trap()){
+    for(int i=0;i<20;i++){
+    // while(!verilator->hit_trap()){
         verilator->step(1);
         nemu->step(1); 
 
@@ -37,6 +37,8 @@ int main(int argc, char **argv){
 
         // difftest
         //[TEST] GPRs only
+
+        /*
         bool diff = false;
         for(int i=0; i<THIS_PC+1; i++){
             if(verilator->regfile[i] != nemu->regfile[i]){
@@ -46,6 +48,10 @@ int main(int argc, char **argv){
                 diff = true; break;
             }
         }
+        */
+
+
+
         //if(diff) break;
         printf("[TEST] %lu\n", main_time);
     }

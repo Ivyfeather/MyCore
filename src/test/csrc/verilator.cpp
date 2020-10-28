@@ -78,32 +78,7 @@ uint32_t Verilator::readinst(wlen_t addr){
 }
 
 void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
-#if 0
-    // set ready signals to zero
-    top->io_imem_req_ready = 0;
-    top->io_dmem_req_ready = 0;
-
-    // deal with read req last cycle
-    top->io_imem_resp_bits_data = ram->Memread(imem_buf.addr, imem_buf.en);
-    top->io_imem_resp_valid = imem_buf.en;
-    top->io_dmem_resp_bits_data = ram->Memread(dmem_buf.addr, dmem_buf.en);
-    top->io_dmem_resp_valid = dmem_buf.en;
-
-    // accept new read req this cycle
-    imem_buf.en = top->io_imem_req_valid;
-    imem_buf.addr = top->io_imem_req_bits_addr; //!FAULT! eval ram before eval top, so ram does not get the new addr
-    if(top->io_imem_req_valid) top->io_imem_req_ready = 1; //ready=1 means accept this req
-
-    dmem_buf.en = top->io_dmem_req_valid;
-    dmem_buf.addr = top->io_dmem_req_bits_addr;
-    if(top->io_dmem_req_valid) top->io_dmem_req_ready = 1;
-
-    //[TODO] write mem has one cycle delay?
-    ram->Memwrite(top->io_dmem_req_bits_addr, top->io_dmem_req_bits_data, \
-        top->io_dmem_req_valid && top->io_dmem_req_bits_fcn,\
-        top->io_dmem_req_bits_msk); // write mem
-#endif   
-#if 1
+#ifdef PAST_SINGLECYCLE
     top->io_imem_req_ready = 0;
     top->io_dmem_req_ready = 0;
     top->io_imem_resp_valid = 0;
@@ -138,6 +113,44 @@ void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
         top->io_dmem_req_valid && top->io_dmem_req_bits_fcn,\
         top->io_dmem_req_bits_msk); // write mem
 #endif
+
+
+#if 1
+    top->io_imem_req_ready = 0;
+    top->io_dmem_req_ready = 0;
+    top->io_imem_resp_valid = 0;
+    top->io_dmem_resp_valid = 0;    
+
+    if(!imem_buf.has && top->io_imem_req_valid){
+        imem_buf.addr = top->io_imem_req_bits_addr;
+        top->io_imem_req_ready = 1;
+        imem_buf.has = true;
+    }
+    else if(imem_buf.has){
+        top->io_imem_resp_bits_data = readinst(imem_buf.addr);
+        top->io_imem_resp_valid = 1;
+        imem_buf.has = 0;
+    }
+    //printf("[TEST] has:%d cycle: %lu, rd_addr: %016lx\n", imem_buf.has, *main_time, imem_buf.addr);
+
+
+    if(!dmem_buf.has && top->io_dmem_req_valid){
+        dmem_buf.addr = top->io_dmem_req_bits_addr;
+        top->io_dmem_req_ready = 1;
+        dmem_buf.has = true;
+    }
+    else if(dmem_buf.has){
+        top->io_dmem_resp_bits_data = ram->Memread(dmem_buf.addr, 1);
+        top->io_dmem_resp_valid = 1;
+        dmem_buf.has = 0;
+    }
+
+    //[TODO] should implement resp_valid for memread and memwrite separately
+    ram->Memwrite(top->io_dmem_req_bits_addr, top->io_dmem_req_bits_data, \
+        top->io_dmem_req_valid && top->io_dmem_req_bits_wr,\
+        top->io_dmem_req_bits_msk); // write mem
+#endif
+
 }
 
 bool Verilator::hit_trap(){
