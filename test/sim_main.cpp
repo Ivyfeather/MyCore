@@ -1,4 +1,4 @@
-/* // outdated version, for testing ALU and RegFile
+// outdated version, for testing ALU and RegFile
 #include <verilated.h>
 #include <iostream>
 #include "VTop.h"
@@ -12,8 +12,8 @@ double sc_time_stamp () {       // Called by $time in Verilog
 	return main_time;           // converts to double, to match
 }		                        // what SystemC does
 
-//#define REGFILE
-#define ALU
+#define REGFILE
+//#define ALU
 
 int main(int argc, char** argv, char** env) {
 	Verilated::traceEverOn(true);
@@ -23,25 +23,28 @@ int main(int argc, char** argv, char** env) {
 	top = new VTop;
 
 	top->reset = !0;
-	top->clock = 0;
+	top->clock = 1;
 #ifdef REGFILE	
-	while (!Verilated::gotFinish()) {
+	for(int i=0; i < 100; i++){
+		main_time ++;
+		top->clock = !top->clock;
+		top->eval();
+		
 		main_time ++;
 		top->clock = !top->clock;
 		if(main_time > 4)	top->reset = 0;		
-		if(main_time > 100)	break;
 		
-		top->io_waddr = main_time % 32;
+		top->io_waddr = i % 32;
 		top->io_wen = 1;
-		top->io_wdata = main_time;
+		top->io_wdata = i;
 
-		top->io_rs1_addr = (main_time - 1) % 32 ;
-		top->io_rs2_addr = main_time % 32 ;
+		top->io_rs1_addr = (i - 1) % 32 ;
+		top->io_rs2_addr = i % 32 ;
 
 		top->eval();
-		printf("%lu:\t clk:%u\t rst:%u\t raddr1:%u\t rdata1:%lu\t raddr2:%u\t rdata2:%lu\t \n",
-				main_time, top->clock, top->reset, top->io_rs1_addr, top->io_rs1_data, \
-				 top->io_rs2_addr, top->io_rs2_data);
+		// printf("%lu:\t clk:%u\t rst:%u\t raddr1:%u\t rdata1:%lu\t raddr2:%u\t rdata2:%lu\t \n",
+		// 		main_time, top->clock, top->reset, top->io_rs1_addr, top->io_rs1_data, \
+		// 		 top->io_rs2_addr, top->io_rs2_data);
 	}
 #endif
 
@@ -76,4 +79,3 @@ int main(int argc, char** argv, char** env) {
 	exit(0);
 }
 
-*/

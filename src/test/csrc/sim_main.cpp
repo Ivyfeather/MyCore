@@ -38,7 +38,7 @@ int main(int argc, char **argv){
         // difftest
         //[TEST] GPRs only
 
-        /*
+        
         bool diff = false;
         for(int i=0; i<THIS_PC+1; i++){
             if(verilator->regfile[i] != nemu->regfile[i]){
@@ -48,7 +48,7 @@ int main(int argc, char **argv){
                 diff = true; break;
             }
         }
-        */
+        
 
 
 

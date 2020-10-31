@@ -55,8 +55,8 @@ VERILATOR_FLAGS += -Wno-UNUSED -Wno-DECLFILENAME
 
 # Input files for Verilator
 
-VERILATOR_INPUT = -f input.vc ../Top.v 
-VERILATOR_INPUT += $(shell find ../src/test/csrc -name "*.cpp")
+VERILATOR_INPUT = -f input.vc ../Top.v  sim_main.cpp
+#VERILATOR_INPUT += $(shell find ../src/test/csrc -name "*.cpp")
 
 NEMU_SO = ./ready-to-run/riscv64-nemu-interpreter-so
 RAM_PATH = ./testbench/build/dummy.bin

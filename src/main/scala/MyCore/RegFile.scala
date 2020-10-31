@@ -24,5 +24,5 @@ class RegFile extends MyCoreModule {
     io.rs2_data := Mux((io.rs2_addr =/= 0.U), regfile(io.rs2_addr), 0.U)
 
     // !caution! regfile[0] reads 0 from RFIO, but its content is not 0
-    BoringUtils.addSource(VecInit((0 to 31).map(i => regfile(i))), "difftest_r")
+    //BoringUtils.addSource(VecInit((0 to 31).map(i => regfile(i))), "difftest_r")
 }
