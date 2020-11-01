@@ -46,6 +46,7 @@ class core extends MyCoreModule {
 //    BoringUtils.addSink(debug_io.inst, "debug_inst")
     BoringUtils.addSink(debug_io.rf, "difftest_r")
     BoringUtils.addSink(debug_io.trap, "is_trap")
+    BoringUtils.addSink(debug_io.valid, "is_valid")
     io.debug     := debug_io
 
 
@@ -169,7 +170,7 @@ class single_core extends MyCoreModule {
 
     // DEBUG
     io.debug.PC      := pc_reg
-    io.debug.stall   := stall
+    io.debug.valid   := !stall
 
     val difftest_regs = WireInit(0.U.asTypeOf( Vec(32, UInt(xlen.W)) ))
     val difftest_is_trap = WireInit(false.B)

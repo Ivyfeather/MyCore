@@ -85,4 +85,20 @@ class ID_TOP extends MyCoreModule{
     BoringUtils.addSource(br_taken, "br_taken")
     BoringUtils.addSource(br_target, "br_target")
 
+    // if br_taken, then we need to flush 2 following insts
+    val flush_reg = RegInit(0.U(2.W))
+    when(br_taken && io.fs.valid && io.fs.ready){
+        flush_reg := 0.U
+    }.elsewhen(br_taken) {
+        flush_reg := 1.U
+    }.elsewhen(io.fs.valid && io.fs.ready && flush_reg > 0.U){
+        flush_reg := flush_reg - 1.U
+    }
+
+    //[TODO] as it appears in waveform, dont need to flush the reg
+    // maybe it will have problem with random delay ram
+    when(flush_reg =/= 0.U){ // this "if" has higher prior when generating .v
+        from_fs_r := 0.U.asTypeOf(new IF_to_ID_IO)
+    }
+
 }

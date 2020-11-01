@@ -25,7 +25,7 @@ int main(int argc, char **argv){
     Verilator *verilator = new Verilator(ram, &main_time);
     Nemu *nemu = new Nemu(ram);
 
-    for(int i=0;i<20;i++){
+    for(int i=0;i<13;i++){
     // while(!verilator->hit_trap()){
         verilator->step(1);
         nemu->step(1); 

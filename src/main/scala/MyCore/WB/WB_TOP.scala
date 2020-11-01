@@ -30,4 +30,15 @@ class WB_TOP extends MyCoreModule{
     //[TODO] wb to rf may be 1 cycle later than PC at ws
     BoringUtils.addSource(from_ms_r.PC, "debug_pc")
     //    BoringUtils.addSource(from_es_r.inst, "debug_inst")
+
+    val is_commit = RegInit(false.B)
+    when(io.ms.valid && io.ms.ready){
+        is_commit := RegNext(from_ms_r.PC =/= 0.U)
+    }.elsewhen(is_commit){ // last for one cycle
+        is_commit := false.B
+    }
+
+    BoringUtils.addSource(is_commit, "is_valid")
+
+
 }

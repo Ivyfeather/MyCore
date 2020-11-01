@@ -28,7 +28,7 @@ class Pre_TOP extends MyCoreModule {
 // ================================================================
     // trick: to make nextpc be START_ADDR during reset
     val nextpc  = Wire(UInt(xlen.W))
-    val pre_pc  = RegEnable(nextpc, (START_ADDR - 4).asUInt(xlen.W), io.fs.valid && io.fs.ready) //[TODO]
+    val pre_pc  = RegEnable(nextpc, (START_ADDR - 4).asUInt(xlen.W), io.imem.req.ready) //[TODO]
     val seq_pc  = pre_pc + 4.U
 
     // require inst
@@ -64,5 +64,5 @@ class Pre_TOP extends MyCoreModule {
     ))
 
     //[TODO] check
-    io.fs.bits.PC := nextpc
+    io.fs.bits.PC := pre_pc
 }

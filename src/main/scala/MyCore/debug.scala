@@ -17,7 +17,7 @@ class Debug_IO extends MyCoreBundle {
     //[TEST] GPRs only for now
     val rf      = Output(Vec(32, UInt(xlen.W)))
     val PC      = Output(UInt(xlen.W))
-    val stall   = Output(Bool())
+    val valid   = Output(Bool())
     val trap    = Output(Bool())
 
     //[TEST]

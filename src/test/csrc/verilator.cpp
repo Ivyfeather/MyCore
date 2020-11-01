@@ -36,7 +36,7 @@ Verilator::~Verilator(){
 
 void Verilator::step(int n){
     for(; n>0; n--){
-        while(top->io_debug_stall){
+        while(!top->io_debug_valid){
             single_cycle();
         }
         single_cycle();
@@ -45,6 +45,12 @@ void Verilator::step(int n){
 }
 
 void Verilator::single_cycle(){
+// ram random delay  // wrong version, because resp_ready will last several cycles
+    // for(int i=0; i<(rand() % 5); i++){
+    //     top->clock = 1;   top->eval();   (*main_time) ++;
+    //     top->clock = 0;   top->eval();   (*main_time) ++;
+    // }
+
     top->clock = 1;
     eval_ram();
     top->eval();
