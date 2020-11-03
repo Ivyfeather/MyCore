@@ -74,11 +74,15 @@ class EXE_TOP extends MyCoreModule {
 
 // ==== To ms ============================================================
     io.ms.bits.PC           := from_ds_r.PC
-    io.ms.bits.alu_result   := alu.io.out
+    io.ms.bits.alu_result   := Mux(decode.wb_sel === WB_PC4, from_ds_r.PC + 4.U, alu.io.out)
     io.ms.bits.rd_addr      := inst(RD_MSB,  RD_LSB)
     io.ms.bits.decode       := decode
 
-
-
-
+// ==== Forward ============================================================
+    val es_res = Wire(new Forwardbus)
+    es_res.wb_sel  := from_ds_r.decode.wb_sel
+    es_res.rf_we   := from_ds_r.decode.rf_wen
+    es_res.wr_addr := io.ms.bits.rd_addr
+    es_res.wr_data := io.ms.bits.alu_result
+    BoringUtils.addSource(es_res, "es_res")
 }

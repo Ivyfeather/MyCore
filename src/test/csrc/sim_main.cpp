@@ -25,35 +25,41 @@ int main(int argc, char **argv){
     Verilator *verilator = new Verilator(ram, &main_time);
     Nemu *nemu = new Nemu(ram);
 
-    for(int i=0;i<13;i++){
-    // while(!verilator->hit_trap()){
+    for(int i=0;i<20;i++){
+        printf("[TEST] %lu\n", main_time);
         verilator->step(1);
         nemu->step(1); 
 
-        // printf("VERILATOR");
-        verilator->dump();
-        // printf("NEMU     ");
-        // nemu->dump();
-
-        // difftest
         //[TEST] GPRs only
+        printf("pc:\t %016lx\n\n", nemu->regfile[THIS_PC]);
 
-        
         bool diff = false;
-        for(int i=0; i<THIS_PC+1; i++){
-            if(verilator->regfile[i] != nemu->regfile[i]){
+        // compare regs
+        for(int j=0; j<THIS_PC+1; j++){
+            if(verilator->regfile[j] != nemu->regfile[j]){
                 printf("\n ================= Reg Diff =================\n");
                 printf("nemu_pc:\t %016lx\nverilator_pc:\t %016lx\n%s:\n nemu:\t\t %016lx\n verilator:\t %016lx\n", \
-                    nemu->regfile[THIS_PC], verilator->regfile[THIS_PC], reg_name[i], nemu->regfile[i], verilator->regfile[i]);
-                diff = true; break;
+                    nemu->regfile[THIS_PC], verilator->regfile[THIS_PC], reg_name[j], nemu->regfile[j], verilator->regfile[j]);
+                diff = true;
+                                
+                printf("VERILATOR");
+                verilator->dump();
+                printf("NEMU     ");
+                nemu->dump();
+
+                break;
             }
         }
         
 
-
+        if(verilator->hit_trap()){
+            verilator->step(1);
+            nemu->step(1); 
+            break;
+        }
 
         //if(diff) break;
-        printf("[TEST] %lu\n", main_time);
+
     }
 #if VM_COVERAGE
     Verilated::mkdir("logs");

@@ -91,6 +91,7 @@ VL_MODULE(VTop) {
         CData/*0:0*/ Top__DOT__core__DOT__fs_top_io_pres_ready;
         CData/*0:0*/ Top__DOT__core__DOT__fs_top_io_ds_valid;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top_io_fs_ready;
+        CData/*0:0*/ Top__DOT__core__DOT__ds_top_io_es_valid;
         CData/*0:0*/ Top__DOT__core__DOT__es_top_io_ds_ready;
         CData/*0:0*/ Top__DOT__core__DOT__es_top_io_ms_valid;
         CData/*0:0*/ Top__DOT__core__DOT__es_top_io_dmem_req_valid;
@@ -109,6 +110,7 @@ VL_MODULE(VTop) {
         CData/*1:0*/ Top__DOT__core__DOT__ds_top__DOT__idu_io_ctrl_op1_sel;
         CData/*1:0*/ Top__DOT__core__DOT__ds_top__DOT__idu_io_ctrl_op2_sel;
         CData/*5:0*/ Top__DOT__core__DOT__ds_top__DOT__idu_io_ctrl_alu_op;
+        CData/*1:0*/ Top__DOT__core__DOT__ds_top__DOT__idu_io_ctrl_wb_sel;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT__idu_io_ctrl_rf_wen;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT__idu_io_ctrl_mem_en;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT__idu_io_ctrl_mem_wr;
@@ -131,6 +133,9 @@ VL_MODULE(VTop) {
         CData/*5:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_383;
         CData/*5:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_398;
         CData/*5:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_413;
+        CData/*1:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_443;
+        CData/*1:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_458;
+        CData/*1:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_473;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_507;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_536;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT__idu__DOT___T_560;
@@ -143,28 +148,34 @@ VL_MODULE(VTop) {
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT___T;
         CData/*1:0*/ Top__DOT__core__DOT__es_top__DOT__from_ds_r_decode_op1_sel;
         CData/*1:0*/ Top__DOT__core__DOT__es_top__DOT__from_ds_r_decode_op2_sel;
+    };
+    struct {
         CData/*5:0*/ Top__DOT__core__DOT__es_top__DOT__from_ds_r_decode_alu_op;
+        CData/*1:0*/ Top__DOT__core__DOT__es_top__DOT__from_ds_r_decode_wb_sel;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__from_ds_r_decode_rf_wen;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__from_ds_r_decode_mem_en;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__from_ds_r_decode_mem_wr;
         CData/*2:0*/ Top__DOT__core__DOT__es_top__DOT__from_ds_r_decode_mem_msk;
-    };
-    struct {
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__es_ready_go;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__es_valid;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__dmem_req_r;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT___GEN_17;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT__slt_result;
         CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT___T;
+        CData/*1:0*/ Top__DOT__core__DOT__ms_top__DOT__from_es_r_decode_wb_sel;
         CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT__from_es_r_decode_rf_wen;
         CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT__from_es_r_decode_mem_wr;
         CData/*4:0*/ Top__DOT__core__DOT__ms_top__DOT__from_es_r_rd_addr;
+        CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT___GEN_4;
         CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT__ms_valid;
         CData/*3:0*/ Top__DOT__core__DOT__ms_top__DOT__unfinished_store;
+        CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT___T_1;
         CData/*3:0*/ Top__DOT__core__DOT__ms_top__DOT___unfinished_store_T_1;
         CData/*3:0*/ Top__DOT__core__DOT__ms_top__DOT___unfinished_store_T_3;
         CData/*0:0*/ Top__DOT__core__DOT__ws_top__DOT__from_ms_r___05Fdecode_rf_wen;
         CData/*4:0*/ Top__DOT__core__DOT__ws_top__DOT__from_ms_r___05Frd_addr;
+        CData/*0:0*/ Top__DOT__core__DOT__ws_top__DOT__is_commit;
+        CData/*0:0*/ Top__DOT__core__DOT__ws_top__DOT__REG;
         SData/*11:0*/ Top__DOT__core__DOT__ds_top__DOT__imm_b;
         SData/*11:0*/ Top__DOT__core__DOT__es_top__DOT__imm_s;
         IData/*31:0*/ Top__DOT__imem_resp_bits_data;
@@ -179,6 +190,7 @@ VL_MODULE(VTop) {
         WData/*64:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT__add_result[3];
         WData/*126:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT___T_7[4];
         QData/*63:0*/ Top__DOT__core__DOT__pre_top_io_imem_req_bits_addr;
+        QData/*63:0*/ Top__DOT__core__DOT__es_top_io_ms_bits_alu_result;
         QData/*63:0*/ Top__DOT__core__DOT__pre_top__DOT__pre_pc;
         QData/*63:0*/ Top__DOT__core__DOT__pre_top__DOT__buf_npc;
         QData/*63:0*/ Top__DOT__core__DOT__pre_top__DOT__seq_pc;
@@ -188,8 +200,10 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__from_fs_r_PC;
         QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__imm_i_sext;
         QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__jr_target;
-        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__regfile_io_rs1_data_MPORT_data;
-        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__regfile_io_rs2_data_MPORT_data;
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__rf_io_rs1_data;
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__rf_io_rs2_data;
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__rf__DOT__regfile_io_rs1_data_MPORT_data;
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__rf__DOT__regfile_io_rs2_data_MPORT_data;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu_io_in1;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu_io_in2;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu_io_out;
@@ -200,6 +214,8 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__imm_s_sext;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__imm_u_sext;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT__xor_result;
+    };
+    struct {
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT__or_result;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT__and_result;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT__sra_result;
@@ -208,7 +224,7 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT__core__DOT__ms_top__DOT__from_es_r_alu_result;
         QData/*63:0*/ Top__DOT__core__DOT__ws_top__DOT__from_ms_r___05FPC;
         QData/*63:0*/ Top__DOT__core__DOT__ws_top__DOT__from_ms_r___05Ffinal_result;
-        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__regfile[32];
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__rf__DOT__regfile[32];
     };
     
     // LOCAL VARIABLES
@@ -248,23 +264,28 @@ VL_MODULE(VTop) {
         CData/*1:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_decode_op1_sel;
         CData/*1:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_decode_op2_sel;
         CData/*5:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_decode_alu_op;
+        CData/*1:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_decode_wb_sel;
         CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_decode_rf_wen;
         CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_decode_mem_en;
         CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_decode_mem_wr;
         CData/*2:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_decode_mem_msk;
         CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_wb_rf_we;
-        CData/*4:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_wb_rf_addr;
+        CData/*4:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_wb_wr_addr;
+        CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_ms_res_rf_we;
+        CData/*4:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_ms_res_wr_addr;
+        CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_es_res_rf_we;
+        CData/*4:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_es_res_wr_addr;
+        CData/*1:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_es_res_wb_sel;
         CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__es_top_io_ms_ready;
         CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__es_top_io_ms_valid;
-        CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__es_top_io_ms_bits_decode_rf_wen;
-        CData/*4:0*/ Top__DOT__core__DOT____Vtogcov__es_top_io_ms_bits_rd_addr;
         CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__ms_top_io_ws_valid;
-        CData/*0:0*/ Top__DOT__core__DOT____Vtogcov__ms_top_io_ws_bits_decode_rf_wen;
-        CData/*4:0*/ Top__DOT__core__DOT____Vtogcov__ms_top_io_ws_bits_rd_addr;
         CData/*0:0*/ Top__DOT__core__DOT__pre_top__DOT____Vtogcov__buf_valid;
         CData/*0:0*/ Top__DOT__core__DOT__fs_top__DOT____Vtogcov__fs_ready_go;
         CData/*0:0*/ Top__DOT__core__DOT__fs_top__DOT____Vtogcov__fs_valid;
+        CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__rf_io_wr_stall;
         CData/*3:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__idu_io_ctrl_br_type;
+        CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__ds_ready_go;
+        CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__ds_valid;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__right_right;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__right_left;
         CData/*0:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__left_right_1;
@@ -274,22 +295,26 @@ VL_MODULE(VTop) {
         CData/*1:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__flush_reg;
         CData/*5:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__alu_io_opcode;
         CData/*1:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__from_ds_r_decode_op1_sel;
+    };
+    struct {
         CData/*1:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__from_ds_r_decode_op2_sel;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__from_ds_r_decode_mem_en;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__es_ready_go;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__es_valid;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__dmem_req_r;
-    };
-    struct {
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT____Vtogcov__sltu_result;
         CData/*0:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT____Vtogcov__slt_result;
+        CData/*1:0*/ Top__DOT__core__DOT__ms_top__DOT____Vtogcov__from_es_r_decode_wb_sel;
         CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT____Vtogcov__from_es_r_decode_mem_wr;
         CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT____Vtogcov__ms_valid;
         CData/*3:0*/ Top__DOT__core__DOT__ms_top__DOT____Vtogcov__unfinished_store;
         CData/*0:0*/ Top__DOT__core__DOT__ms_top__DOT____Vtogcov__ms_ready_go;
+        CData/*0:0*/ Top__DOT__core__DOT__ws_top__DOT____Vtogcov__REG;
         CData/*0:0*/ __Vdly__Top__DOT__core__DOT__pre_top__DOT__buf_valid;
         CData/*1:0*/ __Vdly__Top__DOT__core__DOT__ds_top__DOT__flush_reg;
+        CData/*0:0*/ __Vdly__Top__DOT__core__DOT__ms_top__DOT__from_es_r_decode_mem_wr;
         CData/*3:0*/ __Vdly__Top__DOT__core__DOT__ms_top__DOT__unfinished_store;
+        CData/*0:0*/ __Vdly__Top__DOT__core__DOT__ws_top__DOT__is_commit;
         CData/*0:0*/ __Vclklast__TOP__clock;
         SData/*11:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__imm_b;
         SData/*11:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__imm_s;
@@ -336,6 +361,8 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_23;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_24;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_25;
+    };
+    struct {
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_26;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_27;
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_rf_28;
@@ -345,8 +372,6 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT____Vtogcov__io_debug_PC;
         QData/*63:0*/ Top__DOT____Vtogcov__core_io_imem_req_bits_addr;
         QData/*63:0*/ Top__DOT____Vtogcov__core_io_dmem_req_bits_addr;
-    };
-    struct {
         QData/*63:0*/ Top__DOT____Vtogcov__core_io_dmem_req_bits_data;
         QData/*63:0*/ Top__DOT____Vtogcov__core_io_debug_rf_0;
         QData/*63:0*/ Top__DOT____Vtogcov__core_io_debug_rf_1;
@@ -387,10 +412,11 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_PC;
         QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_rs1_data;
         QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_es_bits_rs2_data;
-        QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_wb_rf_data;
+        QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_io_wb_wr_data;
+        QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_ms_res_wr_data;
+        QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ds_top_es_res_wr_data;
         QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__es_top_io_ms_bits_PC;
         QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ms_top_io_ws_bits_PC;
-        QData/*63:0*/ Top__DOT__core__DOT____Vtogcov__ms_top_io_ws_bits_final_result;
         QData/*63:0*/ Top__DOT__core__DOT__pre_top__DOT____Vtogcov__buf_npc;
         QData/*63:0*/ Top__DOT__core__DOT__pre_top__DOT____Vtogcov__seq_pc;
         QData/*51:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__right_2;
@@ -398,8 +424,12 @@ VL_MODULE(VTop) {
         QData/*52:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__right_right_2;
         QData/*52:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__right_right_3;
         QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT____Vtogcov__jr_target;
-        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT____Vtogcov__regfile_io_rs1_data_MPORT_data;
-        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT____Vtogcov__regfile_io_rs2_data_MPORT_data;
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT____Vtogcov__rf_io_rs1_data;
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT____Vtogcov__rf_io_rs2_data;
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__rf__DOT____Vtogcov__regfile_io_rs1_data_MPORT_data;
+    };
+    struct {
+        QData/*63:0*/ Top__DOT__core__DOT__ds_top__DOT__rf__DOT__rf__DOT____Vtogcov__regfile_io_rs2_data_MPORT_data;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__alu_io_in1;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__alu_io_in2;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT____Vtogcov__from_ds_r_rs1_data;
@@ -411,8 +441,6 @@ VL_MODULE(VTop) {
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT____Vtogcov__xor_result;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT____Vtogcov__or_result;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT____Vtogcov__and_result;
-    };
-    struct {
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT____Vtogcov__sll_result;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT____Vtogcov__sra_result;
         QData/*63:0*/ Top__DOT__core__DOT__es_top__DOT__alu__DOT____Vtogcov__srl_result;

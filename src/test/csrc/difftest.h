@@ -72,6 +72,7 @@ private:
     };
     uint32_t readinst(wlen_t addr);
     struct memread_req imem_buf, dmem_buf;
+    //struct memread_req write_mem;
 
     void get_difftest_result();
     void single_cycle();

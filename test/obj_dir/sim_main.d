@@ -1,5 +1,6 @@
 sim_main.o: ../../src/test/csrc/sim_main.cpp ../../src/test/csrc/ram.h \
- ../../src/test/csrc/common.h ../../src/test/csrc/difftest.h VTop.h \
+ ../../src/test/csrc/common.h ../../src/test/csrc/log.h \
+ ../../src/test/csrc/difftest.h VTop.h \
  /usr/local/share/verilator/include/verilated_heavy.h \
  /usr/local/share/verilator/include/verilated.h \
  /usr/local/share/verilator/include/verilatedos.h \

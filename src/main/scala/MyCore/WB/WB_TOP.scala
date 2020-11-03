@@ -23,8 +23,8 @@ class WB_TOP extends MyCoreModule{
 
 
 // ================================================================
-    io.rf.rf_addr := from_ms_r.rd_addr
-    io.rf.rf_data := from_ms_r.final_result
+    io.rf.wr_addr := from_ms_r.rd_addr
+    io.rf.wr_data := from_ms_r.final_result
     io.rf.rf_we   := decode.rf_wen
 
     //[TODO] wb to rf may be 1 cycle later than PC at ws
@@ -32,8 +32,13 @@ class WB_TOP extends MyCoreModule{
     //    BoringUtils.addSource(from_es_r.inst, "debug_inst")
 
     val is_commit = RegInit(false.B)
-    when(io.ms.valid && io.ms.ready){
-        is_commit := RegNext(from_ms_r.PC =/= 0.U)
+//    when(io.ms.valid && io.ms.ready){
+//        is_commit := RegNext(from_ms_r.PC =/= 0.U)
+//    }.elsewhen(is_commit){ // last for one cycle
+//        is_commit := false.B
+//    }
+    when(RegNext(io.ms.valid && io.ms.ready)){
+        is_commit := from_ms_r.PC =/= 0.U
     }.elsewhen(is_commit){ // last for one cycle
         is_commit := false.B
     }

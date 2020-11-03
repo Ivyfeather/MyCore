@@ -14,10 +14,12 @@ class ID_TOP extends MyCoreModule{
     val io = IO(new ID_TOP_IO)
     io := DontCare
 
+    val rf = Module(new ForwardUnit)
+
     val from_fs_r = RegEnable(io.fs.bits, 0.U.asTypeOf(new IF_to_ID_IO), io.fs.valid && io.fs.ready)
 
     //[TODO] consider write_read related later
-    val ds_ready_go = WireInit(true.B)
+    val ds_ready_go = !rf.io.wr_stall
     val ds_valid    = RegEnable(io.fs.valid, false.B, io.fs.ready)
 
     io.fs.ready := !ds_valid || ds_ready_go && io.es.ready
@@ -29,16 +31,10 @@ class ID_TOP extends MyCoreModule{
     idu.io.inst := inst
 
 // ==== RegFile ============================================================
-
-    val rf = Module(new RegFile)
-    //[TODO] write rf
-    //[TODO] forwarding
-    rf.io := DontCare
-    rf.io.rs1_addr  := inst(RS1_MSB, RS1_LSB)
-    rf.io.rs2_addr  := inst(RS2_MSB, RS2_LSB)
-    rf.io.wen       := io.wb.rf_we
-    rf.io.waddr     := io.wb.rf_addr
-    rf.io.wdata     := io.wb.rf_data
+    rf.io.ctrl        := idu.io.ctrl
+    rf.io.ws_res      := io.wb
+    rf.io.rs1_addr    := inst(RS1_MSB, RS1_LSB)
+    rf.io.rs2_addr    := inst(RS2_MSB, RS2_LSB)
 
 // ==== To es ============================================================
     io.es.bits.PC       := from_fs_r.PC

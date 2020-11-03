@@ -36,10 +36,14 @@ Verilator::~Verilator(){
 
 void Verilator::step(int n){
     for(; n>0; n--){
-        while(!top->io_debug_valid){
+        // while(!top->io_debug_valid){
+        //     single_cycle();
+        // }
+        // single_cycle();
+        do{
             single_cycle();
-        }
-        single_cycle();
+        }while(!top->io_debug_valid);
+
     }
     get_difftest_result();
 }
@@ -155,6 +159,14 @@ void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
     ram->Memwrite(top->io_dmem_req_bits_addr, top->io_dmem_req_bits_data, \
         top->io_dmem_req_valid && top->io_dmem_req_bits_wr,\
         top->io_dmem_req_bits_msk); // write mem
+    /*
+    if(!write_mem.has && top->io_dmem_req_valid && top->io_dmem_req_bits_wr){
+        write_mem.has = 1;
+    }else if(write_mem.has){
+        top->io_dmem_resp_valid = 1;
+        write_mem.has = 0;
+    }
+    */
 #endif
 
 }

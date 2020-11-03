@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <stdint.h>
 #include <assert.h>
+#include "log.h"
 
 #ifdef __RV32__
     typedef uint32_t wlen_t;
