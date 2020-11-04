@@ -14,7 +14,7 @@
     typedef uint64_t wlen_t;
 #endif
 
-typedef uint32_t mask_t;
+typedef uint8_t mask_t;
 
 #define START_ADDR 0x80000000
 

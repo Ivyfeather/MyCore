@@ -59,10 +59,10 @@ VERILATOR_INPUT = -f input.vc ../Top.v
 VERILATOR_INPUT += $(shell find ../src/test/csrc -name "*.cpp")
 
 NEMU_SO = ./ready-to-run/riscv64-nemu-interpreter-so
-RAM_PATH = ./testbench/build/bit.bin
+#RAM_PATH = ./testbench/build/bit.bin
 
 CFLAGS = -DNEMU_SO=\\\"$(NEMU_SO)\\\"
-CFLAGS += -DRAM_PATH=\\\"$(RAM_PATH)\\\"
+#CFLAGS += -DRAM_PATH=\\\"$(RAM_PATH)\\\"
 LDFLAGS = -ldl
 
 VERILATOR_FLAGS += -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"

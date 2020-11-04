@@ -11,6 +11,7 @@ double sc_time_stamp () {       // Called by $time in Verilog
 }		                        // what SystemC does
 
 #define VCD_TRACE
+#define RAM_PATH "./testbench/build/bit.bin"
 
 int main(int argc, char **argv){
 #ifndef RAM_PATH
@@ -32,6 +33,7 @@ int main(int argc, char **argv){
 
         //[TEST] GPRs only
         printf("pc:\t %016lx\n\n", nemu->regfile[THIS_PC]);
+        nemu->dump();
 
         bool diff = false;
         // compare regs

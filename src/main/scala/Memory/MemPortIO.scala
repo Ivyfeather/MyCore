@@ -13,7 +13,7 @@ class MemReq(val data_width: Int) extends MyCoreBundle {
     val addr = Output(UInt(xlen.W))//[TODO] 32/39 bit addr space
     val data = Output(UInt(data_width.W))
     val wr   = Output(Bool())
-    val msk  = Output(UInt(MTT_bits))
+    val msk  = Output(UInt(8.W))
 }
 
 class MemResp(val data_width: Int) extends MyCoreBundle {

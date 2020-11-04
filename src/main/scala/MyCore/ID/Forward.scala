@@ -37,17 +37,23 @@ class ForwardUnit extends MyCoreModule {
 
 // Output
 
+    val is_load = es_res.wb_sel === WB_MEM
     //[TODO] forward from csr
     io.rs1_data := MuxCase(rf.io.rs1_data, Array(
-        (es_res.rf_we && es_res.wr_addr === io.rs1_addr) -> es_res.wr_data,
+        (es_res.rf_we && es_res.wr_addr === io.rs1_addr && !is_load) -> es_res.wr_data,
         (ms_res.rf_we && ms_res.wr_addr === io.rs1_addr) -> ms_res.wr_data,
         (ws_res.rf_we && ws_res.wr_addr === io.rs1_addr) -> ws_res.wr_data
     ))
     io.rs2_data := MuxCase(rf.io.rs2_data, Array(
-        (es_res.rf_we && es_res.wr_addr === io.rs2_addr) -> es_res.wr_data,
+        (es_res.rf_we && es_res.wr_addr === io.rs2_addr && !is_load) -> es_res.wr_data,
         (ms_res.rf_we && ms_res.wr_addr === io.rs2_addr) -> ms_res.wr_data,
         (ws_res.rf_we && ws_res.wr_addr === io.rs2_addr) -> ws_res.wr_data
     ))
-    io.wr_stall := (es_res.wr_addr === io.rs1_addr || es_res.wr_addr === io.rs2_addr) && es_res.wb_sel === WB_MEM
+    val load_data_ok = WireInit(false.B)
+    BoringUtils.addSink(load_data_ok, "load_data_returned")
+
+    //[TODO] ??
+    io.wr_stall := (es_res.wr_addr === io.rs1_addr || es_res.wr_addr === io.rs2_addr) && is_load && !load_data_ok
+
 
 }

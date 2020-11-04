@@ -25,7 +25,7 @@ long ram_c::get_img_size() { return img_size; }
 
 wlen_t ram_c::Memread(wlen_t addr, bool en){
     if(en){
-        logg(DEBUG, "read ram: 0x%016lx\n", addr);
+        // logg(DEBUG, "read ram: 0x%016lx\n", addr);
         if(addr == 0) return 0;
         MEM_ASSERT(addr);
         return ram[(addr - START_ADDR)/sizeof(wlen_t)];
@@ -35,9 +35,15 @@ wlen_t ram_c::Memread(wlen_t addr, bool en){
 
 void ram_c::Memwrite(wlen_t addr, wlen_t data, bool wen, mask_t mask){
     if(wen){
-        logg(DEBUG, "write ram: 0x%016lx\n", addr);
+        logg(DEBUG, "write ram: 0x%016lx, mask: %x\n", addr, mask);
         MEM_ASSERT(addr);
-        //[TODO] implement bit mask later
-        ram[(addr - START_ADDR)/sizeof(wlen_t)] = data;
+        wlen_t bitmask = 0;
+        for(int i=0; i<8; i++){
+            if(mask & (0x1 << i)){
+                bitmask |= (wlen_t)(0xFF) << (8*i);
+            }
+        }
+        ram[(addr - START_ADDR)/sizeof(wlen_t)] &= ~bitmask;
+        ram[(addr - START_ADDR)/sizeof(wlen_t)] |= (data & bitmask);
     }
 }

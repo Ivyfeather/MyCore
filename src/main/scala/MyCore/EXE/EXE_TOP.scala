@@ -65,21 +65,28 @@ class EXE_TOP extends MyCoreModule {
     .elsewhen(decode.mem_en && dmem_req_r) { }
     //[TODO]the last line refer to myCPU EXE.v:333 ?   else if ((es_load_op||es_mem_we) && data_sram_req_r==1'b1)begin   end
 
+    val offset = if(xlen==64) alu.io.out % 8.U else alu.io.out % 4.U
+    val offset_8 = (offset << 3.U).asUInt()
+
     io.dmem.req.valid       := Mux(decode.mem_en, dmem_req_r, false.B)
     if(xlen==64){   io.dmem.req.bits.addr   := Cat(alu.io.out(xlen-1, 3), Fill(3, 0.U)) }
-    else        {   io.ms.bits.load_offset  := Cat(alu.io.out(xlen-1, 2), Fill(2, 0.U)) }
-    io.dmem.req.bits.data   := from_ds_r.rs2_data
+    else        {   io.dmem.req.bits.addr   := Cat(alu.io.out(xlen-1, 2), Fill(2, 0.U)) }
+    // for store
+    io.dmem.req.bits.data   := from_ds_r.rs2_data << offset_8
     io.dmem.req.bits.wr     := decode.mem_wr
-    io.dmem.req.bits.msk    := decode.mem_msk
-
+    io.dmem.req.bits.msk    := MuxCase("hFF".U, Array(
+        (decode.mem_msk === MT_B)   -> ("b1".U << offset),
+        (decode.mem_msk === MT_H)   -> ("b11".U << offset),
+        (decode.mem_msk === MT_W)   -> ("hF".U << offset)
+    ))
 
 // ==== To ms ============================================================
     io.ms.bits.PC           := from_ds_r.PC
     io.ms.bits.alu_result   := Mux(decode.wb_sel === WB_PC4, from_ds_r.PC + 4.U, alu.io.out)
     io.ms.bits.rd_addr      := inst(RD_MSB,  RD_LSB)
     io.ms.bits.decode       := decode
-    if(xlen==64){   io.ms.bits.load_offset  := alu.io.out % 8.U }
-    else        {   io.ms.bits.load_offset  := alu.io.out % 4.U }
+    io.ms.bits.load_offset  := offset
+
 
     // ==== Forward ============================================================
     val es_res = Wire(new Forwardbus)

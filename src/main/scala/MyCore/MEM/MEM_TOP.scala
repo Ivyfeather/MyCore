@@ -72,4 +72,5 @@ class MEM_TOP extends MyCoreModule {
     ms_res.wr_addr  := io.ws.bits.rd_addr
     ms_res.wr_data  := io.ws.bits.final_result
     BoringUtils.addSource(ms_res, "ms_res")
+    BoringUtils.addSource(io.dmem.resp.valid, "load_data_returned")
 }
