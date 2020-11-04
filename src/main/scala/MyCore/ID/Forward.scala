@@ -48,6 +48,6 @@ class ForwardUnit extends MyCoreModule {
         (ms_res.rf_we && ms_res.wr_addr === io.rs2_addr) -> ms_res.wr_data,
         (ws_res.rf_we && ws_res.wr_addr === io.rs2_addr) -> ws_res.wr_data
     ))
-    io.wr_stall := es_res.wb_sel === WB_MEM
+    io.wr_stall := (es_res.wr_addr === io.rs1_addr || es_res.wr_addr === io.rs2_addr) && es_res.wb_sel === WB_MEM
 
 }

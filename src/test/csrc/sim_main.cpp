@@ -25,7 +25,7 @@ int main(int argc, char **argv){
     Verilator *verilator = new Verilator(ram, &main_time);
     Nemu *nemu = new Nemu(ram);
 
-    for(int i=0;i<20;i++){
+    for(int i=0;i<5000;i++){
         printf("[TEST] %lu\n", main_time);
         verilator->step(1);
         nemu->step(1); 
@@ -58,7 +58,7 @@ int main(int argc, char **argv){
             break;
         }
 
-        //if(diff) break;
+        if(diff) break;
 
     }
 #if VM_COVERAGE

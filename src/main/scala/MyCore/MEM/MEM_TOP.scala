@@ -1,6 +1,7 @@
 package MyCore
 
 import Memory.MemPortIO
+import Utils.{SignExt, ZeroExt}
 import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.BoringUtils
@@ -23,7 +24,7 @@ class MEM_TOP extends MyCoreModule {
     io.ws.valid := ms_valid && ms_ready_go
     // ================================================================
     val decode = from_es_r.decode
-    val res_from_mem = (decode.wb_sel == WB_MEM).asBool()
+    val res_from_mem = (decode.wb_sel === WB_MEM).asBool()
     // ==== Dmem ============================================================
     //[TODO] logic from myCPU:MEM_stage.v: 133
     // if we see in waveform that unfinished_store is always 0, then can simply this logic
@@ -42,9 +43,26 @@ class MEM_TOP extends MyCoreModule {
 
 
 // ==== To ws ============================================================
+    val data = (io.dmem.resp.bits.data >> (from_es_r.load_offset << 3.U).asUInt()).asUInt()
+    val byte = Wire(UInt(8.W))
+    byte := data & "h_ff".U
+    val half = Wire(UInt(16.W))
+    half := data & "h_ffff".U
+    val word = Wire(UInt(32.W))
+    word := data & "h_ffff_ffff".U
+
+    val load_final = MuxCase(io.dmem.resp.bits.data, Array(
+        (decode.mem_msk === MT_B)    -> SignExt(byte, xlen),
+        (decode.mem_msk === MT_BU)   -> ZeroExt(byte, xlen),
+        (decode.mem_msk === MT_H)    -> SignExt(half, xlen),
+        (decode.mem_msk === MT_HU)   -> ZeroExt(half, xlen),
+        (decode.mem_msk === MT_W)    -> SignExt(word, xlen),
+        (decode.mem_msk === MT_WU)   -> ZeroExt(word, xlen)
+    ))
+
     io.ws.bits.PC           := from_es_r.PC
     io.ws.bits.decode       := decode
-    io.ws.bits.final_result := Mux(res_from_mem, io.dmem.resp.bits.data, from_es_r.alu_result)
+    io.ws.bits.final_result := Mux(res_from_mem, load_final, from_es_r.alu_result)
     io.ws.bits.rd_addr      := from_es_r.rd_addr
 
 // ==== Forward ============================================================

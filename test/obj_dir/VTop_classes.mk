@@ -28,6 +28,7 @@ VM_CLASSES_FAST += \
 	VTop__2 \
 	VTop__3 \
 	VTop__4 \
+	VTop__5 \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
@@ -37,6 +38,7 @@ VM_CLASSES_SLOW += \
 	VTop__3__Slow \
 	VTop__4__Slow \
 	VTop__5__Slow \
+	VTop__6__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization
 VM_SUPPORT_FAST += \

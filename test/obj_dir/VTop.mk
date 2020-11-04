@@ -33,7 +33,7 @@ VM_PREFIX = VTop
 VM_MODPREFIX = VTop
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-DNEMU_SO=\"./ready-to-run/riscv64-nemu-interpreter-so\" -DRAM_PATH=\"./testbench/build/dummy.bin\" \
+	-DNEMU_SO=\"./ready-to-run/riscv64-nemu-interpreter-so\" -DRAM_PATH=\"./testbench/build/bit.bin\" \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \

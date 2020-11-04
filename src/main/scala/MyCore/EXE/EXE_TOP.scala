@@ -66,7 +66,8 @@ class EXE_TOP extends MyCoreModule {
     //[TODO]the last line refer to myCPU EXE.v:333 ?   else if ((es_load_op||es_mem_we) && data_sram_req_r==1'b1)begin   end
 
     io.dmem.req.valid       := Mux(decode.mem_en, dmem_req_r, false.B)
-    io.dmem.req.bits.addr   := alu.io.out
+    if(xlen==64){   io.dmem.req.bits.addr   := Cat(alu.io.out(xlen-1, 3), Fill(3, 0.U)) }
+    else        {   io.ms.bits.load_offset  := Cat(alu.io.out(xlen-1, 2), Fill(2, 0.U)) }
     io.dmem.req.bits.data   := from_ds_r.rs2_data
     io.dmem.req.bits.wr     := decode.mem_wr
     io.dmem.req.bits.msk    := decode.mem_msk
@@ -77,8 +78,10 @@ class EXE_TOP extends MyCoreModule {
     io.ms.bits.alu_result   := Mux(decode.wb_sel === WB_PC4, from_ds_r.PC + 4.U, alu.io.out)
     io.ms.bits.rd_addr      := inst(RD_MSB,  RD_LSB)
     io.ms.bits.decode       := decode
+    if(xlen==64){   io.ms.bits.load_offset  := alu.io.out % 8.U }
+    else        {   io.ms.bits.load_offset  := alu.io.out % 4.U }
 
-// ==== Forward ============================================================
+    // ==== Forward ============================================================
     val es_res = Wire(new Forwardbus)
     es_res.wb_sel  := from_ds_r.decode.wb_sel
     es_res.rf_we   := from_ds_r.decode.rf_wen
