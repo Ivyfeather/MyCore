@@ -11,7 +11,8 @@ double sc_time_stamp () {       // Called by $time in Verilog
 }		                        // what SystemC does
 
 #define VCD_TRACE
-#define RAM_PATH "./testbench/build/bit.bin"
+#define RAM_PATH "./testbench/build/load-store.bin"
+// #define RAM_PATH "./testbench/rtthread.bin"
 
 int main(int argc, char **argv){
 #ifndef RAM_PATH
@@ -26,17 +27,19 @@ int main(int argc, char **argv){
     Verilator *verilator = new Verilator(ram, &main_time);
     Nemu *nemu = new Nemu(ram);
 
-    for(int i=0;i<5000;i++){
+    // for(int i=0;i<5000;i++){
+    for(int i=0; ;i++){
         printf("[TEST] %lu\n", main_time);
         verilator->step(1);
         nemu->step(1); 
 
         //[TEST] GPRs only
         printf("pc:\t %016lx\n\n", nemu->regfile[THIS_PC]);
-        nemu->dump();
+        //nemu->dump();
 
         bool diff = false;
         // compare regs
+        
         for(int j=0; j<THIS_PC+1; j++){
             if(verilator->regfile[j] != nemu->regfile[j]){
                 printf("\n ================= Reg Diff =================\n");

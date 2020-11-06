@@ -74,7 +74,6 @@ package object ISA {
     def EBREAK             = BitPat("b00000000000100000000000001110011")
     def URET               = BitPat("b00000000001000000000000001110011")
     def MRET               = BitPat("b00110000001000000000000001110011")
-    def DRET               = BitPat("b01111011001000000000000001110011")
     def SFENCE_VMA         = BitPat("b0001001??????????000000001110011")
     def WFI                = BitPat("b00010000010100000000000001110011")
     def CSRRW              = BitPat("b?????????????????001?????1110011")

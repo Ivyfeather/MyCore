@@ -21,7 +21,7 @@ class Debug_IO extends MyCoreBundle {
     val trap    = Output(Bool())
 
     //[TEST]
-    val inst    = Output(UInt(32.W))
+    val test    = Output(UInt(xlen.W))
 }
 
 object MyCoreTrap{

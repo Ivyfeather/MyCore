@@ -8,7 +8,7 @@ import Memory.MemPortIO
 class IF_TOP_IO extends MyCoreBundle {
     val pres    = Flipped(DecoupledIO(new Pre_to_IF_IO))
     val ds      = DecoupledIO(new IF_to_ID_IO)
-    val imem    = new MemPortIO(32)
+    val imem    = new MemPortIO(xlen)
 }
 
 class IF_TOP extends MyCoreModule {
@@ -32,9 +32,6 @@ class IF_TOP extends MyCoreModule {
     io.ds.valid    := fs_valid && fs_ready_go
 
 // ==== To ds ===========================================================
-    io.ds.bits.inst := io.imem.resp.bits.data
+    io.ds.bits.inst := Mux(from_pre_r.offset, io.imem.resp.bits.data(xlen-1, 32), io.imem.resp.bits.data(31, 0))
     io.ds.bits.PC := from_pre_r.PC
-
-
-
 }

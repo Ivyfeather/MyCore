@@ -7,7 +7,7 @@ import Memory.MemPortIO
 
 class Pre_TOP_IO extends MyCoreBundle {
     val fs   = DecoupledIO(new Pre_to_IF_IO)
-    val imem    = new MemPortIO(32)
+    val imem    = new MemPortIO(xlen)
 }
 
 class Pre_TOP extends MyCoreModule {
@@ -40,7 +40,7 @@ class Pre_TOP extends MyCoreModule {
     }
 
     io.imem.req.valid       := imem_req_r
-    io.imem.req.bits.addr   := nextpc
+    io.imem.req.bits.addr   := nextpc & "hFFFF_FFFF_FFFF_FFF8".U
     io.imem.req.bits.data   := 0.U
     io.imem.req.bits.wr     := false.B
     io.imem.req.bits.msk    := MT_WU
@@ -65,4 +65,5 @@ class Pre_TOP extends MyCoreModule {
 
     //[TODO] check
     io.fs.bits.PC := pre_pc
+    io.fs.bits.offset := pre_pc(2)
 }

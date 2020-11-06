@@ -45,5 +45,8 @@ class WB_TOP extends MyCoreModule{
 
     BoringUtils.addSource(is_commit, "is_valid")
 
+// ================================================================
+    val csrs = Module(new CSR)
+    csrs.io := DontCare
 
 }

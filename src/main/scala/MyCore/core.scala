@@ -6,7 +6,7 @@ import Memory._
 import chisel3.util.experimental.BoringUtils
 
 class coreIO extends MyCoreBundle {
-    val imem = new MemPortIO(32)
+    val imem = new MemPortIO(xlen)
     val dmem = new MemPortIO(xlen)
     val debug = new Debug_IO
 }
@@ -49,11 +49,12 @@ class core extends MyCoreModule {
     BoringUtils.addSink(debug_io.valid, "is_valid")
     io.debug     := debug_io
 
-
+//    BoringUtils.addSink(debug_io.test, "misa")
 }
 
 class single_core extends MyCoreModule {
     val io = IO(new coreIO)
+    io := DontCare
 
     val alu = Module(new ALU)
     val idu = Module(new IDU)
@@ -178,7 +179,6 @@ class single_core extends MyCoreModule {
     BoringUtils.addSink(difftest_is_trap, "is_trap")
     io.debug.rf     := difftest_regs
     io.debug.trap   := difftest_is_trap
-    io.debug.inst   := inst
 }
 
 

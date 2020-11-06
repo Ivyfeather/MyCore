@@ -137,7 +137,7 @@ void Verilator::eval_ram(){// here, ram can always resp in 1 cycle
         imem_buf.has = true;
     }
     else if(imem_buf.has){
-        top->io_imem_resp_bits_data = readinst(imem_buf.addr);
+        top->io_imem_resp_bits_data = ram->Memread(imem_buf.addr, 1);
         top->io_imem_resp_valid = 1;
         imem_buf.has = 0;
     }
