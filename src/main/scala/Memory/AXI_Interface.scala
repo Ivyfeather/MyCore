@@ -20,6 +20,7 @@ class AXI_Interface extends Bundle {
     val awprot  = Input(UInt(3.W))
     val awvalid = Input(Bool())
     val awready = Output(Bool())
+    val wid    = Input(UInt(id_width.W))
     val wdata   = Input(UInt(data_width.W))
     val wstrb   = Input(UInt(wstrb_width.W))
     val wlast   = Input(Bool())

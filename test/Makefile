@@ -52,10 +52,12 @@ VERILATOR_FLAGS += --coverage
 #VERILATOR_FLAGS += --gdbbt
 # Ignore Unused signals and module name not matching filename
 VERILATOR_FLAGS += -Wno-UNUSED -Wno-DECLFILENAME
+VERILATOR_FLAGS += -Wno-WIDTH -Wno-CASEINCOMPLETE
 
 # Input files for Verilator
 
 VERILATOR_INPUT = -f input.vc ../Top.v
+# VERILATOR_INPUT = -f input.vc $(shell find ../ -maxdepth 1 -name "*.v")
 VERILATOR_INPUT += $(shell find ../src/test/csrc -name "*.cpp")
 
 NEMU_SO = ./ready-to-run/riscv64-nemu-interpreter-so

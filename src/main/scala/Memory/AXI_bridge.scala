@@ -4,34 +4,34 @@ import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.BoringUtils
 
+class AXI_bridge_IO extends AXI_Interface {
+    val clock = Output(Clock())
+    val reset = Output(Reset())
+    // To CPU
+    // inst sram-like
+    val inst_req = Output(Bool())
+    val inst_wr = Output(Bool())
+    val inst_size = Output(UInt(8.W))
+    val inst_addr = Output(UInt(64.W))
+    val inst_wdata = Output(UInt(64.W))
+    val inst_rdata = Input(UInt(64.W))
+    val inst_addr_ok = Input(Bool())
+    val inst_data_ok = Input(Bool())
+    // data sram-like
+    val data_req = Output(Bool())
+    val data_wr = Output(Bool())
+    val data_size = Output(UInt(8.W))
+    val data_addr = Output(UInt(64.W))
+    val data_wdata = Output(UInt(64.W))
+    val data_rdata = Input(UInt(64.W))
+    val data_addr_ok = Input(Bool())
+    val data_data_ok = Input(Bool())
+}
+
 class AXI_Bridge extends BlackBox with HasBlackBoxInline {
-    val io = IO(Flipped(new AXI_Interface{
-        val clock = Output(Clock())
-        val reset = Output(Reset())
-        // To CPU
-        // inst sram-like
-        val inst_req = Output(Bool())
-        val inst_wr = Output(Bool())
-        val inst_size = Output(UInt(2.W))
-        val inst_addr = Output(UInt(64.W))
-        val inst_wdata = Output(UInt(64.W))
-        val inst_rdata = Input(UInt(64.W))
-        val inst_addr_ok = Input(Bool())
-        val inst_data_ok = Input(Bool())
-        // data sram-like
-        val data_req = Output(Bool())
-        val data_wr = Output(Bool())
-        val data_size = Output(UInt(2.W))
-        val data_addr = Output(UInt(64.W))
-        val data_wdata = Output(UInt(64.W))
-        val data_rdata = Input(UInt(64.W))
-        val data_addr_ok = Input(Bool())
-        val data_data_ok = Input(Bool())
+    val io = IO(Flipped(new AXI_bridge_IO))
 
-        // To AXI in AXI_Interface
-    }))
-
-    setInline("AXI_bridge",
+    setInline("AXI_bridge.v",
         s"""           module AXI_Bridge
            |           (
            |               input         clock,
@@ -40,7 +40,7 @@ class AXI_Bridge extends BlackBox with HasBlackBoxInline {
            |               //inst sram-like
            |               input         inst_req     ,
            |               input         inst_wr      ,
-           |               input  [1 :0] inst_size    ,
+           |               input  [7 :0] inst_size    ,
            |               input  [63:0] inst_addr    ,
            |               input  [63:0] inst_wdata   ,
            |               output [63:0] inst_rdata   ,
@@ -50,7 +50,7 @@ class AXI_Bridge extends BlackBox with HasBlackBoxInline {
            |               //data sram-like
            |               input         data_req     ,
            |               input         data_wr      ,
-           |               input  [1 :0] data_size    ,
+           |               input  [7 :0] data_size    ,
            |               input  [63:0] data_addr    ,
            |               input  [63:0] data_wdata   ,
            |               output [63:0] data_rdata   ,
@@ -105,7 +105,7 @@ class AXI_Bridge extends BlackBox with HasBlackBoxInline {
            |reg do_req;
            |reg do_req_or; //req is inst or data;1:data,0:inst
            |reg        do_wr_r;
-           |reg [1 :0] do_size_r;
+           |reg [7 :0] do_size_r;
            |reg [63:0] do_addr_r;
            |reg [63:0] do_wdata_r;
            |wire data_back;
@@ -155,7 +155,7 @@ class AXI_Bridge extends BlackBox with HasBlackBoxInline {
            |assign arid    = 4'd0;
            |assign araddr  = do_addr_r;
            |assign arlen   = 8'd0;
-           |assign arsize  = do_size_r;
+           |assign arsize  = 3'd3; // do misaligned shift and mask in core
            |assign arburst = 2'd0;
            |assign arlock  = 2'd0;
            |assign arcache = 4'd0;
@@ -168,7 +168,7 @@ class AXI_Bridge extends BlackBox with HasBlackBoxInline {
            |assign awid    = 4'd0;
            |assign awaddr  = do_addr_r;
            |assign awlen   = 8'd0;
-           |assign awsize  = do_size_r;
+           |assign awsize  = 3'd3;
            |assign awburst = 2'd0;
            |assign awlock  = 2'd0;
            |assign awcache = 4'd0;
@@ -177,9 +177,7 @@ class AXI_Bridge extends BlackBox with HasBlackBoxInline {
            |//w
            |assign wid    = 4'd0;
            |assign wdata  = do_wdata_r;
-           |assign wstrb  = do_size_r==2'd0 ? 8'b00000001<<do_addr_r[2:0] :
-           |                do_size_r==2'd1 ? 8'b00000011<<do_addr_r[2:0] :
-           |                do_size_r==2'd2 ? 8'b00001111<<do_addr_r[2:0] : 8'b11111111;
+           |assign wstrb  = do_size_r;
            |assign wlast  = 1'd1;
            |assign wvalid = do_req&&do_wr_r&&!wdata_rcv;
            |//b

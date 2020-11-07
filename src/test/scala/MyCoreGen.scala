@@ -9,6 +9,7 @@ import chisel3._
 // 似乎利用verilator仿真，然后用gtkwave查看波形，
 // 输入信号会晚一拍， 导致效果是看起来 当拍的输入就会立刻驱动reg更新
 //为解决上述问题，加了如下一个缓冲 （等于看波形时将所有输入左移一拍
+/*
 class Top extends MyCoreModule{
     val io = IO(new coreIO)
     val core = Module(new core)
@@ -32,7 +33,8 @@ class Top extends MyCoreModule{
     core.io.dmem.resp.bits.data := dmem_resp_bits_data
 
 }
-
+*/
+class Top extends Soc
 object MyCoreGen extends App{
     chisel3.Driver.execute(args, () => new Top)
 }

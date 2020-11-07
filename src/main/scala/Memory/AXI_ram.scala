@@ -4,12 +4,14 @@ import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.BoringUtils
 
+class AXI_ram_IO extends AXI_Interface{
+    val clock = Input(Clock())
+    val reset = Input(Reset())
+}
+
 class AXI_ram extends BlackBox with HasBlackBoxInline {
-    val io = IO(new AXI_Interface {
-        val clock = Input(Clock())
-        val reset = Input(Reset())
-    })
-    setInline("AXIRAM.v",
+    val io = IO(new AXI_ram_IO)
+    setInline("AXI_ram.v",
         s"""    module AXI_ram #
            |(
            |    // Width of data bus in bits
@@ -37,6 +39,7 @@ class AXI_ram extends BlackBox with HasBlackBoxInline {
            |    input  wire [2:0]             awprot,
            |    input  wire                   awvalid,
            |    output wire                   awready,
+           |    input  wire [ID_WIDTH-1:0]    wid,
            |    input  wire [DATA_WIDTH-1:0]  wdata,
            |    input  wire [STRB_WIDTH-1:0]  wstrb,
            |    input  wire                   wlast,
@@ -344,11 +347,6 @@ class AXI_ram extends BlackBox with HasBlackBoxInline {
            |end
            |
            |endmodule
-           |    \"\"\".stripMargin
-           |    )
-           |}
-           |
-           |
            |""".stripMargin)
 }
 /*

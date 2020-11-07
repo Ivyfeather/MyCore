@@ -32,7 +32,7 @@ class Pre_TOP extends MyCoreModule {
     val seq_pc  = pre_pc + 4.U
 
     // require inst
-    val imem_req_r = RegInit(false.B)
+    val imem_req_r = RegInit(true.B)
     when(io.imem.req.ready) { // addr accepted, send req no more
         imem_req_r := false.B
     }.elsewhen(io.fs.ready){// if ready to accept, so pre send another req
@@ -43,7 +43,7 @@ class Pre_TOP extends MyCoreModule {
     io.imem.req.bits.addr   := nextpc & "hFFFF_FFFF_FFFF_FFF8".U
     io.imem.req.bits.data   := 0.U
     io.imem.req.bits.wr     := false.B
-    io.imem.req.bits.msk    := MT_WU
+    io.imem.req.bits.msk    := "hFF".U
 
     // next pc
     val br_taken  = WireInit(Bool(), false.B)
