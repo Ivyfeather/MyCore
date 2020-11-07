@@ -57,7 +57,6 @@ VERILATOR_FLAGS += -Wno-WIDTH -Wno-CASEINCOMPLETE
 # Input files for Verilator
 
 VERILATOR_INPUT = -f input.vc ../Top.v
-# VERILATOR_INPUT = -f input.vc $(shell find ../ -maxdepth 1 -name "*.v")
 VERILATOR_INPUT += $(shell find ../src/test/csrc -name "*.cpp")
 
 NEMU_SO = ./ready-to-run/riscv64-nemu-interpreter-so
@@ -72,7 +71,14 @@ VERILATOR_FLAGS += -CFLAGS "$(CFLAGS)" -LDFLAGS "$(LDFLAGS)"
 default: run
 
 add_waveform:
-	sed -i '1i /* verilator lint_off UNUSED */' ../Top.v && sed -i '$$d' ../Top.v && cat >> ../Top.v <dumpfile.txt
+# sed -i '1i /* verilator lint_off UNUSED */' ../Top.v && sed -i '$$d' ../Top.v && cat >> ../Top.v <dumpfile.txt
+	rm ../Top.v
+	cat >> ../Top.v < ../AXI_ram.v 
+	cat >> ../Top.v < ../AXI_bridge.v 
+	cat >> ../Top.v < ../Soc.v
+	sed -i '1i /* verilator lint_off UNUSED */' ../Top.v 
+	sed -i '$$d' ../Top.v
+	cat >> ../Top.v <dumpfile.txt
 
 run:
 	@echo

@@ -34,7 +34,6 @@ class Top extends MyCoreModule{
 
 }
 */
-class Top extends Soc
 object MyCoreGen extends App{
-    chisel3.Driver.execute(args, () => new Top)
+    chisel3.Driver.execute(args, () => new Soc)
 }

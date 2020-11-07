@@ -12,7 +12,23 @@ class AXI_ram_IO extends AXI_Interface{
 class AXI_ram extends BlackBox with HasBlackBoxInline {
     val io = IO(new AXI_ram_IO)
     setInline("AXI_ram.v",
-        s"""    module AXI_ram #
+        s"""
+           |    module Endian
+           |(
+           |    input  wire [63:0] in,
+           |    output wire [63:0] out
+           |);
+           |    assign out[63:56] = in[ 7: 0];
+           |    assign out[55:48] = in[15: 8];
+           |    assign out[47:40] = in[23:16];
+           |    assign out[39:32] = in[31:24];
+           |    assign out[31:24] = in[39:32];
+           |    assign out[23:16] = in[47:40];
+           |    assign out[15: 8] = in[55:48];
+           |    assign out[7 : 0] = in[63:56];
+           |endmodule
+           |
+           |    module AXI_ram #
            |(
            |    // Width of data bus in bits
            |    parameter DATA_WIDTH = 64,
@@ -131,7 +147,14 @@ class AXI_ram extends BlackBox with HasBlackBoxInline {
            |assign bvalid = bvalid_reg;
            |assign arready = arready_reg;
            |assign rid = PIPELINE_OUTPUT ? rid_pipe_reg : rid_reg;
-           |assign rdata = PIPELINE_OUTPUT ? rdata_pipe_reg : rdata_reg;
+           |wire [63:0] rdata_big;
+           |assign rdata_big = PIPELINE_OUTPUT ? rdata_pipe_reg : rdata_reg;
+           |
+           |Endian ed1 (
+           |    .in(rdata_big),
+           |    .out(rdata)
+           |);
+           |
            |assign rresp = 2'b00;
            |assign rlast = PIPELINE_OUTPUT ? rlast_pipe_reg : rlast_reg;
            |assign rvalid = PIPELINE_OUTPUT ? rvalid_pipe_reg : rvalid_reg;
@@ -225,6 +248,13 @@ class AXI_ram extends BlackBox with HasBlackBoxInline {
            |    endcase
            |end
            |
+           |wire [63:0] wdata_big;
+           |Endian ed2(
+           |    .in(wdata),
+           |    .out(wdata_big)
+           |);
+           |
+           |
            |always @(posedge clock) begin
            |    if (reset) begin
            |        write_state_reg <= WRITE_STATE_IDLE;
@@ -248,10 +278,11 @@ class AXI_ram extends BlackBox with HasBlackBoxInline {
            |
            |    for (i = 0; i < WORD_WIDTH; i = i + 1) begin
            |        if (mem_wr_en & wstrb[i]) begin
-           |            mem[write_addr_valid][WORD_SIZE*i +: WORD_SIZE] <= wdata[WORD_SIZE*i +: WORD_SIZE];
+           |            mem[write_addr_valid][WORD_SIZE*i +: WORD_SIZE] <= wdata_big[WORD_SIZE*i +: WORD_SIZE];
            |        end
            |    end
            |end
+           |
            |
            |always @* begin
            |    read_state_next = READ_STATE_IDLE;
