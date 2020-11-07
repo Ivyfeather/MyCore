@@ -11,7 +11,7 @@ double sc_time_stamp () {       // Called by $time in Verilog
 }		                        // what SystemC does
 
 #define VCD_TRACE
-#define RAM_PATH "./testbench/build/dummy.bin"
+#define RAM_PATH "./testbench/build/add.bin"
 // #define RAM_PATH "./testbench/rtthread.bin"
 
 int main(int argc, char **argv){

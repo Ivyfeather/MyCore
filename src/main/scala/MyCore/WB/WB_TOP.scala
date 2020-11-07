@@ -27,24 +27,20 @@ class WB_TOP extends MyCoreModule{
     io.rf.wr_data := from_ms_r.final_result
     io.rf.rf_we   := decode.rf_wen
 
-    //[TODO] wb to rf may be 1 cycle later than PC at ws
-    BoringUtils.addSource(from_ms_r.PC, "debug_pc")
-    //    BoringUtils.addSource(from_es_r.inst, "debug_inst")
-
     val is_commit = RegInit(false.B)
 //    when(io.ms.valid && io.ms.ready){
 //        is_commit := RegNext(from_ms_r.PC =/= 0.U)
 //    }.elsewhen(is_commit){ // last for one cycle
 //        is_commit := false.B
 //    }
-    when(RegNext(io.ms.valid && io.ms.ready)){
-        is_commit := from_ms_r.PC =/= 0.U
+    when(io.ms.valid && io.ms.ready){
+        is_commit := true.B
     }.elsewhen(is_commit){ // last for one cycle
         is_commit := false.B
     }
 
-    BoringUtils.addSource(is_commit, "is_valid")
-
+    BoringUtils.addSource( RegNext(Mux(is_commit, from_ms_r.PC =/= 0.U, false.B)), "is_valid")
+    BoringUtils.addSource( RegNext(from_ms_r.PC), "debug_pc")
 // ================================================================
     val csrs = Module(new CSR)
     csrs.io := DontCare

@@ -32,7 +32,7 @@ class VTop__Syms : public VerilatedSyms {
     VTop_Endian                    TOP__Soc__DOT__ram__DOT__ed2;
     
     // COVERAGE
-    uint32_t __Vcoverage[9065];
+    uint32_t __Vcoverage[9127];
     
     // CREATORS
     VTop__Syms(VTop* topp, const char* namep);
