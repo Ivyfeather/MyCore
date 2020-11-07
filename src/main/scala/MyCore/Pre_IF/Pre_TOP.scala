@@ -48,16 +48,27 @@ class Pre_TOP extends MyCoreModule {
     // next pc
     val br_taken  = WireInit(Bool(), false.B)
     val br_target = WireInit(UInt(xlen.W), 0.U)
-
+    val br_old_PC = WireInit(UInt(xlen.W), 0.U)
     BoringUtils.addSink(br_taken, "br_taken")
     BoringUtils.addSink(br_target,"br_target")
+    BoringUtils.addSink(br_old_PC, "br_old_PC")
+
+    // #insts that are sent to imem after branch
+    val insts_sent_after_br = WireInit(UInt(2.W), 0.U)
+    val diff = ((nextpc - br_old_PC)>> 2.U ).asUInt()
+    insts_sent_after_br := Mux(io.imem.req.ready, diff, //如果当拍imem接受了
+                           Mux(diff>0.U, diff-1.U, 0.U))
+    BoringUtils.addSource(insts_sent_after_br, "insts_sent_after_br")
+
 
     // use reg to store br_target
     val buf_valid = RegInit(false.B)
+    val buf_npc = RegEnable(br_target, 0.U(xlen.W), br_taken)
+
     when(buf_valid && io.imem.req.ready)    { buf_valid := false.B }
+    .elsewhen(buf_npc === br_target)        { }
     .elsewhen(br_taken)                     { buf_valid := true.B}
 
-    val buf_npc = RegEnable(br_target, 0.U(xlen.W), br_taken)
 
     nextpc := MuxCase(seq_pc, Array(
         (buf_valid) -> buf_npc

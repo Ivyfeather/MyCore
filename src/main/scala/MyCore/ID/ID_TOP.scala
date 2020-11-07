@@ -80,15 +80,25 @@ class ID_TOP extends MyCoreModule{
 
     BoringUtils.addSource(br_taken, "br_taken")
     BoringUtils.addSource(br_target, "br_target")
+    BoringUtils.addSource(from_fs_r.PC, "br_old_PC")
 
-    // if br_taken, then we need to flush 2 following insts
+    val insts_sent_after_br = WireInit(0.U)
+    BoringUtils.addSink(insts_sent_after_br, "insts_sent_after_br")
+
+    // if br_taken, then we need to flush #"insts_sent_after_br" following insts
+    val flush_set = RegInit(false.B)
     val flush_reg = RegInit(0.U(2.W))
-    when(br_taken && io.fs.valid && io.fs.ready){
-        flush_reg := 0.U
-    }.elsewhen(br_taken) {
-        flush_reg := 1.U
+    when(br_taken && io.fs.valid && io.fs.ready && !flush_set){
+        flush_reg := insts_sent_after_br - 1.U
+        flush_set := true.B
+    }.elsewhen(br_taken && !flush_set) {
+        flush_reg := insts_sent_after_br
+        flush_set := true.B
     }.elsewhen(io.fs.valid && io.fs.ready && flush_reg > 0.U){
         flush_reg := flush_reg - 1.U
+        flush_set := Mux(flush_reg === 0.U, false.B, flush_set)
+    }.elsewhen(io.fs.valid && io.fs.ready && flush_reg === 0.U){
+        flush_set := false.B
     }
 
     //[TODO] as it appears in waveform, dont need to flush the reg
