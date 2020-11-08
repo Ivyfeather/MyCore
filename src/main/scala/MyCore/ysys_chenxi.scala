@@ -8,6 +8,8 @@ import chisel3.util.experimental.BoringUtils
 class ysys_chenxi_IO extends MyCoreBundle {
     val mem  = Flipped(new AXI_Interface)
     val mmio = Flipped(new AXI_lite_interface)
+    val mtip = Input(Bool())
+    val meip = Input(Bool())
 }
 
 class ysys_chenxi extends MyCoreModule {
@@ -15,6 +17,8 @@ class ysys_chenxi extends MyCoreModule {
 
     val core = Module(new core)
     val bridge = Module(new AXI_Bridge)
+    core.io.mtip := io.mtip
+    core.io.meip := io.meip
 
     // Connecting core to AXI bridge
     bridge.io.clock     := clock

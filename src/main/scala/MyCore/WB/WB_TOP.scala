@@ -7,6 +7,8 @@ import chisel3.util.experimental.BoringUtils
 class WB_TOP_IO extends MyCoreBundle {
     val ms  = Flipped(DecoupledIO(new MEM_TO_WB_IO))
     val rf  = new WBbus
+    val mtip = Input(Bool())
+    val meip = Input(Bool())
 }
 
 class WB_TOP extends MyCoreModule{

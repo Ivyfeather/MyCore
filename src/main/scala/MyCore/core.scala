@@ -8,6 +8,8 @@ import chisel3.util.experimental.BoringUtils
 class coreIO extends MyCoreBundle {
     val imem = new MemPortIO(xlen)
     val dmem = new MemPortIO(xlen)
+    val mtip = Input(Bool())
+    val meip = Input(Bool())
     val debug = new Debug_IO
 }
 
@@ -29,7 +31,6 @@ class core extends MyCoreModule {
     ms_top.io.ws <> ws_top.io.ms
     ws_top.io.rf <> ds_top.io.wb
 
-
     pre_top.io.imem := DontCare
     fs_top.io.imem  := DontCare
     io.imem.req  <> pre_top.io.imem.req
@@ -39,19 +40,18 @@ class core extends MyCoreModule {
     ms_top.io.dmem := DontCare
     io.dmem.req  <> es_top.io.dmem.req
     io.dmem.resp <> ms_top.io.dmem.resp
-
+    ws_top.io.mtip := io.mtip
+    ws_top.io.meip := io.meip
 
     val debug_io    = WireInit(0.U.asTypeOf(new Debug_IO))
     BoringUtils.addSink(debug_io.PC, "debug_pc")
-//    BoringUtils.addSink(debug_io.inst, "debug_inst")
     BoringUtils.addSink(debug_io.rf, "difftest_r")
     BoringUtils.addSink(debug_io.trap, "is_trap")
     BoringUtils.addSink(debug_io.valid, "is_valid")
     io.debug     := debug_io
 
-//    BoringUtils.addSink(debug_io.test, "misa")
 }
-
+/*
 class single_core extends MyCoreModule {
     val io = IO(new coreIO)
     io := DontCare
@@ -180,5 +180,5 @@ class single_core extends MyCoreModule {
     io.debug.rf     := difftest_regs
     io.debug.trap   := difftest_is_trap
 }
-
+*/
 
