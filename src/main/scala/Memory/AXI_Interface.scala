@@ -20,12 +20,14 @@ class AXI_Interface extends Bundle {
     val awprot  = Input(UInt(3.W))
     val awvalid = Input(Bool())
     val awready = Output(Bool())
+
     val wid    = Input(UInt(id_width.W))
     val wdata   = Input(UInt(data_width.W))
     val wstrb   = Input(UInt(wstrb_width.W))
     val wlast   = Input(Bool())
     val wvalid  = Input(Bool())
     val wready  = Output(Bool())
+
     val bid     = Output(UInt(id_width.W))
     val bresp   = Output(UInt(2.W))
     val bvalid  = Output(Bool())
@@ -40,6 +42,7 @@ class AXI_Interface extends Bundle {
     val arprot  = Input(UInt(3.W))
     val arvalid = Input(Bool())
     val arready = Output(Bool())
+
     val rid     = Output(UInt(id_width.W))
     val rdata   = Output(UInt(data_width.W))
     val rresp   = Output(UInt(2.W))
@@ -57,17 +60,21 @@ class AXI_lite_interface extends Bundle {
     val awprot  = Input(UInt(3.W))
     val awvalid = Input(Bool())
     val awready = Output(Bool())
+
     val wdata   = Input(UInt(data_width.W))
     val wstrb   = Input(UInt(wstrb_width.W))
     val wvalid  = Input(Bool())
     val wready  = Output(Bool())
+
     val bresp   = Output(UInt(2.W))
     val bvalid  = Output(Bool())
     val bready  = Input(Bool())
+
     val araddr  = Input(UInt(addr_width.W))
     val arprot  = Input(UInt(3.W))
     val arvalid = Input(Bool())
     val arready = Output(Bool())
+
     val rdata   = Output(UInt(data_width.W))
     val rresp   = Output(UInt(2.W))
     val rvalid  = Output(Bool())

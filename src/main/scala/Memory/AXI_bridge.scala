@@ -32,74 +32,74 @@ class AXI_Bridge extends BlackBox with HasBlackBoxInline {
     val io = IO(Flipped(new AXI_bridge_IO))
 
     setInline("AXI_bridge.v",
-        s"""           module AXI_Bridge
-           |           (
-           |               input         clock,
-           |               input         reset,
+        s"""module AXI_Bridge
+           |(
+           |    input         clock,
+           |    input         reset,
            |
-           |               //inst sram-like
-           |               input         inst_req     ,
-           |               input         inst_wr      ,
-           |               input  [7 :0] inst_size    ,
-           |               input  [63:0] inst_addr    ,
-           |               input  [63:0] inst_wdata   ,
-           |               output [63:0] inst_rdata   ,
-           |               output        inst_addr_ok ,
-           |               output        inst_data_ok ,
+           |    //inst sram-like
+           |    input         inst_req     ,
+           |    input         inst_wr      ,
+           |    input  [7 :0] inst_size    ,
+           |    input  [63:0] inst_addr    ,
+           |    input  [63:0] inst_wdata   ,
+           |    output [63:0] inst_rdata   ,
+           |    output        inst_addr_ok ,
+           |    output        inst_data_ok ,
            |
-           |               //data sram-like
-           |               input         data_req     ,
-           |               input         data_wr      ,
-           |               input  [7 :0] data_size    ,
-           |               input  [63:0] data_addr    ,
-           |               input  [63:0] data_wdata   ,
-           |               output [63:0] data_rdata   ,
-           |               output        data_addr_ok ,
-           |               output        data_data_ok ,
+           |    //data sram-like
+           |    input         data_req     ,
+           |    input         data_wr      ,
+           |    input  [7 :0] data_size    ,
+           |    input  [63:0] data_addr    ,
+           |    input  [63:0] data_wdata   ,
+           |    output [63:0] data_rdata   ,
+           |    output        data_addr_ok ,
+           |    output        data_data_ok ,
            |
-           |               //axi
-           |               //ar
-           |               output [3 :0] arid         ,
-           |               output [63:0] araddr       ,
-           |               output [7 :0] arlen        ,
-           |               output [2 :0] arsize       ,
-           |               output [1 :0] arburst      ,
-           |               output [1 :0] arlock        ,
-           |               output [3 :0] arcache      ,
-           |               output [2 :0] arprot       ,
-           |               output        arvalid      ,
-           |               input         arready      ,
-           |               //r
-           |               input  [3 :0] rid          ,
-           |               input  [63:0] rdata        ,
-           |               input  [1 :0] rresp        ,
-           |               input         rlast        ,
-           |               input         rvalid       ,
-           |               output        rready       ,
-           |               //aw
-           |               output [3 :0] awid         ,
-           |               output [63:0] awaddr       ,
-           |               output [7 :0] awlen        ,
-           |               output [2 :0] awsize       ,
-           |               output [1 :0] awburst      ,
-           |               output [1 :0] awlock       ,
-           |               output [3 :0] awcache      ,
-           |               output [2 :0] awprot       ,
-           |               output        awvalid      ,
-           |               input         awready      ,
-           |               //w
-           |               output [3 :0] wid          ,
-           |               output [63:0] wdata        ,
-           |               output [7 :0] wstrb        ,
-           |               output        wlast        ,
-           |               output        wvalid       ,
-           |               input         wready       ,
-           |               //b
-           |               input  [3 :0] bid          ,
-           |               input  [1 :0] bresp        ,
-           |               input         bvalid       ,
-           |               output        bready
-           |           );
+           |    //axi
+           |    //ar
+           |    output [3 :0] arid         ,
+           |    output [63:0] araddr       ,
+           |    output [7 :0] arlen        ,
+           |    output [2 :0] arsize       ,
+           |    output [1 :0] arburst      ,
+           |    output [1 :0] arlock        ,
+           |    output [3 :0] arcache      ,
+           |    output [2 :0] arprot       ,
+           |    output        arvalid      ,
+           |    input         arready      ,
+           |    //r
+           |    input  [3 :0] rid          ,
+           |    input  [63:0] rdata        ,
+           |    input  [1 :0] rresp        ,
+           |    input         rlast        ,
+           |    input         rvalid       ,
+           |    output        rready       ,
+           |    //aw
+           |    output [3 :0] awid         ,
+           |    output [63:0] awaddr       ,
+           |    output [7 :0] awlen        ,
+           |    output [2 :0] awsize       ,
+           |    output [1 :0] awburst      ,
+           |    output [1 :0] awlock       ,
+           |    output [3 :0] awcache      ,
+           |    output [2 :0] awprot       ,
+           |    output        awvalid      ,
+           |    input         awready      ,
+           |    //w
+           |    output [3 :0] wid          ,
+           |    output [63:0] wdata        ,
+           |    output [7 :0] wstrb        ,
+           |    output        wlast        ,
+           |    output        wvalid       ,
+           |    input         wready       ,
+           |    //b
+           |    input  [3 :0] bid          ,
+           |    input  [1 :0] bresp        ,
+           |    input         bvalid       ,
+           |    output        bready
+           |);
            |wire resetn = !reset;
            |//addr
            |reg do_req;

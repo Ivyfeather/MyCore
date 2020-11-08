@@ -37,3 +37,7 @@ class Top extends MyCoreModule{
 object MyCoreGen extends App{
     chisel3.Driver.execute(args, () => new Soc)
 }
+
+object ysys extends App{
+    chisel3.Driver.execute(args, () => new ysys_chenxi)
+}
