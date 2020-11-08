@@ -45,8 +45,8 @@ class ysys_chenxi extends MyCoreModule {
 
 // Connecting AXI bridge to MMIO and RAM
     // to mem
-    val is_mem_raddr = (bridge.io.araddr < "h8000_0000".U)
-    val is_mem_waddr = (bridge.io.awaddr < "h8000_0000".U)
+    val is_mem_raddr = (bridge.io.araddr >= "h8000_0000".U)
+    val is_mem_waddr = (bridge.io.awaddr >= "h8000_0000".U)
 
     io.mem.awid := bridge.io.awid
     io.mem.awaddr := bridge.io.awaddr
@@ -99,7 +99,7 @@ class ysys_chenxi extends MyCoreModule {
     bridge.io.bresp := io.mem.bresp     | io.mmio.bresp
     bridge.io.bvalid := io.mem.bvalid   | io.mmio.bvalid
     bridge.io.arready := io.mem.arready | io.mmio.arready
-    bridge.io.rdata := Mux(io.mem.rready, io.mem.rdata, io.mmio.rdata)
+    bridge.io.rdata := Mux(io.mem.rvalid, io.mem.rdata, io.mmio.rdata)
     bridge.io.rresp := io.mem.rresp     | io.mmio.rresp
     bridge.io.rvalid := io.mem.rvalid   | io.mmio.rvalid
 

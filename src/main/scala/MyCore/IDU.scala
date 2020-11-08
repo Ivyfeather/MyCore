@@ -104,7 +104,9 @@ class IDU extends MyCoreModule with ALUop {
                 WFI     -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.N), // implemented as a NOP
 
                 FENCE_I -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.N),
-                FENCE   -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_1, MRD , MT_X,  CSR_CTRL.N)
+                FENCE   -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_1, MRD , MT_X,  CSR_CTRL.N),
+
+                DIVUW   -> List(Y, BR_N  , OP1_RS1, OP2_RS2 , ALU_DIVUW, WB_ALU, REN_1, MEN_0, MRD , MT_X,  CSR_CTRL.N)
             ))
 
     io.ctrl.is_Inst      := csignals(0)
