@@ -13,6 +13,6 @@ trait RISCVconst {
     // Machine generated NOP, XOR x0, x0, x0
     val BUBBLE  = 0x4033.U(32.W)
 
-    val START_ADDR = 0x80000000L
+    val START_ADDR = 0x40000000L
 }
    
