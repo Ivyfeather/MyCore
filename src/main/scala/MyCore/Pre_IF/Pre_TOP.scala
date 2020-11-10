@@ -40,7 +40,7 @@ class Pre_TOP extends MyCoreModule {
     }
 
     io.imem.req.valid       := imem_req_r
-    io.imem.req.bits.addr   := nextpc & "hFFFF_FFFF_FFFF_FFF8".U
+    io.imem.req.bits.addr   := Mux(nextpc >= "h8000_0000".U, nextpc & "hFFFF_FFFF_FFFF_FFF8".U, nextpc)
     io.imem.req.bits.data   := 0.U
     io.imem.req.bits.wr     := false.B
     io.imem.req.bits.msk    := "hFF".U

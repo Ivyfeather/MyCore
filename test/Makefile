@@ -52,6 +52,7 @@ VERILATOR_FLAGS += --coverage
 #VERILATOR_FLAGS += --gdbbt
 # Ignore Unused signals and module name not matching filename
 VERILATOR_FLAGS += -Wno-UNUSED -Wno-DECLFILENAME
+# CAUTION [TODO]
 VERILATOR_FLAGS += -Wno-WIDTH -Wno-CASEINCOMPLETE
 
 # Input files for Verilator
@@ -79,6 +80,11 @@ add_waveform:
 	sed -i '1i /* verilator lint_off UNUSED */' ../Top.v 
 	sed -i '$$d' ../Top.v
 	cat >> ../Top.v <dumpfile.txt
+
+for_soc:
+	sed -i '1i `define RANDOMIZE_DELAY 0' ../ysys_chenxi.v
+	cat >> ../ysys_chenxi.v < ../AXI_bridge.v
+
 
 run:
 	@echo

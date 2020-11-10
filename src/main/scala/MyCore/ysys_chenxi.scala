@@ -66,7 +66,7 @@ class ysys_chenxi extends MyCoreModule {
     io.mem.wdata := bridge.io.wdata
     io.mem.wstrb := bridge.io.wstrb
     io.mem.wlast := bridge.io.wlast
-    io.mem.wvalid := bridge.io.wvalid
+    io.mem.wvalid := Mux(is_mem_waddr, bridge.io.wvalid, false.B)
 
     io.mem.bready := bridge.io.bready
     io.mem.arid := bridge.io.arid
@@ -77,7 +77,7 @@ class ysys_chenxi extends MyCoreModule {
     io.mem.arlock := bridge.io.arlock
     io.mem.arcache := bridge.io.arcache
     io.mem.arprot := bridge.io.arprot
-    io.mem.arvalid :=  Mux(is_mem_raddr, bridge.io.arvalid, false.B)
+    io.mem.arvalid := Mux(is_mem_raddr, bridge.io.arvalid, false.B)
     io.mem.rready := bridge.io.rready
 
     // to mmio
@@ -86,7 +86,7 @@ class ysys_chenxi extends MyCoreModule {
     io.mmio.awvalid := Mux(is_mem_waddr, false.B, bridge.io.awvalid)
     io.mmio.wdata   := bridge.io.wdata
     io.mmio.wstrb   := bridge.io.wstrb
-    io.mmio.wvalid  := bridge.io.wvalid
+    io.mmio.wvalid  := Mux(is_mem_waddr, false.B, bridge.io.wvalid)
     io.mmio.bready  := bridge.io.bready
     io.mmio.araddr  := bridge.io.araddr
     io.mmio.arprot  := bridge.io.arprot
