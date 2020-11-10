@@ -24,6 +24,7 @@ trait ALUop {
     def ALU_SRAW    = "b100110".U
 
     def ALU_DIVUW   = "b111111".U
+    def ALU_REMUW   = "b111110".U
 
     def isSub(op: UInt) = op(4)
 }
