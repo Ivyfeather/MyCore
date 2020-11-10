@@ -59,6 +59,7 @@ class MEM_TOP extends MyCoreModule {
         (decode.mem_msk === MT_W)    -> SignExt(word, xlen),
         (decode.mem_msk === MT_WU)   -> ZeroExt(word, xlen)
     ))
+    val load_final_reg = RegEnable(load_final, 0.U, io.dmem.resp.valid)
 
     io.ws.bits.PC           := from_es_r.PC
     io.ws.bits.decode       := decode

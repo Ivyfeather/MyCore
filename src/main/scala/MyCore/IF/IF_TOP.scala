@@ -32,6 +32,7 @@ class IF_TOP extends MyCoreModule {
     io.ds.valid    := fs_valid && fs_ready_go
 
 // ==== To ds ===========================================================
-    io.ds.bits.inst := Mux(from_pre_r.offset, io.imem.resp.bits.data(xlen-1, 32), io.imem.resp.bits.data(31, 0))
+    val inst_off = Mux(from_pre_r.offset, io.imem.resp.bits.data(xlen-1, 32), io.imem.resp.bits.data(31, 0))
+    io.ds.bits.inst := RegEnable(inst_off, 0.U, io.imem.resp.valid)
     io.ds.bits.PC := from_pre_r.PC
 }
