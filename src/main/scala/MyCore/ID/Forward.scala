@@ -52,7 +52,7 @@ class ForwardUnit extends MyCoreModule {
     val load_data_ok = WireInit(false.B)
     BoringUtils.addSink(load_data_ok, "load_data_returned")
 
-    //[TODO] ??
+    //[TODO] assume mem-op always take longer time so that flowline always will stall for load
     io.wr_stall := (es_res.wr_addr === io.rs1_addr || es_res.wr_addr === io.rs2_addr) && is_load && !load_data_ok
 
 

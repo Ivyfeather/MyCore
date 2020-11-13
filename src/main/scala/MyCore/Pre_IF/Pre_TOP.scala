@@ -48,7 +48,7 @@ class Pre_TOP extends MyCoreModule {
     // next pc
     val br_taken  = WireInit(Bool(), false.B)
     val br_target = WireInit(UInt(xlen.W), 0.U)
-    val br_old_PC = WireInit(UInt(xlen.W), 0.U)
+    val br_old_PC = WireInit(UInt(xlen.W), 0.U) //the pc of the branch inst
     BoringUtils.addSink(br_taken, "br_taken")
     BoringUtils.addSink(br_target,"br_target")
     BoringUtils.addSink(br_old_PC, "br_old_PC")
@@ -66,7 +66,7 @@ class Pre_TOP extends MyCoreModule {
     val buf_npc = RegEnable(br_target, 0.U(xlen.W), br_taken)
 
     when(buf_valid && io.imem.req.ready)    { buf_valid := false.B }
-    .elsewhen(buf_npc === br_target)        { }
+    //.elsewhen(buf_npc === br_target)        { }
     .elsewhen(br_taken)                     { buf_valid := true.B}
 
 

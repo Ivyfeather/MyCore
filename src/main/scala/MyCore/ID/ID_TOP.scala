@@ -78,7 +78,9 @@ class ID_TOP extends MyCoreModule{
         (ctrl.br_type === BR_JR)                  -> jr_target
     ))
 
-    BoringUtils.addSource(br_taken, "br_taken")
+    val br_taken_final = Mux(rf.io.wr_stall, false.B, br_taken && ds_valid)
+
+    BoringUtils.addSource(br_taken_final, "br_taken")
     BoringUtils.addSource(br_target, "br_target")
     BoringUtils.addSource(from_fs_r.PC, "br_old_PC")
 
