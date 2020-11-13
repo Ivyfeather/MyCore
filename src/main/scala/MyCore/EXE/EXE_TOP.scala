@@ -65,12 +65,13 @@ class EXE_TOP extends MyCoreModule {
     .elsewhen(decode.mem_en && dmem_req_r) { }
     //[TODO]the last line refer to myCPU EXE.v:333 ?   else if ((es_load_op||es_mem_we) && data_sram_req_r==1'b1)begin   end
 
-    val offset = if(xlen==64) alu.io.out % 8.U else alu.io.out % 4.U
+    val offset = alu.io.out % 8.U
     val offset_8 = (offset << 3.U).asUInt()
 
     io.dmem.req.valid       := Mux(decode.mem_en, dmem_req_r, false.B)
-    if(xlen==64){   io.dmem.req.bits.addr   := Cat(alu.io.out(xlen-1, 3), Fill(3, 0.U)) }
-    else        {   io.dmem.req.bits.addr   := Cat(alu.io.out(xlen-1, 2), Fill(2, 0.U)) }
+    // send direct addr to mmio [TEST]
+    io.dmem.req.bits.addr   := Mux(alu.io.out >= "h8000_0000".U, Cat(alu.io.out(xlen-1, 3), Fill(3, 0.U)), alu.io.out)
+
     // for store
     io.dmem.req.bits.data   := from_ds_r.rs2_data << offset_8
     io.dmem.req.bits.wr     := decode.mem_wr
