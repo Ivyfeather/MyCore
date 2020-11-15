@@ -9,8 +9,10 @@ object CSR_CTRL {
     val W = 1.asUInt(SZ)
     val S = 2.asUInt(SZ)
     val C = 3.asUInt(SZ)
-    val I = 4.asUInt(SZ)
-    val R = 5.asUInt(SZ)
+    val MRET  = 4.asUInt(SZ)
+    val ECALL = 5.asUInt(SZ)
+    val EBREAK= 6.asUInt(SZ)
+    val R = 7.asUInt(SZ)
 }
 
 trait CSR_addr {

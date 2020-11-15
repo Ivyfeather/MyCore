@@ -3,11 +3,12 @@ package MyCore
 import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.BoringUtils
+import Const.CSR_CTRL
 
 class ID_TOP_IO extends MyCoreBundle{
     val fs      = Flipped(DecoupledIO(new IF_to_ID_IO))
     val es      = DecoupledIO(new ID_TO_EXE_IO)
-    val wb      = Flipped(new WBbus)
+    val wb      = Flipped(new Forwardbus)
 }
 
 class ID_TOP extends MyCoreModule{
@@ -62,6 +63,8 @@ class ID_TOP extends MyCoreModule{
 
     val br_taken = Wire(Bool())
     val br_target = Wire(UInt(xlen.W))
+    val mepc    = WireInit(0.U(64.W))
+    BoringUtils.addSink(mepc, "mepc")
 
     br_taken := MuxCase(false.B, Array(
         (ctrl.br_type === BR_EQ  &&  rf_eq)       -> true.B,
@@ -71,7 +74,8 @@ class ID_TOP extends MyCoreModule{
         (ctrl.br_type === BR_LT  &&  rf_lt)       -> true.B,
         (ctrl.br_type === BR_LTU &&  rf_ltu)      -> true.B,
         (ctrl.br_type === BR_J)                   -> true.B,
-        (ctrl.br_type === BR_JR)                  -> true.B
+        (ctrl.br_type === BR_JR)                  -> true.B,
+        (ctrl.csr_cmd === CSR_CTRL.MRET)          -> true.B
     ))
     br_target:= MuxCase(branch_target, Array(
         (ctrl.br_type === BR_J)                   -> jmp_target,

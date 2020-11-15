@@ -54,7 +54,7 @@ class EXE_TOP extends MyCoreModule {
         (decode.op2_sel === OP2_RS2) -> from_ds_r.rs2_data,
         (decode.op2_sel === OP2_IMI) -> imm_i_sext,
         (decode.op2_sel === OP2_IMS) -> imm_s_sext,
-        (decode.op2_sel === OP2_PC) -> from_ds_r.PC //[TODO] check, right?
+        (decode.op2_sel === OP2_PC) -> from_ds_r.PC
     )).asUInt()
 
 
@@ -87,7 +87,7 @@ class EXE_TOP extends MyCoreModule {
     io.ms.bits.rd_addr      := inst(RD_MSB,  RD_LSB)
     io.ms.bits.decode       := decode
     io.ms.bits.load_offset  := offset
-
+    io.ms.bits.csr_addr     := inst(31, 20)
 
     // ==== Forward ============================================================
     val es_res = Wire(new Forwardbus)

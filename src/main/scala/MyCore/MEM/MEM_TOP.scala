@@ -65,6 +65,7 @@ class MEM_TOP extends MyCoreModule {
     io.ws.bits.decode       := decode
     io.ws.bits.final_result := Mux(res_from_mem, load_final, from_es_r.alu_result)
     io.ws.bits.rd_addr      := from_es_r.rd_addr
+    io.ws.bits.csr_addr     := from_es_r.csr_addr
 
 // ==== Forward ============================================================
     val ms_res = Wire(new Forwardbus)

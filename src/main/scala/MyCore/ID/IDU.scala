@@ -98,9 +98,9 @@ class IDU extends MyCoreModule with ALUop {
                 CSRRS   -> List(Y, BR_N  , OP1_RS1, OP2_X   , ALU_COPY1, WB_CSR, REN_1, MEN_0, MRD,  MT_X,  CSR_CTRL.S),
                 CSRRC   -> List(Y, BR_N  , OP1_RS1, OP2_X   , ALU_COPY1, WB_CSR, REN_1, MEN_0, MRD,  MT_X,  CSR_CTRL.C),
 
-                ECALL   -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.I),
-                MRET    -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.I),
-                EBREAK  -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.I),
+                ECALL   -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.ECALL),
+                MRET    -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.MRET),
+                EBREAK  -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.EBREAK),
                 WFI     -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.N), // implemented as a NOP
 
                 FENCE_I -> List(Y, BR_N  , OP1_X  , OP2_X  ,  ALU_X    , WB_X  , REN_0, MEN_0, MRD , MT_X,  CSR_CTRL.N),
