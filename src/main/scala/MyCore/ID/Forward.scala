@@ -43,6 +43,7 @@ class ForwardUnit extends MyCoreModule {
     val ws_addr1 = ws_res.wr_addr === io.rs1_addr
     val ws_addr2 = ws_res.wr_addr === io.rs2_addr
 
+    val is_load = es_res.wb_sel === WB_MEM
     io.rs1_data := MuxCase(rf.io.rs1_data, Array(
         (es_res.rf_we && es_addr1 && !is_load) -> es_res.wr_data,
         (ms_res.rf_we && ms_addr1) -> ms_res.wr_data,
@@ -54,7 +55,6 @@ class ForwardUnit extends MyCoreModule {
         (ws_res.rf_we && ws_addr2) -> ws_res.wr_data
     ))
 
-    val is_load = es_res.wb_sel === WB_MEM
     val load_data_ok = WireInit(false.B)
     BoringUtils.addSink(load_data_ok, "load_data_returned")
     val load_data_not_returned = (es_addr1 || es_addr2) && is_load && !load_data_ok

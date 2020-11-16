@@ -4,6 +4,7 @@ import Memory.MemPortIO
 import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.BoringUtils
+import Const._
 
 class EXE_TOP_IO extends MyCoreBundle{
     val ds      = Flipped(DecoupledIO(new ID_TO_EXE_IO))
@@ -11,7 +12,7 @@ class EXE_TOP_IO extends MyCoreBundle{
     val dmem    = new MemPortIO(xlen)
 }
 
-class EXE_TOP extends MyCoreModule {
+class EXE_TOP extends MyCoreModule with CSR_mem_addr with ADDR_CSRS{
     val io = IO(new EXE_TOP_IO)
     io := DontCare
 
@@ -89,11 +90,16 @@ class EXE_TOP extends MyCoreModule {
     io.ms.bits.load_offset  := offset
     io.ms.bits.csr_addr     := inst(31, 20)
 
-    // ==== Forward ============================================================
+
+// ==== Forward ============================================================
     val es_res = Wire(new Forwardbus)
     es_res.wb_sel  := from_ds_r.decode.wb_sel
     es_res.rf_we   := from_ds_r.decode.rf_wen
     es_res.wr_addr := io.ms.bits.rd_addr
     es_res.wr_data := io.ms.bits.alu_result
     BoringUtils.addSource(es_res, "es_res")
+
+    val exception = WireInit(false.B)
+    BoringUtils.addSink(exception, "exception")
+    when(exception) { from_ds_r := 0.U.asTypeOf(new ID_TO_EXE_IO)}
 }

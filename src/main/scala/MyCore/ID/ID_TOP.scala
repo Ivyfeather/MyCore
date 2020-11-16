@@ -64,9 +64,14 @@ class ID_TOP extends MyCoreModule{
     val br_taken = Wire(Bool())
     val br_target = Wire(UInt(xlen.W))
     val mepc    = WireInit(0.U(64.W))
+    val exception = WireInit(false.B)
+    val exc_addr  = WireInit(0.U(64.W))
+    BoringUtils.addSink(exception, "exception")
+    BoringUtils.addSink(exc_addr, "exc_addr")
     BoringUtils.addSink(mepc, "mepc")
 
     br_taken := MuxCase(false.B, Array(
+        (exception)                               -> true.B,
         (ctrl.br_type === BR_EQ  &&  rf_eq)       -> true.B,
         (ctrl.br_type === BR_NE  && !rf_eq)       -> true.B,
         (ctrl.br_type === BR_GE  && !rf_lt)       -> true.B,
@@ -78,10 +83,12 @@ class ID_TOP extends MyCoreModule{
         (ctrl.csr_cmd === CSR_CTRL.MRET)          -> true.B
     ))
     br_target:= MuxCase(branch_target, Array(
+        (exception)                               -> exc_addr,
         (ctrl.br_type === BR_J)                   -> jmp_target,
-        (ctrl.br_type === BR_JR)                  -> jr_target
+        (ctrl.br_type === BR_JR)                  -> jr_target,
+        (ctrl.csr_cmd === CSR_CTRL.MRET)          -> mepc
     ))
-
+    //[TODO] stall until previous inst before ecall/mret flows to ws-stage
     val br_taken_final = Mux(rf.io.wr_stall, false.B, br_taken && ds_valid)
 
     BoringUtils.addSource(br_taken_final, "br_taken")
@@ -107,8 +114,6 @@ class ID_TOP extends MyCoreModule{
         flush_set := false.B
     }
 
-    //[TODO] as it appears in waveform, dont need to flush the reg
-    // maybe it will have problem with random delay ram
     when(flush_reg =/= 0.U){ // this "if" has higher prior when generating .v
         from_fs_r := 0.U.asTypeOf(new IF_to_ID_IO)
     }

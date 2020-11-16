@@ -75,4 +75,10 @@ class MEM_TOP extends MyCoreModule {
     ms_res.wr_data  := io.ws.bits.final_result
     BoringUtils.addSource(ms_res, "ms_res")
     BoringUtils.addSource(io.dmem.resp.valid, "load_data_returned")
+
+
+    val exception = WireInit(false.B)
+    BoringUtils.addSink(exception, "exception")
+    when(exception) { from_es_r := 0.U.asTypeOf(new EXE_TO_MEM_IO) }
+
 }

@@ -32,6 +32,7 @@ class WB_TOP extends MyCoreModule{
     csrs.io.addr    := from_ms_r.csr_addr
     csrs.io.ctrl    := from_ms_r.decode.csr_cmd
     csrs.io.gr_data := from_ms_r.final_result
+    csrs.io.pc      := from_ms_r.PC
 
     val csr_data = csrs.io.csr_data
     // WBstage takes only 1 cycle always(ready_go === true)
