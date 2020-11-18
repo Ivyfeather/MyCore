@@ -9,6 +9,11 @@ class WB_TOP_IO extends MyCoreBundle {
     val rf  = new Forwardbus
     val mtip = Input(Bool())
     val meip = Input(Bool())
+
+    val exception = Output(Bool())
+
+    val mepc = Output(UInt(64.W))
+    val exc_addr = Output(UInt(64.W))
 }
 
 class WB_TOP extends MyCoreModule{
@@ -50,7 +55,7 @@ class WB_TOP extends MyCoreModule{
     }.elsewhen(is_commit){ // last for one cycle
         is_commit := false.B
     }
-
-    BoringUtils.addSource( RegNext(Mux(is_commit, from_ms_r.PC =/= 0.U, false.B)), "is_valid")
-    BoringUtils.addSource( RegNext(from_ms_r.PC), "debug_pc")
+    io.exception := csrs.io.exception
+    io.mepc := csrs.io.mepc
+    io.exc_addr := csrs.io.exc_addr
 }

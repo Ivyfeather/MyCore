@@ -10,6 +10,10 @@ class EXE_TOP_IO extends MyCoreBundle{
     val ds      = Flipped(DecoupledIO(new ID_TO_EXE_IO))
     val ms      = DecoupledIO(new EXE_TO_MEM_IO)
     val dmem    = new MemPortIO(xlen)
+
+    val exception = Input(Bool())
+
+    val es_res = Output(new Forwardbus)
 }
 
 class EXE_TOP extends MyCoreModule with CSR_mem_addr with ADDR_CSRS{
@@ -97,9 +101,9 @@ class EXE_TOP extends MyCoreModule with CSR_mem_addr with ADDR_CSRS{
     es_res.rf_we   := from_ds_r.decode.rf_wen
     es_res.wr_addr := io.ms.bits.rd_addr
     es_res.wr_data := io.ms.bits.alu_result
-    BoringUtils.addSource(es_res, "es_res")
+    io.es_res := es_res
 
     val exception = WireInit(false.B)
-    BoringUtils.addSink(exception, "exception")
+    exception := io.exception
     when(exception) { from_ds_r := 0.U.asTypeOf(new ID_TO_EXE_IO)}
 }

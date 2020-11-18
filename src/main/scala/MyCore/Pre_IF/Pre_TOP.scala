@@ -8,6 +8,12 @@ import Memory.MemPortIO
 class Pre_TOP_IO extends MyCoreBundle {
     val fs   = DecoupledIO(new Pre_to_IF_IO)
     val imem    = new MemPortIO(xlen)
+
+    val br_taken = Input(Bool())
+    val br_target= Input(UInt(64.W))
+    val br_old_PC= Input(UInt(64.W))
+
+    val insts_sent_after_br = Output(UInt(2.W))
 }
 
 class Pre_TOP extends MyCoreModule {
@@ -49,16 +55,16 @@ class Pre_TOP extends MyCoreModule {
     val br_taken  = WireInit(Bool(), false.B)
     val br_target = WireInit(UInt(xlen.W), 0.U)
     val br_old_PC = WireInit(UInt(xlen.W), 0.U) //the pc of the branch inst
-    BoringUtils.addSink(br_taken, "br_taken")
-    BoringUtils.addSink(br_target,"br_target")
-    BoringUtils.addSink(br_old_PC, "br_old_PC")
+    br_taken := io.br_taken
+    br_target:= io.br_target
+    br_old_PC:= io.br_old_PC
 
     // #insts that are sent to imem after branch
     val insts_sent_after_br = WireInit(UInt(2.W), 0.U)
     val diff = ((nextpc - br_old_PC)>> 2.U ).asUInt()
     insts_sent_after_br := Mux(io.imem.req.ready, diff, //如果当拍imem接受了
                            Mux(diff>0.U, diff-1.U, 0.U))
-    BoringUtils.addSource(insts_sent_after_br, "insts_sent_after_br")
+    io.insts_sent_after_br := insts_sent_after_br
 
 
     // use reg to store br_target

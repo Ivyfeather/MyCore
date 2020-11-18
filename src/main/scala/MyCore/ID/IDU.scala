@@ -123,7 +123,6 @@ class IDU extends MyCoreModule with ALUop {
     io.ctrl.csr_cmd      := csignals(10)
 
     val is_trap = io.inst === MyCoreTrap.TRAP
-    BoringUtils.addSource(is_trap, "is_trap")
 }
 
 

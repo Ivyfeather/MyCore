@@ -32,7 +32,7 @@ class AXI_Bridge extends BlackBox with HasBlackBoxInline {
     val io = IO(Flipped(new AXI_bridge_IO))
 
     setInline("AXI_bridge.v",
-        s"""module AXI_Bridge
+        s"""module cx_AXI_Bridge
            |(
            |    input         clock,
            |    input         reset,

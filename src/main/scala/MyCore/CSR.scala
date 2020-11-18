@@ -11,6 +11,11 @@ class CSRIO extends MyCoreBundle{
     val ctrl = Input(UInt(CSR_CTRL.SZ))
     val gr_data  = Input(UInt(xlen.W))
     val csr_data = Output(UInt(xlen.W))
+
+    val exception = Output(Bool())
+
+    val mepc = Output(UInt(64.W))
+    val exc_addr = Output(UInt(64.W))
 }
 
 //[TODO] consider write/read protection later
@@ -86,7 +91,7 @@ class CSR extends MyCoreModule with ADDR_CSRS {
         (io.ctrl === CSR_CTRL.C)    -> (read_csr_data & ~io.gr_data)
     ))
 
-    BoringUtils.addSource(mepc, "mepc")
+    io.mepc := mepc
     //[TEST][TODO]
 //    BoringUtils.addSource(misa, "misa")
     val exception = WireInit(false.B)
@@ -117,7 +122,7 @@ class CSR extends MyCoreModule with ADDR_CSRS {
     exception   := mstatus.mie.asBool() & (is_ecall || is_ebreak || time_int)
     exc_addr    := Mux(mtvec.mode === 0.U, Cat(mtvec.base, Fill(2, 0.U)), Cat(mtvec.base, Fill(2, 0.U)) + mcause.asUInt() << 2.U)
 
-    BoringUtils.addSource(exception, "exception")
-    BoringUtils.addSource(exc_addr, "exc_addr")
+    io.exception := exception
+    io.exc_addr := exc_addr
 
 }

@@ -38,14 +38,14 @@ class Top extends MyCoreModule{
 
 }
 */
-//object ysys extends App{
-//    chisel3.Driver.execute(args, () => new ysys_chenxi)
+//object ysyx extends App{
+//    chisel3.Driver.execute(args, () => new ysyx_chenxi)
 //}
 
-object ysys extends App{
+object ysyx extends App{
     (new chisel3.stage.ChiselStage).execute(args,
         Seq(
-            ChiselGeneratorAnnotation(() => new ysys_chenxi),
+            ChiselGeneratorAnnotation(() => new ysyx_chenxi),
             RunFirrtlTransformAnnotation(new AddModulePrefix()),
             ModulePrefixAnnotation("cx_")
         )

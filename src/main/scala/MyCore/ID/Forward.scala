@@ -12,6 +12,10 @@ class ForwardUnitIO extends MyCoreBundle {
     val rs1_data = Output(UInt(xlen.W))
     val rs2_data = Output(UInt(xlen.W))
     val wr_stall = Output(Bool()) // stall caused by write-read related
+
+    val es_res = Input(new Forwardbus)
+    val ms_res = Input(new Forwardbus)
+    val ldrt = Input(Bool())
 }
 
 class ForwardUnit extends MyCoreModule {
@@ -19,8 +23,10 @@ class ForwardUnit extends MyCoreModule {
     val es_res = WireInit(0.U.asTypeOf(new Forwardbus))
     val ms_res = WireInit(0.U.asTypeOf(new Forwardbus))
     val ws_res = io.ws_res
-    BoringUtils.addSink(es_res, "es_res")
-    BoringUtils.addSink(ms_res, "ms_res")
+
+    es_res := io.es_res
+    ms_res := io.ms_res
+
 
 
 
@@ -56,7 +62,7 @@ class ForwardUnit extends MyCoreModule {
     ))
 
     val load_data_ok = WireInit(false.B)
-    BoringUtils.addSink(load_data_ok, "load_data_returned")
+    load_data_ok := io.ldrt
     val load_data_not_returned = (es_addr1 || es_addr2) && is_load && !load_data_ok
 
     val csrr_at_ws = ws_res.wb_sel === WB_CSR

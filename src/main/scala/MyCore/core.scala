@@ -10,7 +10,6 @@ class coreIO extends MyCoreBundle {
     val dmem = new MemPortIO(xlen)
     val mtip = Input(Bool())
     val meip = Input(Bool())
-    val debug = new Debug_IO
 }
 
 class core extends MyCoreModule {
@@ -43,12 +42,22 @@ class core extends MyCoreModule {
     ws_top.io.mtip := io.mtip
     ws_top.io.meip := io.meip
 
-    val debug_io    = WireInit(0.U.asTypeOf(new Debug_IO))
-    BoringUtils.addSink(debug_io.PC, "debug_pc")
-    BoringUtils.addSink(debug_io.rf, "difftest_r")
-    BoringUtils.addSink(debug_io.trap, "is_trap")
-    BoringUtils.addSink(debug_io.valid, "is_valid")
-    io.debug     := debug_io
+    ms_top.io.exception := ws_top.io.exception
+    es_top.io.exception := ws_top.io.exception
+
+    pre_top.io.br_taken := ds_top.io.br_taken
+    pre_top.io.br_target := ds_top.io.br_target
+    pre_top.io.br_old_PC := ds_top.io.br_old_PC
+
+    ds_top.io.insts_sent_after_br := pre_top.io.insts_sent_after_br
+
+    ds_top.io.es_res := es_top.io.es_res
+    ds_top.io.ms_res := ms_top.io.ms_res
+    ds_top.io.ldrt := ms_top.io.ldrt
+
+    ds_top.io.exception := ws_top.io.exception
+    ds_top.io.exc_addr := ws_top.io.exc_addr
+    ds_top.io.mepc := ws_top.io.mepc
 
 }
 /*

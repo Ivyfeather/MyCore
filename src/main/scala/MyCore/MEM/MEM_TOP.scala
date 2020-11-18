@@ -10,6 +10,11 @@ class MEM_TOP_IO extends MyCoreBundle{
     val es      = Flipped(DecoupledIO(new EXE_TO_MEM_IO))
     val ws      = DecoupledIO(new MEM_TO_WB_IO)
     val dmem    = new MemPortIO(xlen)
+
+    val exception = Input(Bool())
+
+    val ms_res = Output(new Forwardbus)
+    val ldrt = Output(Bool())
 }
 
 class MEM_TOP extends MyCoreModule {
@@ -73,12 +78,11 @@ class MEM_TOP extends MyCoreModule {
     ms_res.rf_we    := from_es_r.decode.rf_wen
     ms_res.wr_addr  := io.ws.bits.rd_addr
     ms_res.wr_data  := io.ws.bits.final_result
-    BoringUtils.addSource(ms_res, "ms_res")
-    BoringUtils.addSource(io.dmem.resp.valid, "load_data_returned")
-
+    io.ms_res := ms_res
+    io.ldrt   := io.dmem.resp.valid
 
     val exception = WireInit(false.B)
-    BoringUtils.addSink(exception, "exception")
+    exception := io.exception
     when(exception) { from_es_r := 0.U.asTypeOf(new EXE_TO_MEM_IO) }
 
 }
