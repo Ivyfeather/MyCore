@@ -1,5 +1,9 @@
 package MyCore
 
+import AddPrefix._
+import chisel3.stage.ChiselGeneratorAnnotation
+import firrtl.stage.RunFirrtlTransformAnnotation
+
 //class Top extends core
 //class Top extends RegFile
 import Memory.MemPortIO
@@ -34,10 +38,16 @@ class Top extends MyCoreModule{
 
 }
 */
-object MyCoreGen extends App{
-    chisel3.Driver.execute(args, () => new Soc)
-}
+//object ysyx extends App{
+//    chisel3.Driver.execute(args, () => new ysyx_chenxi)
+//}
 
-object ysys extends App{
-    chisel3.Driver.execute(args, () => new ysys_chenxi)
+object ysyx extends App{
+    (new chisel3.stage.ChiselStage).execute(args,
+        Seq(
+            ChiselGeneratorAnnotation(() => new ysyx_chenxi),
+            RunFirrtlTransformAnnotation(new AddModulePrefix()),
+            ModulePrefixAnnotation("cx_")
+        )
+    )
 }

@@ -4,14 +4,19 @@ import Memory.MemPortIO
 import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.BoringUtils
+import Const._
 
 class EXE_TOP_IO extends MyCoreBundle{
     val ds      = Flipped(DecoupledIO(new ID_TO_EXE_IO))
     val ms      = DecoupledIO(new EXE_TO_MEM_IO)
     val dmem    = new MemPortIO(xlen)
+
+    val exception = Input(Bool())
+
+    val es_res = Output(new Forwardbus)
 }
 
-class EXE_TOP extends MyCoreModule {
+class EXE_TOP extends MyCoreModule with CSR_mem_addr with ADDR_CSRS{
     val io = IO(new EXE_TOP_IO)
     io := DontCare
 
@@ -54,7 +59,7 @@ class EXE_TOP extends MyCoreModule {
         (decode.op2_sel === OP2_RS2) -> from_ds_r.rs2_data,
         (decode.op2_sel === OP2_IMI) -> imm_i_sext,
         (decode.op2_sel === OP2_IMS) -> imm_s_sext,
-        (decode.op2_sel === OP2_PC) -> from_ds_r.PC //[TODO] check, right?
+        (decode.op2_sel === OP2_PC) -> from_ds_r.PC
     )).asUInt()
 
 
@@ -87,13 +92,18 @@ class EXE_TOP extends MyCoreModule {
     io.ms.bits.rd_addr      := inst(RD_MSB,  RD_LSB)
     io.ms.bits.decode       := decode
     io.ms.bits.load_offset  := offset
+    io.ms.bits.csr_addr     := inst(31, 20)
 
 
-    // ==== Forward ============================================================
+// ==== Forward ============================================================
     val es_res = Wire(new Forwardbus)
     es_res.wb_sel  := from_ds_r.decode.wb_sel
     es_res.rf_we   := from_ds_r.decode.rf_wen
     es_res.wr_addr := io.ms.bits.rd_addr
     es_res.wr_data := io.ms.bits.alu_result
-    BoringUtils.addSource(es_res, "es_res")
+    io.es_res := es_res
+
+    val exception = WireInit(false.B)
+    exception := io.exception
+    when(exception) { from_ds_r := 0.U.asTypeOf(new ID_TO_EXE_IO)}
 }

@@ -37,8 +37,8 @@ class ALU extends MyCoreModule with ALUop{
     val sraw_result = (io.in1(31,0).asSInt() >> shamt5).asUInt()
     val srlw_result = io.in1(31,0) >> shamt5
 
-    val divuw_result = io.in1(31,0).asUInt() / io.in2(31,0).asUInt()
-    val remuw_result = io.in1(31,0).asUInt() % io.in2(31,0).asUInt()
+//    val divuw_result = io.in1(31,0).asUInt() / io.in2(31,0).asUInt()
+//    val remuw_result = io.in1(31,0).asUInt() % io.in2(31,0).asUInt()
 
     io.out := MuxCase(add_result(xlen-1, 0), Array(
         (io.opcode === ALU_SLTU)    -> ZeroExt(sltu_result, xlen),
@@ -54,9 +54,9 @@ class ALU extends MyCoreModule with ALUop{
         (io.opcode === ALU_SUBW)    -> SignExt(add_result(31,0), xlen),
         (io.opcode === ALU_SLLW)    -> SignExt(sllw_result(31,0), xlen),
         (io.opcode === ALU_SRAW)    -> SignExt(sraw_result(31,0), xlen),
-        (io.opcode === ALU_SRLW)    -> SignExt(srlw_result(31,0), xlen),
-        (io.opcode === ALU_DIVUW)   -> SignExt(divuw_result(31,0), xlen),
-        (io.opcode === ALU_REMUW)   -> SignExt(remuw_result(31,0), xlen)
+        (io.opcode === ALU_SRLW)    -> SignExt(srlw_result(31,0), xlen)//,
+//        (io.opcode === ALU_DIVUW)   -> SignExt(divuw_result(31,0), xlen),
+//        (io.opcode === ALU_REMUW)   -> SignExt(remuw_result(31,0), xlen)
     ))
 
     io.zero := Mux(io.out === 0.asUInt(xlen.W), true.B, false.B)

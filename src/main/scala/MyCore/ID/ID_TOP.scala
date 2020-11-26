@@ -3,11 +3,26 @@ package MyCore
 import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.BoringUtils
+import Const.CSR_CTRL
 
 class ID_TOP_IO extends MyCoreBundle{
     val fs      = Flipped(DecoupledIO(new IF_to_ID_IO))
     val es      = DecoupledIO(new ID_TO_EXE_IO)
-    val wb      = Flipped(new WBbus)
+    val wb      = Flipped(new Forwardbus)
+
+    val br_taken = Output(Bool())
+    val br_target = Output(UInt(64.W))
+    val br_old_PC = Output(UInt(64.W))
+
+    val insts_sent_after_br = Input(UInt(2.W))
+
+    val es_res = Input(new Forwardbus)
+    val ms_res = Input(new Forwardbus)
+    val ldrt = Input(Bool())
+
+    val mepc = Input(UInt(64.W))
+    val exc_addr = Input(UInt(64.W))
+    val exception = Input(Bool())
 }
 
 class ID_TOP extends MyCoreModule{
@@ -15,6 +30,9 @@ class ID_TOP extends MyCoreModule{
     io := DontCare
 
     val rf = Module(new ForwardUnit)
+    rf.io.es_res := io.es_res
+    rf.io.ms_res := io.ms_res
+    rf.io.ldrt := io.ldrt
 
     val from_fs_r = RegEnable(io.fs.bits, 0.U.asTypeOf(new IF_to_ID_IO), io.fs.valid && io.fs.ready)
 
@@ -62,8 +80,15 @@ class ID_TOP extends MyCoreModule{
 
     val br_taken = Wire(Bool())
     val br_target = Wire(UInt(xlen.W))
+    val mepc    = WireInit(0.U(64.W))
+    val exception = WireInit(false.B)
+    val exc_addr  = WireInit(0.U(64.W))
+    exception := io.exception
+    exc_addr := io.exc_addr
+    mepc := io.mepc
 
     br_taken := MuxCase(false.B, Array(
+        (exception)                               -> true.B,
         (ctrl.br_type === BR_EQ  &&  rf_eq)       -> true.B,
         (ctrl.br_type === BR_NE  && !rf_eq)       -> true.B,
         (ctrl.br_type === BR_GE  && !rf_lt)       -> true.B,
@@ -71,21 +96,24 @@ class ID_TOP extends MyCoreModule{
         (ctrl.br_type === BR_LT  &&  rf_lt)       -> true.B,
         (ctrl.br_type === BR_LTU &&  rf_ltu)      -> true.B,
         (ctrl.br_type === BR_J)                   -> true.B,
-        (ctrl.br_type === BR_JR)                  -> true.B
+        (ctrl.br_type === BR_JR)                  -> true.B,
+        (ctrl.csr_cmd === CSR_CTRL.MRET)          -> true.B
     ))
     br_target:= MuxCase(branch_target, Array(
+        (exception)                               -> exc_addr,
         (ctrl.br_type === BR_J)                   -> jmp_target,
-        (ctrl.br_type === BR_JR)                  -> jr_target
+        (ctrl.br_type === BR_JR)                  -> jr_target,
+        (ctrl.csr_cmd === CSR_CTRL.MRET)          -> mepc
     ))
-
+    //[TODO] stall until previous inst before ecall/mret flows to ws-stage
     val br_taken_final = Mux(rf.io.wr_stall, false.B, br_taken && ds_valid)
 
-    BoringUtils.addSource(br_taken_final, "br_taken")
-    BoringUtils.addSource(br_target, "br_target")
-    BoringUtils.addSource(from_fs_r.PC, "br_old_PC")
+    io.br_taken  := br_taken_final
+    io.br_target := br_target
+    io.br_old_PC := from_fs_r.PC
 
     val insts_sent_after_br = WireInit(0.U)
-    BoringUtils.addSink(insts_sent_after_br, "insts_sent_after_br")
+    insts_sent_after_br := io.insts_sent_after_br
 
     // if br_taken, then we need to flush #"insts_sent_after_br" following insts
     val flush_set = RegInit(false.B)
@@ -103,8 +131,6 @@ class ID_TOP extends MyCoreModule{
         flush_set := false.B
     }
 
-    //[TODO] as it appears in waveform, dont need to flush the reg
-    // maybe it will have problem with random delay ram
     when(flush_reg =/= 0.U){ // this "if" has higher prior when generating .v
         from_fs_r := 0.U.asTypeOf(new IF_to_ID_IO)
     }

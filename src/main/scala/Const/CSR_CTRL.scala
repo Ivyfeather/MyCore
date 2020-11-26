@@ -9,24 +9,14 @@ object CSR_CTRL {
     val W = 1.asUInt(SZ)
     val S = 2.asUInt(SZ)
     val C = 3.asUInt(SZ)
-    val I = 4.asUInt(SZ)
-    val R = 5.asUInt(SZ)
+    val MRET  = 4.asUInt(SZ)
+    val ECALL = 5.asUInt(SZ)
+    val EBREAK= 6.asUInt(SZ)
+    val R = 7.asUInt(SZ)
 }
 
-trait CSR_addr {
-    val MSTATUS = 0x300.U
-    val MISA    = 0x301.U
-    val MIE     = 0x304.U
-    val MTVEC   = 0x305.U
-    val MSCRATCH  = 0x340.U
-    val MEPC    = 0x341.U
-    val MCAUSE  = 0x342.U
-    val MTVAL   = 0x343.U
-    val MIP     = 0x344.U
-    val MVENDORID = 0xf11.U
-    val MARCHID = 0xf12.U
-    val MIMPID  = 0xf13.U
-    val MHARTID = 0xf14.U
-
+trait CSR_mem_addr {
+    val mem_mtime       = 0x41400000.U(64.W)
+    val mem_mtimecmp    = 0x41400008.U(64.W)
 
 }

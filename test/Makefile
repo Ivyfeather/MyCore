@@ -82,8 +82,8 @@ add_waveform:
 	cat >> ../Top.v <dumpfile.txt
 
 for_soc:
-	sed -i '1i `define RANDOMIZE_DELAY 0' ../ysys_chenxi.v
-	cat >> ../ysys_chenxi.v < ../AXI_bridge.v
+	sed -i '1i `define RANDOMIZE_DELAY 0' ../ysyx_chenxi.v
+	cat >> ../ysyx_chenxi.v < ../AXI_bridge.v
 
 
 run:

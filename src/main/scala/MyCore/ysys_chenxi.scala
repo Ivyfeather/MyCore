@@ -5,15 +5,15 @@ import chisel3._
 import chisel3.util._
 import chisel3.util.experimental.BoringUtils
 
-class ysys_chenxi_IO extends MyCoreBundle {
+class ysyx_chenxi_IO extends MyCoreBundle {
     val mem  = Flipped(new AXI_Interface)
     val mmio = Flipped(new AXI_lite_interface)
     val mtip = Input(Bool())
     val meip = Input(Bool())
 }
 
-class ysys_chenxi extends MyCoreModule {
-    val io = IO(new ysys_chenxi_IO)
+class ysyx_chenxi extends MyCoreModule {
+    val io = IO(new ysyx_chenxi_IO)
 
     val core = Module(new core)
     val bridge = Module(new AXI_Bridge)

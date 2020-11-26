@@ -6,9 +6,14 @@ import chisel3.util.experimental.BoringUtils
 
 class WB_TOP_IO extends MyCoreBundle {
     val ms  = Flipped(DecoupledIO(new MEM_TO_WB_IO))
-    val rf  = new WBbus
+    val rf  = new Forwardbus
     val mtip = Input(Bool())
     val meip = Input(Bool())
+
+    val exception = Output(Bool())
+
+    val mepc = Output(UInt(64.W))
+    val exc_addr = Output(UInt(64.W))
 }
 
 class WB_TOP extends MyCoreModule{
@@ -24,27 +29,33 @@ class WB_TOP extends MyCoreModule{
     val decode = from_ms_r.decode
 
 
-// ================================================================
-    io.rf.wr_addr := from_ms_r.rd_addr
-    io.rf.wr_data := from_ms_r.final_result
-    io.rf.rf_we   := decode.rf_wen
 
+
+
+// ================================================================
+    val csrs = Module(new CSR)
+    csrs.io.addr    := from_ms_r.csr_addr
+    csrs.io.ctrl    := from_ms_r.decode.csr_cmd
+    csrs.io.gr_data := from_ms_r.final_result
+    csrs.io.pc      := from_ms_r.PC
+
+    val csr_data = csrs.io.csr_data
+    // WBstage takes only 1 cycle always(ready_go === true)
+    // write into RF will not be affected when IDstage is stalled
+
+    io.rf.wr_addr := from_ms_r.rd_addr
+    io.rf.wr_data := Mux(decode.wb_sel === WB_CSR, csr_data, from_ms_r.final_result)
+    io.rf.rf_we   := decode.rf_wen
+    io.rf.wb_sel  := decode.wb_sel
+
+// ==== for debug ============================================================
     val is_commit = RegInit(false.B)
-//    when(io.ms.valid && io.ms.ready){
-//        is_commit := RegNext(from_ms_r.PC =/= 0.U)
-//    }.elsewhen(is_commit){ // last for one cycle
-//        is_commit := false.B
-//    }
     when(io.ms.valid && io.ms.ready){
         is_commit := true.B
     }.elsewhen(is_commit){ // last for one cycle
         is_commit := false.B
     }
-
-    BoringUtils.addSource( RegNext(Mux(is_commit, from_ms_r.PC =/= 0.U, false.B)), "is_valid")
-    BoringUtils.addSource( RegNext(from_ms_r.PC), "debug_pc")
-// ================================================================
-    val csrs = Module(new CSR)
-    csrs.io := DontCare
-
+    io.exception := csrs.io.exception
+    io.mepc := csrs.io.mepc
+    io.exc_addr := csrs.io.exc_addr
 }

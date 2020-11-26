@@ -8,4 +8,5 @@ class EXE_TO_MEM_IO extends MyCoreBundle {
     val alu_result  = Output(UInt(xlen.W))
     val rd_addr     = Output(UInt(5.W))
     val load_offset = Output(UInt(3.W))
+    val csr_addr    = Output(UInt(12.W))
 }

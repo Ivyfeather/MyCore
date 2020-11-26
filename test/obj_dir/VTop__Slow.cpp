@@ -50,7 +50,7 @@ void VTop::_initial__TOP__1(VTop__Syms* __restrict vlSymsp) {
     VTop* const __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
     // Variables
     WData/*159:0*/ __Vtemp1[5];
-    WData/*383:0*/ __Vtemp4[12];
+    WData/*447:0*/ __Vtemp4[14];
     // Body
     if (VL_UNLIKELY((0U != VL_TESTPLUSARGS_I("trace")))) {
         __Vtemp1[0U] = 0x2e766364U;
@@ -135,19 +135,21 @@ void VTop::_initial__TOP__1(VTop__Syms* __restrict vlSymsp) {
                                          + vlTOPp->Soc__DOT__ram__DOT__i);
     }
     __Vtemp4[0U] = 0x2e62696eU;
-    __Vtemp4[1U] = 0x2f616464U;
-    __Vtemp4[2U] = 0x75696c64U;
-    __Vtemp4[3U] = 0x63682f62U;
-    __Vtemp4[4U] = 0x7462656eU;
-    __Vtemp4[5U] = 0x2f746573U;
-    __Vtemp4[6U] = 0x74657374U;
-    __Vtemp4[7U] = 0x6f72652fU;
-    __Vtemp4[8U] = 0x2f4d7943U;
-    __Vtemp4[9U] = 0x68617265U;
-    __Vtemp4[0xaU] = 0x6e742f73U;
-    __Vtemp4[0xbU] = 0x2f6dU;
+    __Vtemp4[1U] = 0x746f7265U;
+    __Vtemp4[2U] = 0x61642d73U;
+    __Vtemp4[3U] = 0x642f6c6fU;
+    __Vtemp4[4U] = 0x6275696cU;
+    __Vtemp4[5U] = 0x6e63682fU;
+    __Vtemp4[6U] = 0x73746265U;
+    __Vtemp4[7U] = 0x742f7465U;
+    __Vtemp4[8U] = 0x2f746573U;
+    __Vtemp4[9U] = 0x436f7265U;
+    __Vtemp4[0xaU] = 0x652f4d79U;
+    __Vtemp4[0xbU] = 0x73686172U;
+    __Vtemp4[0xcU] = 0x6d6e742fU;
+    __Vtemp4[0xdU] = 0x2fU;
     vlTOPp->Soc__DOT__ram__DOT__mem_file = VL_FOPEN_NN(
-                                                       VL_CVT_PACK_STR_NW(12, __Vtemp4)
+                                                       VL_CVT_PACK_STR_NW(14, __Vtemp4)
                                                        , 
                                                        std::string("r"));
     (void)VL_FREAD_I(64,0,131072, vlTOPp->Soc__DOT__ram__DOT__mem
